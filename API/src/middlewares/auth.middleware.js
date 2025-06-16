@@ -5,27 +5,21 @@ require('dotenv').config();
 
 const verifyToken = promisify(jwt.verify);
 
-
 const authenticate = async (req, res, next) => {
-  const authHeader = req.headers.authorization;
+  const token = req.headers.authorization;
 
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+  if (!token) {
     return res.status(401).json({ message: 'Token no proporcionado' });
   }
 
-  const token = authHeader.split(' ')[1];
-
   try {
-  
-    const decoded = await verifyToken(token, process.env.JWT_SECRET);
+    const decoded = await verifyToken(token, "secretfresher");
 
-   
     const user = await User.findByPk(decoded.id_user);
 
     if (!user) {
       return res.status(401).json({ message: 'Usuario no encontrado' });
     }
-
 
     req.user = user;
     next();
@@ -34,13 +28,8 @@ const authenticate = async (req, res, next) => {
   }
 };
 
-/**
- * Middleware para verificar si el usuario tiene un rol específico
- * @param {string[]} roles - Lista de roles permitidos
- */
 const authorize = (...roles) => {
   return (req, res, next) => {
-
     if (!req.user || !roles.includes(req.user.role)) {
       return res.status(403).json({ message: 'Acceso denegado: permisos insuficientes' });
     }
