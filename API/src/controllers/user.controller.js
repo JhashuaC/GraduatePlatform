@@ -81,7 +81,7 @@ try {
 
     const { password: _pw, ...safeUser } = user.toJSON();
     console.log("SECRET:", process.env.JWT_SECRET);
-    res.status(200).json({ token, id_user: user.id_user, role: role.name });
+    res.status(200).json({ token, user: user,role: role.name });
   
   } catch (error) {
     res.status(500).json({ message: 'Error al obtener rol', error });
