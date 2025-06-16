@@ -1,7 +1,7 @@
 const { User, Role } = require('../models');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-
+const role = require('../models/role.model'); // Asegúrate de que la ruta sea correcta
 const createUser = async (req, res) => {
   try {
     const { name, last_name, email, password, id_role } = req.body;
@@ -65,22 +65,27 @@ const login = async (req, res) => {
 
     if (!user) return res.status(404).json({ message: 'Usuario no encontrado' });
 
-    // Comparar
-    //const match = await bcrypt.compare(password, user.password);
-    //if (!match) return res.status(400).json({ message: 'Contraseña incorrecta' });
-
+  
     if (user.password !== password) {
       return res.status(400).json({ message: 'Contraseña incorrecta' });
     }
 
-    const payload = { id_user: user.id_user, role: user.id_role };
 
-    const token = jwt.sign(payload, "NO SIRVEEE", { expiresIn: '1h' });         //NO SIRVEEEEEEE
+    
+try {
+    const role = await Role.findByPk(user.id_role);
+    if (!role) return res.status(404).json({ message: 'Rol no encontrado' });
+      const payload = { id_user: user.id_user };
 
-    // Excluir password del usuario que enviarás al frontend
+    const token = jwt.sign(payload, "secretfresher", { expiresIn: '1h' });         //NO SIRVEEEEEEE
+
     const { password: _pw, ...safeUser } = user.toJSON();
     console.log("SECRET:", process.env.JWT_SECRET);
-    res.status(200).json({ token, user: safeUser });
+    res.status(200).json({ token, id_user: user.id_user, role: role.name });
+  
+  } catch (error) {
+    res.status(500).json({ message: 'Error al obtener rol', error });
+  }
   } catch (error) {
     console.error('ERROR EN LOGIN:', error);
     res.status(500).json({ message: 'Error en el login', error });
