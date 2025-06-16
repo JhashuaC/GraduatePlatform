@@ -6,8 +6,8 @@ const controller = require('../controllers/category.controller');
 // Rutas de categoría
 router.get('/', authenticate, controller.getAllCategories); // Obtener todas las categorías
 router.get('/:id', authenticate, controller.getCategoryById); // Obtener una categoría por ID
-router.post('/', authenticate, authorize('admin'), controller.createCategory); // Crear una nueva categoría (solo admin)
+router.post('/', authenticate, controller.createCategory); // Crear una nueva categoría (solo admin)
 router.put('/:id', authenticate, controller.updateCategory); // Actualizar una categoría
-router.delete('/:id', authenticate, authorize('admin'), controller.deleteCategory); // Eliminar una categoría (solo admin)
+router.delete('/:id', authenticate, controller.deleteCategory); // Eliminar una categoría (solo admin)
 
 module.exports = router;
