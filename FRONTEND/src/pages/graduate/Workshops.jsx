@@ -1,29 +1,40 @@
 import { useEffect, useState } from "react";
 import { getWorkshops } from "../../api/courseService";
+import CourseCard from "../../components/CourseCard";
+import { useAuth } from "../../context/AuthContext";
 
 export default function Workshops() {
-  const [workshops, setWorkshops] = useState([]);
+  const [courses, setCourses] = useState([]);
 
   useEffect(() => {
     async function fetchData() {
-      const data = await getWorkshops();
-      setWorkshops(data);
+      const data = await getWorkshops(); // Aquí deberías retornar los cursos reales
+      setCourses(data);
     }
     fetchData();
   }, []);
 
+  const handleRegister = (courseId) => {
+    // Aquí va la lógica para inscribirse (API POST, modal, etc.)
+    alert(`Te inscribiste al curso con ID ${courseId}`);
+  };
+
   return (
-    <div>
-      <h2 className="text-2xl font-bold mb-4">Talleres Disponibles</h2>
-      <ul>
-        {workshops.map((w) => (
-          <li key={w.id_workshop} className="border p-2 my-2">
-            <h3 className="font-semibold">{w.title}</h3>
-            <p>{w.description}</p>
-            <p><strong>Modalidad:</strong> {w.mode}</p>
-          </li>
+    <div className="p-6">
+      <h2 className="text-3xl font-bold mb-6 text-center text-blue-900">Cursos Disponibles</h2>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {courses.map((course) => (
+          <CourseCard
+            key={course.id_course}
+            name={course.name}
+            description={course.description}
+            date={course.date}
+            time={course.time}
+            modality={course.modality}
+            onRegister={() => handleRegister(course.id_course)}
+          />
         ))}
-      </ul>
+      </div>
     </div>
   );
 }

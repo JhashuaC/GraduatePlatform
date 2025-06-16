@@ -2,7 +2,7 @@ import { useAuth } from "../../context/AuthContext";
 import { useState } from "react";
 
 export default function Profile() {
-  const { user, setUser } = useAuth(); // Asegúrate de que `setUser` esté disponible en tu AuthContext
+  const { user, setUser } = useAuth(); 
   const [editMode, setEditMode] = useState(false);
   const [form, setForm] = useState({
     nombre: user?.nombre || "",
