@@ -5,7 +5,7 @@ function getAuthHeaders() {
   const token = JSON.parse(localStorage.getItem("auth"))?.token;
   return {
     "Content-Type": "application/json",
-    Authorization: `${token}`,
+    Authorization: token,
   };
 }
 
