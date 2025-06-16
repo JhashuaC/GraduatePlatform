@@ -38,15 +38,6 @@ const authenticate = async (req, res, next) => {
  * Middleware para verificar si el usuario tiene un rol específico
  * @param {string[]} roles - Lista de roles permitidos
  */
-const authorize = (...roles) => {
-  return (req, res, next) => {
-
-    if (!req.user || !roles.includes(req.user.role)) {
-      return res.status(403).json({ message: 'Acceso denegado: permisos insuficientes' });
-    }
-    next();
-  };
-};
 
 module.exports = {
   authenticate,

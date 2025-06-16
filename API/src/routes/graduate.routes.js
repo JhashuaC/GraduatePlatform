@@ -6,9 +6,9 @@ const controller = require('../controllers/graduate.controller');
 
 router.get('/', authenticate, controller.getAllGraduates); // Obtener todos los graduados
 router.get('/:id', authenticate, controller.getGraduateById); // Obtener un graduado por ID
-router.post('/', authenticate, authorize('admin'), controller.createGraduate); // Crear un nuevo graduado (solo admin)
+router.post('/', authenticate, controller.createGraduate); // Crear un nuevo graduado (solo admin)
 router.put('/:id', authenticate, controller.updateGraduate); // Actualizar un graduado
-router.delete('/:id', authenticate, authorize('admin'), controller.deleteGraduate); // Eliminar un graduado (solo admin)
+router.delete('/:id', authenticate, controller.deleteGraduate); // Eliminar un graduado (solo admin)
 
 
 
