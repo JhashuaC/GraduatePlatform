@@ -15,7 +15,7 @@ export default function Workshops() {
   }, []);
 
   const handleRegister = (courseId) => {
-    // Aquí va la lógica para inscribirse (API POST, modal, etc.)
+    
     alert(`Te inscribiste al curso con ID ${courseId}`);
   };
 

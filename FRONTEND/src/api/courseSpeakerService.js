@@ -2,10 +2,10 @@ const BASE_URL = "http://localhost:3000/api/course-speakers"; // Ajusta si el en
 
 // Headers con token JWT
 function getAuthHeaders() {
-  const token = localStorage.getItem("token");
+  const token = JSON.parse(localStorage.getItem("auth"))?.token;
   return {
     "Content-Type": "application/json",
-    Authorization: `Bearer ${token}`,
+    Authorization: token,
   };
 }
 

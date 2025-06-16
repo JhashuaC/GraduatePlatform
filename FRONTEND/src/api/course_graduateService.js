@@ -2,7 +2,7 @@ const BASE_URL = "http://localhost:3000/api/assignments";
 
 // Obtener token y headers con autenticación
 function getAuthHeaders() {
-  const token = localStorage.getItem("token");
+  const token = JSON.parse(localStorage.getItem("auth"))?.token;
   return {
     "Content-Type": "application/json",
     Authorization: token,
