@@ -8,7 +8,7 @@ import GraduateRoutes from "./routes/GraduateRoutes";
 import LoginRegister from "./pages/common/LoginRegister";
 
 export default function App() {
-   const { user, loading } = useAuth();       // user === null  → no logueado
+  const { user, loading } = useAuth();       // user === null  → no logueado
   // user.role === "graduate" → graduado
 
   if (loading) {
@@ -23,13 +23,9 @@ export default function App() {
         <Route
           path="/"
           element={
-            !user
-              ? <LoginRegister />
-              : <Navigate to="/graduate/dashboard" replace />
+            !user ? <LoginRegister /> : <Navigate to="/graduate" replace />
           }
         />
-
-        {/* Todas las rutas internas del graduado */}
         <Route path="/graduate/*" element={<GraduateRoutes />} />
 
         {/* Cualquier otra URL → vuelve al inicio */}

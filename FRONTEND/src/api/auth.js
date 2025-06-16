@@ -1,34 +1,34 @@
+// src/api/auth.js
+const API = "http://localhost:3000/api";
 
-
-export async function loginRequest({ email, password }) {
-  const res = await fetch("http://localhost:3000/api/users/login", {
+export async function loginRequest(credentials) {
+  const res = await fetch(`${API}/users/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, password })
+    body: JSON.stringify(credentials),
   });
 
-  if (!res.ok) throw new Error("Error al iniciar sesión");
-  const { token } = await res.json();
+  if (!res.ok) {
+    const { message } = await res.json().catch(() => ({}));
+    throw new Error(message || "Error al iniciar sesión");
+  }
 
-  // Obtener datos del usuario (opcional)
-  const userRes = await fetch("http://localhost:3000/api/users/me", {
-    headers: { Authorization: `Bearer ${token}` }
-  });
-  const user = await userRes.json();
+  const { token, user, role } = await res.json();
 
-  return { user, token };
+  return { user: { ...user, role }, token };
 }
 
 export async function registerRequest(data) {
-  const res = await fetch("http://localhost:3000/api/users", {
+  const res = await fetch(`${API}/users`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data)
+    body: JSON.stringify(data),
   });
 
-  if (!res.ok) throw new Error("Error al registrarse");
-  const user = await res.json();
-
-  // También iniciar sesión luego del registro
+  if (!res.ok) {
+    const { message } = await res.json().catch(() => ({}));
+    throw new Error(message || "Error al registrarse");
+  }
+  // Auto‑login tras registrar
   return loginRequest({ email: data.email, password: data.password });
 }
