@@ -1,0 +1,58 @@
+P4_API/
+│
+├── .env                        # Variables de entorno (DB, puertos, JWT_SECRET, credenciales SMTP, etc.)
+├── .gitignore
+├── package.json
+├── README.md
+│
+├── 📁 src/
+│   ├── index.js                # Punto de entrada de la API (configuración de express y rutas)
+│
+│   ├── 📁 config/              # Configuración general
+│   │   └── db.js               # Conexión a MySQL
+│
+│   ├── 📁 models/              # Definición de esquemas de las tablas
+│   │   ├── user.model.js
+│   │   ├── role.model.js
+│   │   ├── graduate.model.js
+│   │   ├── career.model.js
+│   │   ├── category.model.js
+│   │   ├── course.model.js
+│   │   ├── speaker.model.js
+│   │   ├── course_graduate.model.js
+│   │   └── course_speaker.model.js
+│
+│   ├── 📁 controllers/         # Lógica de negocio de cada entidad
+│   │   ├── user.controller.js
+│   │   ├── role.controller.js
+│   │   ├── graduate.controller.js
+│   │   ├── career.controller.js
+│   │   ├── category.controller.js
+│   │   ├── course.controller.js
+│   │   ├── speaker.controller.js
+│   │   ├── course_graduate.controller.js
+│   │   └── course_speaker.controller.js
+│
+│   ├── 📁 routes/              # Rutas de la API
+│   │   ├── user.routes.js
+│   │   ├── role.routes.js
+│   │   ├── graduate.routes.js
+│   │   ├── career.routes.js
+│   │   ├── category.routes.js
+│   │   ├── course.routes.js
+│   │   ├── speaker.routes.js
+│   │   ├── course_graduate.routes.js
+│   │   └── course_speaker.routes.js
+│
+│   ├── 📁 middlewares/         # Middlewares personalizados
+│   │   ├── auth.middleware.js       # Verificación de JWT (proteger rutas)
+│   │   └── verifyCode.middleware.js # Valida el código enviado por correo
+│
+│   ├── 📁 services/            # Servicios reutilizables
+│   │   ├── auth.service.js          # Generación y verificación de JWT
+│   │   ├── mail.service.js          # Envío de correo con código de verificación
+│   │   └── code.service.js          # Generación/validación de códigos temporales
+│
+│   ├── 📁 utils/               # Utilidades generales
+│   │   ├── hash.js                 # Encriptación y comparación de contraseñas
+│   │   └── generateCode.js         # Generador aleatorio de códigos (ej. 6 dígitos)
