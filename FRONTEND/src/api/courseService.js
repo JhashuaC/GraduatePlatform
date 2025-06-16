@@ -10,7 +10,7 @@ function getAuthHeaders() {
 }
 
 // Obtener todos los cursos (requiere login)
-export async function getCourses() {
+export async function getWorkshops() {
   try {
     const response = await fetch(BASE_URL, {
       headers: getAuthHeaders(),

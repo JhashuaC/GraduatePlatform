@@ -75,7 +75,7 @@ const login = async (req, res) => {
 
     const payload = { id_user: user.id_user, role: user.id_role };
 
-    const token = jwt.sign(payload, env.JWT_SECRET, { expiresIn: '1h' });         //NO SIRVEEEEEEE
+    const token = jwt.sign(payload, "NO SIRVEEE", { expiresIn: '1h' });         //NO SIRVEEEEEEE
 
     // Excluir password del usuario que enviarás al frontend
     const { password: _pw, ...safeUser } = user.toJSON();

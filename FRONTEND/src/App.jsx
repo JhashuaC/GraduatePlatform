@@ -1,46 +1,40 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import Dashboard from "./pages/Home"; // puedes renombrar como quieras
-import Courses from "./pages/Courses";
-import Careers from "./pages/Careers";
-import Speakers from "./pages/Speakers";
-import Graduates from "./pages/Graduates"; // ← asegúrate de importar esta si existe
-import ProtectedRoute from "./components/ProtectedRoute";
+import { useAuth } from "./context/AuthContext";
+
+// Rutas internas del graduado
+import GraduateRoutes from "./routes/GraduateRoutes";
+
+// Página pública (login + registro)
+import LoginRegister from "./pages/common/LoginRegister";
 
 export default function App() {
+   const { user, loading } = useAuth();       // user === null  → no logueado
+  // user.role === "graduate" → graduado
+
+  if (loading) {
+    return <div>Cargando...</div>; // O un spinner / splash screen
+  }
+
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Navigate to="/login" />} />
 
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        {/* Página raíz: login si no hay sesión, redirige si ya hay sesión */}
+        <Route
+          path="/"
+          element={
+            !user
+              ? <LoginRegister />
+              : <Navigate to="/graduate/dashboard" replace />
+          }
+        />
 
-        <Route
-          path="/home"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/graduados"
-          element={
-            <ProtectedRoute>
-              <Graduates />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin"
-          element={
-            <ProtectedRoute role="admin">
-              <h1>Panel de administrador</h1>
-            </ProtectedRoute>
-          }
-        />
+        {/* Todas las rutas internas del graduado */}
+        <Route path="/graduate/*" element={<GraduateRoutes />} />
+
+        {/* Cualquier otra URL → vuelve al inicio */}
+        <Route path="*" element={<Navigate to="/" replace />} />
+
       </Routes>
     </BrowserRouter>
   );

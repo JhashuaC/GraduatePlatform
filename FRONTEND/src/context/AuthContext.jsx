@@ -9,16 +9,19 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);   // Objeto completo del usuario
   const [token, setToken] = useState(null); // JWT
   const [role, setRole] = useState(null);   // Rol del usuario (admin, user, etc.)
+  const [loading, setLoading] = useState(true);
 
   // Restaurar sesión si hay datos en localStorage
   useEffect(() => {
-    const stored = JSON.parse(localStorage.getItem("auth"));
-    if (stored?.token && stored?.user) {
-      setUser(stored.user);
-      setToken(stored.token);
-      setRole(stored.user.role); // Extraer rol
-    }
-  }, []);
+  const stored = localStorage.getItem("auth");
+  if (stored) {
+    const parsed = JSON.parse(stored);
+    setUser(parsed.user);
+    setToken(parsed.token);
+    setRole(parsed.user.role);
+  }
+  setLoading(false);
+}, []);
 
   // Función para iniciar sesión
   const login = async (credentials) => {
@@ -47,21 +50,11 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider
-      value={{
-        user,
-        token,
-        role,
-        isAdmin: role === "admin", // bandera útil
-        login,
-        register,
-        logout,
-      }}
-    >
+    <AuthContext.Provider value={{ user, token, login, register, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-// Hook para consumir el contexto
 export const useAuth = () => useContext(AuthContext);
+
