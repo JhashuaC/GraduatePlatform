@@ -56,8 +56,6 @@ const deleteUser = async (req, res) => {
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
-
-    // Traer explícitamente password
     const user = await User.findOne({
       where: { email },
       attributes: ['id_user', 'name', 'email', 'password', 'id_role']
@@ -65,15 +63,10 @@ const login = async (req, res) => {
 
     if (!user) return res.status(404).json({ message: 'Usuario no encontrado' });
 
-  
     if (user.password !== password) {
       return res.status(400).json({ message: 'Contraseña incorrecta' });
     }
-
-
-    
-try {
-    const role = await Role.findByPk(user.id_role);
+  const role = await Role.findByPk(user.id_role);
     if (!role) return res.status(404).json({ message: 'Rol no encontrado' });
       const payload = { id_user: user.id_user };
 
@@ -83,9 +76,6 @@ try {
     console.log("SECRET:", process.env.JWT_SECRET);
     res.status(200).json({ token, user: user,role: role.name });
   
-  } catch (error) {
-    res.status(500).json({ message: 'Error al obtener rol', error });
-  }
   } catch (error) {
     console.error('ERROR EN LOGIN:', error);
     res.status(500).json({ message: 'Error en el login', error });
