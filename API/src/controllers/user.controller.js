@@ -1,12 +1,11 @@
 const { User, Role } = require('../models');
-const { JWT_SECRET } = process.env;
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken'); // Asegúrate de tener esto importado
+const jwt = require('jsonwebtoken');
 
 const createUser = async (req, res) => {
   try {
-    const { name, email, password, id_role } = req.body;
-    const user = await User.create({ name, email, password, id_role });
+    const { name, last_name, email, password, id_role } = req.body;
+    const user = await User.create({ name, last_name, email, password, id_role });
     res.status(201).json(user);
   } catch (error) {
     res.status(500).json({ message: 'Error al crear usuario', error });
@@ -58,28 +57,32 @@ const login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
+    // Traer explícitamente password
     const user = await User.findOne({
       where: { email },
-      include: Role
+      attributes: ['id_user', 'name', 'email', 'password', 'id_role']
     });
 
-    if (!user) {
-      return res.status(404).json({ message: 'Usuario no encontrado' });
-    }
+    if (!user) return res.status(404).json({ message: 'Usuario no encontrado' });
 
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
+    // Comparar
+    //const match = await bcrypt.compare(password, user.password);
+    //if (!match) return res.status(400).json({ message: 'Contraseña incorrecta' });
+
+    if (user.password !== password) {
       return res.status(400).json({ message: 'Contraseña incorrecta' });
     }
 
-    const token = jwt.sign(
-      { id_user: user.id_user }, // El rol será cargado por el middleware
-      JWT_SECRET,
-      { expiresIn: '1h' }
-    );
+    const payload = { id_user: user.id_user, role: user.id_role };
 
-    res.status(200).json({ token });
+    const token = jwt.sign(payload, "NOSIRVEEE", { expiresIn: '1h' });         //NO SIRVEEEEEEE
+
+    // Excluir password del usuario que enviarás al frontend
+    const { password: _pw, ...safeUser } = user.toJSON();
+    console.log("SECRET:", process.env.JWT_SECRET);
+    res.status(200).json({ token, user: safeUser });
   } catch (error) {
+    console.error('ERROR EN LOGIN:', error);
     res.status(500).json({ message: 'Error en el login', error });
   }
 };
@@ -90,5 +93,6 @@ module.exports = {
   getUserById,
   updateUser,
   deleteUser,
-  login
+  login 
 };
+
