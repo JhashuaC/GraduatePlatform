@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { getGraduates, addGraduate } from "../api/graduates";
-import { getCareers } from "../api/careers";
+import { getGraduates, addGraduate } from "../api/graduateService";
+import { getCareers } from "../api/careersService";
 import GraduatedCard from "../components/GraduatedCard";
 import Navbar from "../components/Navbar";
 

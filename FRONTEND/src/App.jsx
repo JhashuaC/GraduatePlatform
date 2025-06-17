@@ -1,36 +1,37 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "./context/AuthContext";
 
-// Rutas internas del graduado
 import GraduateRoutes from "./routes/GraduateRoutes";
-
-// Página pública (login + registro)
+import AdminRoutes from "./routes/AdminRoutes";
 import LoginRegister from "./pages/common/LoginRegister";
 
 export default function App() {
-  const { user, loading } = useAuth();       // user === null  → no logueado
-  // user.role === "graduate" → graduado
+  const { user, loading } = useAuth();
 
-  if (loading) {
-    return <div>Cargando...</div>; // O un spinner / splash screen
-  }
+  if (loading) return <div>Cargando...</div>;
 
   return (
     <BrowserRouter>
       <Routes>
 
-        {/* Página raíz: login si no hay sesión, redirige si ya hay sesión */}
+        {/* Página raíz */}
         <Route
           path="/"
           element={
-            !user ? <LoginRegister /> : <Navigate to="/graduate" replace />
+            !user
+              ? <LoginRegister />
+              : user.role === "graduate"
+              ? <Navigate to="/graduate" replace />
+              : <Navigate to="/admin" replace />
           }
         />
+
+        {/* Rutas específicas por rol */}
         <Route path="/graduate/*" element={<GraduateRoutes />} />
+        <Route path="/admin/*" element={<AdminRoutes />} />
 
-        {/* Cualquier otra URL → vuelve al inicio */}
+        {/* Rutas desconocidas */}
         <Route path="*" element={<Navigate to="/" replace />} />
-
       </Routes>
     </BrowserRouter>
   );
