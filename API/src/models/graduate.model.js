@@ -1,31 +1,30 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('../config/db');
-const Career = require('./career.model');
+const sequelize = require('../config/database');
 
 const Graduate = sequelize.define('Graduate', {
   id_graduate: {
     type: DataTypes.INTEGER,
     primaryKey: true,
-    autoIncrement: true
   },
-  name: { type: DataTypes.STRING(100), allowNull: false },
-  identification: { type: DataTypes.STRING(20), allowNull: false },
-  address: { type: DataTypes.STRING(200), allowNull: false },
-  email: { type: DataTypes.STRING(100), allowNull: false },
-  phone: { type: DataTypes.STRING(20), allowNull: false },
-  work_phone: { type: DataTypes.STRING(20), allowNull: false },
-  graduation_year: { type: DataTypes.INTEGER, allowNull: false },
+  graduation_year: {
+    type: DataTypes.STRING(4),
+    allowNull: true,
+  },
   id_career: {
     type: DataTypes.INTEGER,
-    allowNull: false,
-    references: {
-      model: Career,
-      key: 'id_career'
-    }
-  }
+    allowNull: true,
+  },
+  category: {
+    type: DataTypes.STRING(50),
+    allowNull: true,
+  },
+  work_phone: {
+    type: DataTypes.STRING(20),
+    allowNull: true,
+  },
 }, {
-  tableName: 'Graduate',
-  timestamps: false
+  tableName: 'graduates',
+  timestamps: false,
 });
 
 module.exports = Graduate;

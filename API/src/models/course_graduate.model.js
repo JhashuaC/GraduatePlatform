@@ -1,20 +1,26 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('../config/db');
+const sequelize = require('../config/database');
 
-const Course_Graduate = sequelize.define('Course_Graduate', {
-  course_id: {
+const CourseGraduate = sequelize.define('CourseGraduate', {
+  id_course: {
     type: DataTypes.INTEGER,
-    allowNull: false,
-    primaryKey: true
+    primaryKey: true,
   },
-  graduate_id: {
+  id_graduate: {
     type: DataTypes.INTEGER,
-    allowNull: false,
-    primaryKey: true
-  }
+    primaryKey: true,
+  },
+  completed: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+  },
+  completed_at: {
+    type: DataTypes.DATE,
+    allowNull: true,
+  },
 }, {
-  tableName: 'Course_Graduate',
-  timestamps: false
+  tableName: 'course_graduate',
+  timestamps: false,
 });
 
-module.exports = Course_Graduate;
+module.exports = CourseGraduate;

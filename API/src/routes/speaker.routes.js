@@ -1,13 +1,18 @@
 const express = require('express');
 const router = express.Router();
-const { authenticate, authorize } = require('../middlewares/auth.middleware');
-const controller = require('../controllers/speaker.controller');
+const {
+  getAllSpeakers,
+  getSpeakerById,
+  createSpeaker,
+  updateSpeaker,
+  deleteSpeaker,
+} = require('../controllers/speaker.controller');
+const { verifyToken } = require('../middleware/auth.middleware');
 
-// Rutas de ponente
-router.get('/', authenticate, controller.getAllSpeakers); // Obtener todos los ponentes
-router.get('/:id', authenticate, controller.getSpeakerById); // Obtener un ponente por ID
-router.post('/', authenticate, controller.createSpeaker); // Crear un nuevo ponente (solo admin)
-router.put('/:id', authenticate, controller.updateSpeaker); // Actualizar un ponente
-router.delete('/:id', authenticate, authorize('admin'), controller.deleteSpeaker); // Eliminar un ponente (solo admin)
+router.get('/', verifyToken, getAllSpeakers);
+router.get('/:id', verifyToken, getSpeakerById);
+router.post('/', verifyToken, createSpeaker);
+router.put('/:id', verifyToken, updateSpeaker);
+router.delete('/:id', verifyToken, deleteSpeaker);
 
 module.exports = router;

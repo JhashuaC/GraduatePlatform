@@ -1,29 +1,39 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('../config/db');
-const Category = require('./category.model');
+const sequelize = require('../config/database');
 
 const Course = sequelize.define('Course', {
   id_course: {
     type: DataTypes.INTEGER,
     primaryKey: true,
-    autoIncrement: true
+    autoIncrement: true,
   },
-  name: { type: DataTypes.STRING(100), allowNull: false },
-  description: { type: DataTypes.TEXT, allowNull: false },
-  date: { type: DataTypes.DATEONLY, allowNull: false },
-  time: { type: DataTypes.TIME, allowNull: false },
-  id_category: {
+  name_course: {
+    type: DataTypes.STRING(100),
+    allowNull: true,
+  },
+  description: {
+    type: DataTypes.TEXT,
+    allowNull: true,
+  },
+  date_course: {
+    type: DataTypes.DATEONLY,
+    allowNull: true,
+  },
+  time_course: {
+    type: DataTypes.TIME,
+    allowNull: true,
+  },
+  modality: {
+    type: DataTypes.STRING(50),
+    allowNull: true,
+  },
+  id_speaker: {
     type: DataTypes.INTEGER,
-    allowNull: false,
-    references: {
-      model: Category,
-      key: 'id_category'
-    }
+    allowNull: true,
   },
-  modality: { type: DataTypes.STRING(50), allowNull: false }
 }, {
-  tableName: 'Course',
-  timestamps: false
+  tableName: 'courses',
+  timestamps: false,
 });
 
 module.exports = Course;

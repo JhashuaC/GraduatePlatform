@@ -1,23 +1,20 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
 
-const Career = sequelize.define('Career', {
-  id_career: {
+const PreferenceOption = sequelize.define('PreferenceOption', {
+  id_option: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
   },
-  area: {
-    type: DataTypes.STRING(100),
-    allowNull: true,
-  },
   name: {
     type: DataTypes.STRING(100),
-    allowNull: true,
+    unique: true,
+    allowNull: false,
   },
 }, {
-  tableName: 'career',
+  tableName: 'preference_options',
   timestamps: false,
 });
 
-module.exports = Career;
+module.exports = PreferenceOption;

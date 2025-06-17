@@ -1,93 +1,94 @@
-const { User, Role } = require('../models');
+const User = require('../models/user.model');
+const Role = require('../models/roles.model');
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const role = require('../models/role.model'); // Asegúrate de que la ruta sea correcta
-const createUser = async (req, res) => {
-  try {
-    const { name, last_name, email, password, id_role } = req.body;
-    const user = await User.create({ name, last_name, email, password, id_role });
-    res.status(201).json(user);
-  } catch (error) {
-    res.status(500).json({ message: 'Error al crear usuario', error });
-  }
-};
 
 const getAllUsers = async (req, res) => {
   try {
     const users = await User.findAll({ include: Role });
-    res.status(200).json(users);
-  } catch (error) {
-    res.status(500).json({ message: 'Error al obtener usuarios', error });
+    res.json(users);
+  } catch (err) {
+    res.status(500).json({ message: 'Error al obtener usuarios' });
   }
 };
 
 const getUserById = async (req, res) => {
+  const { id } = req.params;
   try {
-    const user = await User.findByPk(req.params.id, { include: Role });
+    const user = await User.findByPk(id, { include: Role });
     if (!user) return res.status(404).json({ message: 'Usuario no encontrado' });
-    res.status(200).json(user);
-  } catch (error) {
-    res.status(500).json({ message: 'Error al obtener usuario', error });
+    res.json(user);
+  } catch (err) {
+    res.status(500).json({ message: 'Error al buscar usuario' });
+  }
+};
+
+const createUser = async (req, res) => {
+  const { first_name, last_name1, last_name2, identity_number, email, phone, address, password, id_role } = req.body;
+  try {
+    const hash = await bcrypt.hash(password, 10);
+    const user = await User.create({
+      first_name,
+      last_name1,
+      last_name2,
+      identity_number,
+      email,
+      phone,
+      address,
+      password: hash,
+      id_role,
+    });
+    res.status(201).json(user);
+  } catch (err) {
+    res.status(500).json({ message: 'Error al crear usuario' });
   }
 };
 
 const updateUser = async (req, res) => {
+  const { id } = req.params;
+  const { first_name, last_name1, last_name2, identity_number, email, phone, address, password, id_role } = req.body;
   try {
-    const { name, password, id_role } = req.body;
-    const updated = await User.update({ name, password, id_role }, { where: { id_user: req.params.id } });
-    if (!updated[0]) return res.status(404).json({ message: 'Usuario no encontrado' });
-    const updatedUser = await User.findByPk(req.params.id);
-    res.status(200).json(updatedUser);
-  } catch (error) {
-    res.status(500).json({ message: 'Error al actualizar usuario', error });
+    const user = await User.findByPk(id);
+    if (!user) return res.status(404).json({ message: 'Usuario no encontrado' });
+
+    let updatedPassword = user.password;
+    if (password) {
+      updatedPassword = await bcrypt.hash(password, 10);
+    }
+
+    await user.update({
+      first_name,
+      last_name1,
+      last_name2,
+      identity_number,
+      email,
+      phone,
+      address,
+      password: updatedPassword,
+      id_role,
+    });
+
+    res.json(user);
+  } catch (err) {
+    res.status(500).json({ message: 'Error al actualizar usuario' });
   }
 };
 
 const deleteUser = async (req, res) => {
+  const { id } = req.params;
   try {
-    const deleted = await User.destroy({ where: { id_user: req.params.id } });
-    if (!deleted) return res.status(404).json({ message: 'Usuario no encontrado' });
-    res.status(200).json({ message: 'Usuario eliminado exitosamente' });
-  } catch (error) {
-    res.status(500).json({ message: 'Error al eliminar usuario', error });
-  }
-};
-
-const login = async (req, res) => {
-  try {
-    const { email, password } = req.body;
-    const user = await User.findOne({
-      where: { email },
-      attributes: ['id_user', 'name', 'email', 'password', 'id_role']
-    });
-
+    const user = await User.findByPk(id);
     if (!user) return res.status(404).json({ message: 'Usuario no encontrado' });
-
-    if (user.password !== password) {
-      return res.status(400).json({ message: 'Contraseña incorrecta' });
-    }
-  const role = await Role.findByPk(user.id_role);
-    if (!role) return res.status(404).json({ message: 'Rol no encontrado' });
-      const payload = { id_user: user.id_user };
-
-    const token = jwt.sign(payload, "secretfresher", { expiresIn: '1h' });         //NO SIRVEEEEEEE
-
-    const { password: _pw, ...safeUser } = user.toJSON();
-    console.log("SECRET:", process.env.JWT_SECRET);
-    res.status(200).json({ token, user: user,role: role.name });
-  
-  } catch (error) {
-    console.error('ERROR EN LOGIN:', error);
-    res.status(500).json({ message: 'Error en el login', error });
+    await user.destroy();
+    res.json({ message: 'Usuario eliminado' });
+  } catch (err) {
+    res.status(500).json({ message: 'Error al eliminar usuario' });
   }
 };
 
 module.exports = {
-  createUser,
   getAllUsers,
   getUserById,
+  createUser,
   updateUser,
   deleteUser,
-  login 
 };
-

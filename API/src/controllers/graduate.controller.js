@@ -1,58 +1,71 @@
-const { Graduate, Career } = require('../models');
-
-const createGraduate = async (req, res) => {
-  try {
-    const graduate = await Graduate.create(req.body);
-    res.status(201).json(graduate);
-  } catch (error) {
-    res.status(500).json({ message: 'Error al crear egresado', error });
-  }
-};
+const Graduate = require('../models/graduate.model');
+const User = require('../models/user.model');
+const Career = require('../models/career.model');
 
 const getAllGraduates = async (req, res) => {
   try {
-    const graduates = await Graduate.findAll({ include: Career });
-    res.status(200).json(graduates);
-  } catch (error) {
-    res.status(500).json({ message: 'Error al obtener egresados', error });
+    const graduates = await Graduate.findAll({ include: [User, Career] });
+    res.json(graduates);
+  } catch (err) {
+    res.status(500).json({ message: 'Error al obtener graduados' });
   }
 };
 
 const getGraduateById = async (req, res) => {
   try {
-    const graduate = await Graduate.findByPk(req.params.id, { include: Career });
-    if (!graduate) return res.status(404).json({ message: 'Egresado no encontrado' });
-    res.status(200).json(graduate);
-  } catch (error) {
-    res.status(500).json({ message: 'Error al obtener egresado', error });
+    const graduate = await Graduate.findByPk(req.params.id, { include: [User, Career] });
+    if (!graduate) return res.status(404).json({ message: 'Graduado no encontrado' });
+    res.json(graduate);
+  } catch (err) {
+    res.status(500).json({ message: 'Error al buscar graduado' });
+  }
+};
+
+const createGraduate = async (req, res) => {
+  const { id_graduate, graduation_year, id_career, category, work_phone } = req.body;
+  try {
+    const graduate = await Graduate.create({
+      id_graduate,
+      graduation_year,
+      id_career,
+      category,
+      work_phone,
+    });
+    res.status(201).json(graduate);
+  } catch (err) {
+    res.status(500).json({ message: 'Error al crear graduado' });
   }
 };
 
 const updateGraduate = async (req, res) => {
   try {
-    const updated = await Graduate.update(req.body, { where: { id_graduate: req.params.id } });
-    if (!updated[0]) return res.status(404).json({ message: 'Egresado no encontrado' });
-    const updatedGraduate = await Graduate.findByPk(req.params.id);
-    res.status(200).json(updatedGraduate);
-  } catch (error) {
-    res.status(500).json({ message: 'Error al actualizar egresado', error });
+    const graduate = await Graduate.findByPk(req.params.id);
+    if (!graduate) return res.status(404).json({ message: 'Graduado no encontrado' });
+
+    const { graduation_year, id_career, category, work_phone } = req.body;
+    await graduate.update({ graduation_year, id_career, category, work_phone });
+
+    res.json(graduate);
+  } catch (err) {
+    res.status(500).json({ message: 'Error al actualizar graduado' });
   }
 };
 
 const deleteGraduate = async (req, res) => {
   try {
-    const deleted = await Graduate.destroy({ where: { id_graduate: req.params.id } });
-    if (!deleted) return res.status(404).json({ message: 'Egresado no encontrado' });
-    res.status(200).json({ message: 'Egresado eliminado exitosamente' });
-  } catch (error) {
-    res.status(500).json({ message: 'Error al eliminar egresado', error });
+    const graduate = await Graduate.findByPk(req.params.id);
+    if (!graduate) return res.status(404).json({ message: 'Graduado no encontrado' });
+    await graduate.destroy();
+    res.json({ message: 'Graduado eliminado' });
+  } catch (err) {
+    res.status(500).json({ message: 'Error al eliminar graduado' });
   }
 };
 
 module.exports = {
-  createGraduate,
   getAllGraduates,
   getGraduateById,
+  createGraduate,
   updateGraduate,
-  deleteGraduate
+  deleteGraduate,
 };

@@ -1,58 +1,78 @@
-const { Course, Category } = require('../models');
-
-const createCourse = async (req, res) => {
-  try {
-    const course = await Course.create(req.body);
-    res.status(201).json(course);
-  } catch (error) {
-    res.status(500).json({ message: 'Error al crear curso', error });
-  }
-};
+const Course = require('../models/course.model');
+const Speaker = require('../models/speaker.model');
 
 const getAllCourses = async (req, res) => {
   try {
-    const courses = await Course.findAll({ include: Category });
-    res.status(200).json(courses);
-  } catch (error) {
-    res.status(500).json({ message: 'Error al obtener cursos', error });
+    const courses = await Course.findAll({ include: Speaker });
+    res.json(courses);
+  } catch (err) {
+    res.status(500).json({ message: 'Error al obtener cursos' });
   }
 };
 
 const getCourseById = async (req, res) => {
   try {
-    const course = await Course.findByPk(req.params.id, { include: Category });
+    const course = await Course.findByPk(req.params.id, { include: Speaker });
     if (!course) return res.status(404).json({ message: 'Curso no encontrado' });
-    res.status(200).json(course);
-  } catch (error) {
-    res.status(500).json({ message: 'Error al obtener curso', error });
+    res.json(course);
+  } catch (err) {
+    res.status(500).json({ message: 'Error al buscar curso' });
+  }
+};
+
+const createCourse = async (req, res) => {
+  const { name_course, description, date_course, time_course, modality, id_speaker } = req.body;
+  try {
+    const course = await Course.create({
+      name_course,
+      description,
+      date_course,
+      time_course,
+      modality,
+      id_speaker,
+    });
+    res.status(201).json(course);
+  } catch (err) {
+    res.status(500).json({ message: 'Error al crear curso' });
   }
 };
 
 const updateCourse = async (req, res) => {
   try {
-    const updated = await Course.update(req.body, { where: { id_course: req.params.id } });
-    if (!updated[0]) return res.status(404).json({ message: 'Curso no encontrado' });
-    const updatedCourse = await Course.findByPk(req.params.id);
-    res.status(200).json(updatedCourse);
-  } catch (error) {
-    res.status(500).json({ message: 'Error al actualizar curso', error });
+    const course = await Course.findByPk(req.params.id);
+    if (!course) return res.status(404).json({ message: 'Curso no encontrado' });
+
+    const { name_course, description, date_course, time_course, modality, id_speaker } = req.body;
+    await course.update({
+      name_course,
+      description,
+      date_course,
+      time_course,
+      modality,
+      id_speaker,
+    });
+
+    res.json(course);
+  } catch (err) {
+    res.status(500).json({ message: 'Error al actualizar curso' });
   }
 };
 
 const deleteCourse = async (req, res) => {
   try {
-    const deleted = await Course.destroy({ where: { id_course: req.params.id } });
-    if (!deleted) return res.status(404).json({ message: 'Curso no encontrado' });
-    res.status(200).json({ message: 'Curso eliminado exitosamente' });
-  } catch (error) {
-    res.status(500).json({ message: 'Error al eliminar curso', error });
+    const course = await Course.findByPk(req.params.id);
+    if (!course) return res.status(404).json({ message: 'Curso no encontrado' });
+    await course.destroy();
+    res.json({ message: 'Curso eliminado' });
+  } catch (err) {
+    res.status(500).json({ message: 'Error al eliminar curso' });
   }
 };
 
 module.exports = {
-  createCourse,
   getAllCourses,
   getCourseById,
+  createCourse,
   updateCourse,
-  deleteCourse
+  deleteCourse,
 };

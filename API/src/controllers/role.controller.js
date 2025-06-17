@@ -1,21 +1,11 @@
-const { Role } = require('../models');
-
-const createRole = async (req, res) => {
-  try {
-    const { name } = req.body;
-    const role = await Role.create({ name });
-    res.status(201).json(role);
-  } catch (error) {
-    res.status(500).json({ message: 'Error al crear rol', error });
-  }
-};
+const Role = require('../models/roles.model');
 
 const getAllRoles = async (req, res) => {
   try {
     const roles = await Role.findAll();
-    res.status(200).json(roles);
-  } catch (error) {
-    res.status(500).json({ message: 'Error al obtener roles', error });
+    res.json(roles);
+  } catch (err) {
+    res.status(500).json({ message: 'Error al obtener roles' });
   }
 };
 
@@ -23,38 +13,47 @@ const getRoleById = async (req, res) => {
   try {
     const role = await Role.findByPk(req.params.id);
     if (!role) return res.status(404).json({ message: 'Rol no encontrado' });
-    res.status(200).json(role);
-  } catch (error) {
-    res.status(500).json({ message: 'Error al obtener rol', error });
+    res.json(role);
+  } catch (err) {
+    res.status(500).json({ message: 'Error al buscar rol' });
+  }
+};
+
+const createRole = async (req, res) => {
+  try {
+    const role = await Role.create({ name: req.body.name });
+    res.status(201).json(role);
+  } catch (err) {
+    res.status(500).json({ message: 'Error al crear rol' });
   }
 };
 
 const updateRole = async (req, res) => {
   try {
-    const { name } = req.body;
-    const updated = await Role.update({ name }, { where: { id_role: req.params.id } });
-    if (!updated[0]) return res.status(404).json({ message: 'Rol no encontrado' });
-    const updatedRole = await Role.findByPk(req.params.id);
-    res.status(200).json(updatedRole);
-  } catch (error) {
-    res.status(500).json({ message: 'Error al actualizar rol', error });
+    const role = await Role.findByPk(req.params.id);
+    if (!role) return res.status(404).json({ message: 'Rol no encontrado' });
+    await role.update({ name: req.body.name });
+    res.json(role);
+  } catch (err) {
+    res.status(500).json({ message: 'Error al actualizar rol' });
   }
 };
 
 const deleteRole = async (req, res) => {
   try {
-    const deleted = await Role.destroy({ where: { id_role: req.params.id } });
-    if (!deleted) return res.status(404).json({ message: 'Rol no encontrado' });
-    res.status(200).json({ message: 'Rol eliminado exitosamente' });
-  } catch (error) {
-    res.status(500).json({ message: 'Error al eliminar rol', error });
+    const role = await Role.findByPk(req.params.id);
+    if (!role) return res.status(404).json({ message: 'Rol no encontrado' });
+    await role.destroy();
+    res.json({ message: 'Rol eliminado' });
+  } catch (err) {
+    res.status(500).json({ message: 'Error al eliminar rol' });
   }
 };
 
 module.exports = {
-  createRole,
   getAllRoles,
   getRoleById,
+  createRole,
   updateRole,
-  deleteRole
+  deleteRole,
 };

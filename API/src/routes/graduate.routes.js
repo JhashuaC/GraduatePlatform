@@ -1,15 +1,18 @@
 const express = require('express');
 const router = express.Router();
-const { authenticate, authorize } = require('../middlewares/auth.middleware');
-const controller = require('../controllers/graduate.controller');
+const {
+  getAllGraduates,
+  getGraduateById,
+  createGraduate,
+  updateGraduate,
+  deleteGraduate,
+} = require('../controllers/graduate.controller');
+const { verifyToken } = require('../middleware/auth.middleware');
 
-
-router.get('/', authenticate, controller.getAllGraduates); // Obtener todos los graduados
-router.get('/:id', authenticate, controller.getGraduateById); // Obtener un graduado por ID
-router.post('/', authenticate, controller.createGraduate); // Crear un nuevo graduado (solo admin)
-router.put('/:id', authenticate, controller.updateGraduate); // Actualizar un graduado
-router.delete('/:id', authenticate, controller.deleteGraduate); // Eliminar un graduado (solo admin)
-
-
+router.get('/', verifyToken, getAllGraduates);
+router.get('/:id', verifyToken, getGraduateById);
+router.post('/', verifyToken, createGraduate);
+router.put('/:id', verifyToken, updateGraduate);
+router.delete('/:id', verifyToken, deleteGraduate);
 
 module.exports = router;
