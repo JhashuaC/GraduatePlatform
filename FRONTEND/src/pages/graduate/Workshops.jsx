@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { getAllCourses } from "../../api/course.service";
 import CourseCard from "../../components/CourseCard";
-import { useAuth } from "../../context/AuthContext";
+import { assignGraduateToCourse } from '../../api/course_graduate.service'; 
+import { useAuth } from "../../context/AuthContext"; 
 
 export default function Workshops() {
+  const { user } = useAuth(); 
   const [courses, setCourses] = useState([]);
 
   useEffect(() => {
@@ -14,10 +16,27 @@ export default function Workshops() {
     fetchData();
   }, []);
 
-  const handleRegister = (courseId) => {
-    
-    alert(`Te inscribiste al curso con ID ${courseId}`);
-  };
+  const handleRegister = async (courseId) => {
+  try {
+    if (!user) {
+      alert('Debes iniciar sesión para inscribirte');
+      return;
+    }
+
+    const data = {
+      id_course: courseId,
+      id_graduate: user.id_user,
+      completed: false,
+      completed_at: null,
+    };
+
+    await assignGraduateToCourse(data);
+    alert(`Te inscribiste exitosamente al curso con ID ${courseId}`);
+  } catch (err) {
+    alert('Ocurrió un error al inscribirte. Intenta más tarde.');
+    console.error(err);
+  }
+};
 
   return (
     <div className="p-6">

@@ -1,18 +1,16 @@
 const express = require('express');
 const router = express.Router();
-const {
-  getAllPreferences,
-  getPreferenceById,
-  createPreference,
-  updatePreference,
-  deletePreference,
-} = require('../controllers/preference_options.controller');
-const { verifyToken } = require('../middleware/auth.middleware');
 
-router.get('/', verifyToken, getAllPreferences);
-router.get('/:id', verifyToken, getPreferenceById);
-router.post('/', verifyToken, createPreference);
-router.put('/:id', verifyToken, updatePreference);
-router.delete('/:id', verifyToken, deletePreference);
+const {
+  assignGraduateToCourse,
+  updateCompletionStatus,
+  removeGraduateFromCourse,
+} = require('../controllers/course_graduate.controller');
+
+const verifyToken = require('../middleware/auth.middleware');
+
+router.post('/', verifyToken, assignGraduateToCourse);
+router.put('/:id_course/:id_graduate', verifyToken, updateCompletionStatus);
+router.delete('/:id_course/:id_graduate', verifyToken, removeGraduateFromCourse);
 
 module.exports = router;

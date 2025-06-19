@@ -36,4 +36,4 @@ const EmailHistory = sequelize.define('EmailHistory', {
   timestamps: false,
 });
 
-module.expo
+module.exports = EmailHistory;
