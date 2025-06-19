@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { getAllCourses } from "../../api/course.service";
 import CourseCard from "../../components/CourseCard";
 import { useAuth } from "../../context/AuthContext";
-getAllCoursesgetAllCourses
+
 export default function Workshops() {
   const [courses, setCourses] = useState([]);
 

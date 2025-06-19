@@ -1,12 +1,13 @@
 // src/context/AuthContext.jsx
-import { createContext, useContext, useState, useEffect } from "react";
-import { login, registerRequest } from "../api/auth.Service";
+import { createContext, useContext, useState, useEffect } from 'react';
+import { loginRequest, registerRequest } from '../api/auth.Service';
 
-const AuthContext = createContext();
-const STORAGE_KEY = "auth";
+const AuthContext  = createContext();
+const STORAGE_KEY  = 'auth';
 
 export const AuthProvider = ({ children }) => {
-  /* ---------- Estados ---------- */
+
+  /* ---------- Estado ---------- */
   const [user,  setUser]  = useState(null);
   const [token, setToken] = useState(null);
   const [role,  setRole]  = useState(null);
@@ -17,28 +18,27 @@ export const AuthProvider = ({ children }) => {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) {
       try {
-        const parsed = JSON.parse(raw);
-        if (parsed?.token && parsed?.user) {
-          setUser(parsed.user);
-          setToken(parsed.token);
-          setRole(parsed.user.role);
+        const { token: t, user: u } = JSON.parse(raw);
+        if (t && u) {
+          setToken(t);
+          setUser(u);
+          setRole(u.role);
         }
       } catch {
-        // JSON corrupto -> limpiar
-        localStorage.removeItem(STORAGE_KEY);
+        localStorage.removeItem(STORAGE_KEY);   // JSON corrupto
       }
     }
     setLoading(false);
   }, []);
 
   /* ---------- Helpers ---------- */
-  const saveSession = (userObj, tokenValue) => {
-    // Nunca guardes password
-    const { password, ...safeUser } = userObj;
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({ user: safeUser, token: tokenValue }));
+  const saveSession = ({ token: t, User: u, Role: r }) => {
+    // Nunca guardes el password
+    const { password, ...safeUser } = u;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ user: safeUser, token: t }));
+    setToken(t);
     setUser(safeUser);
-    setToken(tokenValue);
-    setRole(safeUser.role);
+    setRole(r || safeUser.role);     // pref de back o del propio user
   };
 
   const clearSession = () => {
@@ -48,32 +48,12 @@ export const AuthProvider = ({ children }) => {
     setRole(null);
   };
 
-  /* ---------- Login ---------- */
-  const login = async (credentials) => {
-    try {
-      const { user: userObj, token: tokenValue } = await login(credentials);
-      saveSession(userObj, tokenValue);
-    } catch (err) {
-      clearSession();
-      throw err; // para que el componente de Login lo capture
-    }
-  };
+  /* ---------- Acciones ---------- */
+  const login    = async (credentials) => saveSession(await loginRequest(credentials));
+  const register = async (data)        => saveSession(await registerRequest(data));
+  const logout   = clearSession;
 
-  /* ---------- Registro ---------- */
-  const register = async (data) => {
-    try {
-      const { user: userObj, token: tokenValue } = await registerRequest(data);
-      saveSession(userObj, tokenValue);
-    } catch (err) {
-      clearSession();
-      throw err;
-    }
-  };
-
-  /* ---------- Logout ---------- */
-  const logout = clearSession;
-
-  /* ---------- Valor del contexto ---------- */
+  /* ---------- Context Value ---------- */
   const value = {
     user,
     token,
