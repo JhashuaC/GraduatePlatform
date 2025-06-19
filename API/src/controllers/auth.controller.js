@@ -4,8 +4,7 @@ const User = require('../models/user.model');
 const Role = require('../models/roles.model');
 
 const login = async (req, res) => {
-  console.log('⏩ Iniciando login...');
-
+ 
   const { email, password } = req.body;
 
   try {
