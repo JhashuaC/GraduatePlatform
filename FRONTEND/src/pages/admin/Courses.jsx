@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getWorkshops, deleteCourse } from "../../api/courseService";
+import { getAllCourses, deleteCourse } from "../../api/courseService";
 
 export default function Courses() {
   const [courses, setCourses] = useState([]);
@@ -8,7 +8,7 @@ export default function Courses() {
 
   useEffect(() => {
     async function fetchData() {
-      const data = await getWorkshops();
+      const data = await getAllCourses();
       setCourses(data);
     }
     fetchData();
