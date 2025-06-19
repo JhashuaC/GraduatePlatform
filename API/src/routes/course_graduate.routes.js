@@ -7,7 +7,7 @@ const {
   removeGraduateFromCourse,
 } = require('../controllers/course_graduate.controller');
 
-const verifyToken = require('../middleware/auth.middleware');
+const { verifyToken } = require('../middleware/auth.middleware');
 
 router.post('/', verifyToken, assignGraduateToCourse);
 router.put('/:id_course/:id_graduate', verifyToken, updateCompletionStatus);

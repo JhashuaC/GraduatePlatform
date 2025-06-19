@@ -1,39 +1,47 @@
-// src/controllers/course_graduate.controller.js
-const { CourseGraduate } = require('../models');
+const CourseGraduate = require('../models/course_graduate.model');
 
 const assignGraduateToCourse = async (req, res) => {
-  const { id_graduate, id_course } = req.body;
-  const exists = await CourseGraduate.findOne({ where: { id_graduate, id_course } });
-  if (exists) return res.status(400).json({ message: 'Ya asignado' });
-
-  const result = await CourseGraduate.create({ id_graduate, id_course });
-  res.status(201).json(result);
+  const { id_course, id_graduate, completed, completed_at } = req.body;
+  try {
+    const assignment = await CourseGraduate.create({
+      id_course,
+      id_graduate,
+      completed: completed || false,
+      completed_at: completed_at || null,
+    });
+    res.status(201).json(assignment);
+  } catch (err) {
+    res.status(500).json({ message: 'Error al asignar graduado al curso' });
+  }
 };
 
 const updateCompletionStatus = async (req, res) => {
   const { id_course, id_graduate } = req.params;
-  const { completado, fecha_completado } = req.body;
+  const { completed, completed_at } = req.body;
+  try {
+    const record = await CourseGraduate.findOne({ where: { id_course, id_graduate } });
+    if (!record) return res.status(404).json({ message: 'Registro no encontrado' });
 
-  const row = await CourseGraduate.findOne({ where: { id_course, id_graduate } });
-  if (!row) return res.status(404).json({ message: 'No encontrado' });
-
-  row.completado = completado;
-  row.fecha_completado = fecha_completado;
-  await row.save();
-
-  res.json(row);
+    await record.update({ completed, completed_at });
+    res.json(record);
+  } catch (err) {
+    res.status(500).json({ message: 'Error al actualizar estado de finalización' });
+  }
 };
 
 const removeGraduateFromCourse = async (req, res) => {
   const { id_course, id_graduate } = req.params;
-  const deleted = await CourseGraduate.destroy({ where: { id_course, id_graduate } });
-  if (!deleted) return res.status(404).json({ message: 'No encontrado' });
-
-  res.json({ message: 'Eliminado correctamente' });
+  try {
+    const deleted = await CourseGraduate.destroy({ where: { id_course, id_graduate } });
+    if (!deleted) return res.status(404).json({ message: 'Relación no encontrada' });
+    res.json({ message: 'Graduado removido del curso' });
+  } catch (err) {
+    res.status(500).json({ message: 'Error al remover graduado' });
+  }
 };
 
 module.exports = {
   assignGraduateToCourse,
   updateCompletionStatus,
   removeGraduateFromCourse,
-}
+};
