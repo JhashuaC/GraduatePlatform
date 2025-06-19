@@ -11,8 +11,7 @@ const login = async (req, res) => {
   try {
    
     const user = await User.findOne({ where: { email } });
-    console.log('🔍 Usuario encontrado:', user);
-
+   
     if (!user) {
       
       return res.status(404).json({ message: 'Usuario no encontrado' });
@@ -20,8 +19,7 @@ const login = async (req, res) => {
 
 
     const role = await Role.findOne({ where: { id_role: user.id_role } });
-    console.log('🔍 Rol encontrado:', role);
-
+   
     if (!role) {
      
       return res.status(404).json({ message: 'Rol no encontrado' });
