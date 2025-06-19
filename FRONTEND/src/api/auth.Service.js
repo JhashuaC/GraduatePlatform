@@ -4,7 +4,7 @@ const API_URL = 'http://localhost:3000/api';
 const defaultHeaders = { 'Content-Type': 'application/json' };
 
 export const loginRequest = async (credentials) => {
-  const res = await fetch(`${API_URL}/login`, {
+  const res = await fetch(`${API_URL}/auth/login`, {
     method: 'POST',
     headers: defaultHeaders,
     body: JSON.stringify(credentials),

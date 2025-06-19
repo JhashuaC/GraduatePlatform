@@ -1,19 +1,17 @@
 // src/context/AuthContext.jsx
 import { createContext, useContext, useState, useEffect } from 'react';
-import { loginRequest, registerRequest } from '../api/auth.Service';
+import { loginRequest, registerRequest } from '../api/auth.Service'; // ← corrige el nombre si lo tenías mal
 
-const AuthContext  = createContext();
-const STORAGE_KEY  = 'auth';
+const AuthContext = createContext();
+const STORAGE_KEY = 'auth';
 
 export const AuthProvider = ({ children }) => {
-
-  /* ---------- Estado ---------- */
-  const [user,  setUser]  = useState(null);
+  const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
-  const [role,  setRole]  = useState(null);
+  const [role, setRole] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  /* ---------- Restaurar sesión ---------- */
+  /* Restaurar sesión desde localStorage */
   useEffect(() => {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) {
@@ -22,23 +20,30 @@ export const AuthProvider = ({ children }) => {
         if (t && u) {
           setToken(t);
           setUser(u);
-          setRole(u.role);
+          setRole(u.role); // ← esto solo sirve si `role` ya viene dentro del user
         }
       } catch {
-        localStorage.removeItem(STORAGE_KEY);   // JSON corrupto
+        localStorage.removeItem(STORAGE_KEY); // JSON corrupto
       }
     }
     setLoading(false);
   }, []);
 
-  /* ---------- Helpers ---------- */
+  /* Guardar sesión después de login o registro */
   const saveSession = ({ token: t, User: u, Role: r }) => {
-    // Nunca guardes el password
     const { password, ...safeUser } = u;
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({ user: safeUser, token: t }));
+
+    // Asegurarnos de guardar el rol dentro del objeto user
+    const userWithRole = { ...safeUser, role: r };
+
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({
+      user: userWithRole,
+      token: t,
+    }));
+
+    setUser(userWithRole);
     setToken(t);
-    setUser(safeUser);
-    setRole(r || safeUser.role);     // pref de back o del propio user
+    setRole(r);
   };
 
   const clearSession = () => {
@@ -48,12 +53,18 @@ export const AuthProvider = ({ children }) => {
     setRole(null);
   };
 
-  /* ---------- Acciones ---------- */
-  const login    = async (credentials) => saveSession(await loginRequest(credentials));
-  const register = async (data)        => saveSession(await registerRequest(data));
-  const logout   = clearSession;
+  const login = async (credentials) => {
+    const session = await loginRequest(credentials);
+    saveSession(session);
+  };
 
-  /* ---------- Context Value ---------- */
+  const register = async (data) => {
+    const session = await registerRequest(data);
+    saveSession(session);
+  };
+
+  const logout = clearSession;
+
   const value = {
     user,
     token,
@@ -65,8 +76,11 @@ export const AuthProvider = ({ children }) => {
     logout,
   };
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={value}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
-/* Hook de conveniencia */
 export const useAuth = () => useContext(AuthContext);

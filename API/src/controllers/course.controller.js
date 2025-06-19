@@ -3,7 +3,7 @@ const Speaker = require('../models/speaker.model');
 
 const getAllCourses = async (req, res) => {
   try {
-    const courses = await Course.findAll({ include: Speaker });
+    const courses = await Course.findAll();
     res.json(courses);
   } catch (err) {
     res.status(500).json({ message: 'Error al obtener cursos' });

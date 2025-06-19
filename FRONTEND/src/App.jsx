@@ -18,11 +18,15 @@ export default function App() {
         <Route
           path="/"
           element={
-            !user
-              ? <LoginRegister />
-              : user.role === "graduate"
-              ? <Navigate to="/graduate" replace />
-              : <Navigate to="/admin" replace />
+            !user ? (
+              <LoginRegister />
+            ) : user.role === undefined ? (
+              <div>Cargando redirección...</div>
+            ) : user.role === "graduate" ? (
+              <Navigate to="/graduate" replace />
+            ) : (
+              <Navigate to="/admin" replace />
+            )
           }
         />
 
