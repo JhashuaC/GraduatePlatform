@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getAllCourses, deleteCourse } from "../../api/courseService";
+import { getAllCourses, deleteCourse } from "../../api/course.service";
 
 export default function Courses() {
   const [courses, setCourses] = useState([]);

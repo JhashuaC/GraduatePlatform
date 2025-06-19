@@ -1,7 +1,7 @@
 // src/context/AuthContext.jsx
 import { createContext, useContext, useState, useEffect } from "react";
-import { loginRequest, registerRequest } from "../api/auth";
-
+import { loginRequest, registerRequest } from "../api/auth.Service";
+C
 const AuthContext = createContext();
 const STORAGE_KEY = "auth";
 

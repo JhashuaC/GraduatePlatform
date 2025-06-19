@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getSpeakers, deleteSpeaker } from "../../api/speakerService";
+import { getSpeakers, deleteSpeaker } from "../../api/speaker.service";
 
 export default function Speakers() {
   const [speakers, setSpeakers] = useState([]);

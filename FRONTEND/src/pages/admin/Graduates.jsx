@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getGraduates, addGraduate } from "../api/graduateService";
+import { getAllGraduates, addGraduate } from "../api/graduate.service";
 import { getCareers } from "../api/careersService";
 import GraduatedCard from "../components/GraduatedCard";
 import Navbar from "../components/Navbar";

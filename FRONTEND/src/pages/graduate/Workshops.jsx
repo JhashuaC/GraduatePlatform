@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
-import { getWorkshops } from "../../api/courseService";
+import { getAllCourses } from "../../api/course.service";
 import CourseCard from "../../components/CourseCard";
 import { useAuth } from "../../context/AuthContext";
-
+getAllCoursesgetAllCourses
 export default function Workshops() {
   const [courses, setCourses] = useState([]);
 
   useEffect(() => {
     async function fetchData() {
-      const data = await getWorkshops(); // Aquí deberías retornar los cursos reales
+      const data = await getAllCourses(); // Aquí deberías retornar los cursos reales
       setCourses(data);
     }
     fetchData();
