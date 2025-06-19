@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getSpeakers, deleteSpeaker } from "../../api/speaker.service";
+import { getAllSpeakers, deleteSpeaker } from "../../api/speaker.service";
 
 export default function Speakers() {
   const [speakers, setSpeakers] = useState([]);
@@ -8,7 +8,7 @@ export default function Speakers() {
 
   useEffect(() => {
     async function fetchData() {
-      const data = await getSpeakers();
+      const data = await getAllSpeakers();
       setSpeakers(data);
     }
     fetchData();

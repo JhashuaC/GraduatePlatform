@@ -1,7 +1,7 @@
 // src/context/AuthContext.jsx
 import { createContext, useContext, useState, useEffect } from "react";
-import { loginRequest, registerRequest } from "../api/auth.Service";
-C
+import { login, registerRequest } from "../api/auth.Service";
+
 const AuthContext = createContext();
 const STORAGE_KEY = "auth";
 
@@ -51,7 +51,7 @@ export const AuthProvider = ({ children }) => {
   /* ---------- Login ---------- */
   const login = async (credentials) => {
     try {
-      const { user: userObj, token: tokenValue } = await loginRequest(credentials);
+      const { user: userObj, token: tokenValue } = await login(credentials);
       saveSession(userObj, tokenValue);
     } catch (err) {
       clearSession();

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getUsers, deleteUser } from "../../api/user.service";
+import { getAllUsers, deleteUser } from "../../api/user.service";
 
 export default function Users() {
   const [users, setUsers] = useState([]);
@@ -12,7 +12,7 @@ export default function Users() {
 
   useEffect(() => {
     async function fetchData() {
-      const data = await getUsers();
+      const data = await getAllUsers();
       setUsers(data);
     }
     fetchData();

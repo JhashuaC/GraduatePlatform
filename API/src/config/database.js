@@ -4,7 +4,7 @@ const sequelize = new Sequelize(
      
   "p4_project",     //nombre de la base de datos
   "root", //usuario
-  "root", //contraseña 
+  "1234", //contraseña 
   {
     host: process.env.DB_HOST, 
     dialect: 'mysql',         
