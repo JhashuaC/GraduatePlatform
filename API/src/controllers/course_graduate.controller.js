@@ -1,15 +1,40 @@
-const CourseGraduate = require('../models/course_graduate.model');
+const { CourseGraduate, Course, Graduate } = require('../models');
+
+const getAllCourseGraduates = async (req, res) => {
+  try {
+    const data = await CourseGraduate.findAll({
+      include: [Course, Graduate],
+    });
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ message: 'Error al obtener asignaciones de cursos a graduados' });
+  }
+};
+
+const getCourseGraduate = async (req, res) => {
+  const { id_course, id_graduate } = req.params;
+  try {
+    const data = await CourseGraduate.findOne({
+      where: { id_course, id_graduate },
+      include: [Course, Graduate],
+    });
+    if (!data) return res.status(404).json({ message: 'Relación no encontrada' });
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ message: 'Error al buscar la relación' });
+  }
+};
 
 const assignGraduateToCourse = async (req, res) => {
-  const { id_course, id_graduate, completed, completed_at } = req.body;
+  const { id_course, id_graduate, completado, fecha_completado } = req.body;
   try {
-    const assignment = await CourseGraduate.create({
+    const created = await CourseGraduate.create({
       id_course,
       id_graduate,
-      completed: completed || false,
-      completed_at: completed_at || null,
+      completado,
+      fecha_completado,
     });
-    res.status(201).json(assignment);
+    res.status(201).json(created);
   } catch (err) {
     res.status(500).json({ message: 'Error al asignar graduado al curso' });
   }
@@ -17,15 +42,13 @@ const assignGraduateToCourse = async (req, res) => {
 
 const updateCompletionStatus = async (req, res) => {
   const { id_course, id_graduate } = req.params;
-  const { completed, completed_at } = req.body;
   try {
-    const record = await CourseGraduate.findOne({ where: { id_course, id_graduate } });
-    if (!record) return res.status(404).json({ message: 'Registro no encontrado' });
-
-    await record.update({ completed, completed_at });
-    res.json(record);
+    const entry = await CourseGraduate.findOne({ where: { id_course, id_graduate } });
+    if (!entry) return res.status(404).json({ message: 'Relación no encontrada' });
+    await entry.update(req.body);
+    res.json(entry);
   } catch (err) {
-    res.status(500).json({ message: 'Error al actualizar estado de finalización' });
+    res.status(500).json({ message: 'Error al actualizar la relación' });
   }
 };
 
@@ -34,13 +57,15 @@ const removeGraduateFromCourse = async (req, res) => {
   try {
     const deleted = await CourseGraduate.destroy({ where: { id_course, id_graduate } });
     if (!deleted) return res.status(404).json({ message: 'Relación no encontrada' });
-    res.json({ message: 'Graduado removido del curso' });
+    res.json({ message: 'Relación eliminada correctamente' });
   } catch (err) {
-    res.status(500).json({ message: 'Error al remover graduado' });
+    res.status(500).json({ message: 'Error al eliminar relación' });
   }
 };
 
 module.exports = {
+  getAllCourseGraduates,
+  getCourseGraduate,
   assignGraduateToCourse,
   updateCompletionStatus,
   removeGraduateFromCourse,

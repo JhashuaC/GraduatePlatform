@@ -1,42 +1,71 @@
-const SurveyResponse = require('../models/survey_responses.model');
+const { SurveyResponse, SurveyQuestion, Graduate } = require('../models');
 
-const getAllResponses = async (req, res) => {
+const getAllSurveyResponses = async (req, res) => {
   try {
-    const responses = await SurveyResponse.findAll();
-    res.json(responses);
+    const data = await SurveyResponse.findAll({
+      include: [SurveyQuestion, Graduate],
+    });
+    res.json(data);
   } catch (err) {
-    res.status(500).json({ message: 'Error al obtener respuestas' });
+    res.status(500).json({ message: 'Error al obtener respuestas de la encuesta' });
   }
 };
 
-const getResponsesByGraduate = async (req, res) => {
+const getSurveyResponse = async (req, res) => {
+  const { id_question, id_graduate } = req.params;
   try {
-    const responses = await SurveyResponse.findAll({
-      where: { id_graduate: req.params.id_graduate },
+    const data = await SurveyResponse.findOne({
+      where: { id_pregunta: id_question, id_graduado: id_graduate },
+      include: [SurveyQuestion, Graduate],
     });
-    res.json(responses);
+    if (!data) return res.status(404).json({ message: 'Respuesta no encontrada' });
+    res.json(data);
   } catch (err) {
-    res.status(500).json({ message: 'Error al obtener respuestas del graduado' });
+    res.status(500).json({ message: 'Error al buscar respuesta' });
   }
 };
 
-const submitResponse = async (req, res) => {
-  const { id_graduate, id_course, id_question, answer_text } = req.body;
+const createSurveyResponse = async (req, res) => {
+  const { id_pregunta, id_graduado, respuesta } = req.body;
   try {
-    const response = await SurveyResponse.create({
-      id_graduate,
-      id_course,
-      id_question,
-      answer_text,
-    });
-    res.status(201).json(response);
+    const created = await SurveyResponse.create({ id_pregunta, id_graduado, respuesta });
+    res.status(201).json(created);
   } catch (err) {
     res.status(500).json({ message: 'Error al registrar respuesta' });
   }
 };
 
+const updateSurveyResponse = async (req, res) => {
+  const { id_question, id_graduate } = req.params;
+  try {
+    const response = await SurveyResponse.findOne({
+      where: { id_pregunta: id_question, id_graduado: id_graduate },
+    });
+    if (!response) return res.status(404).json({ message: 'Respuesta no encontrada' });
+    await response.update(req.body);
+    res.json(response);
+  } catch (err) {
+    res.status(500).json({ message: 'Error al actualizar respuesta' });
+  }
+};
+
+const deleteSurveyResponse = async (req, res) => {
+  const { id_question, id_graduate } = req.params;
+  try {
+    const deleted = await SurveyResponse.destroy({
+      where: { id_pregunta: id_question, id_graduado: id_graduate },
+    });
+    if (!deleted) return res.status(404).json({ message: 'Respuesta no encontrada' });
+    res.json({ message: 'Respuesta eliminada' });
+  } catch (err) {
+    res.status(500).json({ message: 'Error al eliminar respuesta' });
+  }
+};
+
 module.exports = {
-  getAllResponses,
-  getResponsesByGraduate,
-  submitResponse,
+  getAllSurveyResponses,
+  getSurveyResponse,
+  createSurveyResponse,
+  updateSurveyResponse,
+  deleteSurveyResponse,
 };

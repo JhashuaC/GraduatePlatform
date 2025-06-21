@@ -1,13 +1,11 @@
-
 const express = require('express');
 const router = express.Router();
-const {
-  assignCategoryToCourse,
-  removeCategoryFromCourse,
-} = require('../controllers/course_categories.controller');
-const { verifyToken } = require('../middleware/auth.middleware');
+const controller = require('../controllers/course_categories.controller');
+const verifyToken = require('../middleware/auth.middleware');
 
-router.post('/', verifyToken, assignCategoryToCourse);
-router.delete('/:id_course/:id_option', verifyToken, removeCategoryFromCourse);
+router.get('/', verifyToken, controller.getAllCourseCategories);
+router.get('/:id_course/:id_option', verifyToken, controller.getCourseCategory);
+router.post('/', verifyToken, controller.assignCategoryToCourse);
+router.delete('/:id_course/:id_option', verifyToken, controller.removeCategoryFromCourse);
 
 module.exports = router;

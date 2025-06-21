@@ -1,6 +1,18 @@
 import { getAuthHeaders } from './authHeader';
 
-const BASE_URL = 'http://localhost:3000/api/assignments';
+const BASE_URL = 'http://localhost:3000/api/course_graduate';
+
+export const getAllCourseGraduates = async () => {
+  const res = await fetch(BASE_URL, { headers: getAuthHeaders() });
+  if (!res.ok) throw new Error('Error al obtener relaciones curso-graduado');
+  return await res.json();
+};
+
+export const getCourseGraduate = async (id_course, id_graduate) => {
+  const res = await fetch(`${BASE_URL}/${id_course}/${id_graduate}`, { headers: getAuthHeaders() });
+  if (!res.ok) throw new Error('Error al obtener la relación curso-graduado');
+  return await res.json();
+};
 
 export const assignGraduateToCourse = async (data) => {
   const res = await fetch(BASE_URL, {

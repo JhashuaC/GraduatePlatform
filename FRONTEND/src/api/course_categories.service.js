@@ -1,6 +1,18 @@
 import { getAuthHeaders } from './authHeader';
 
-const BASE_URL = 'http://localhost:3000/api/course-categories';
+const BASE_URL = 'http://localhost:3000/api/course_categories';
+
+export const getAllCourseCategories = async () => {
+  const res = await fetch(BASE_URL, { headers: getAuthHeaders() });
+  if (!res.ok) throw new Error('Error al obtener categorías de cursos');
+  return await res.json();
+};
+
+export const getCourseCategory = async (id_course, id_option) => {
+  const res = await fetch(`${BASE_URL}/${id_course}/${id_option}`, { headers: getAuthHeaders() });
+  if (!res.ok) throw new Error('Error al obtener la categoría del curso');
+  return await res.json();
+};
 
 export const assignCategoryToCourse = async (data) => {
   const res = await fetch(BASE_URL, {
@@ -17,6 +29,6 @@ export const removeCategoryFromCourse = async (id_course, id_option) => {
     method: 'DELETE',
     headers: getAuthHeaders(),
   });
-  if (!res.ok) throw new Error('Error al remover categoría del curso');
+  if (!res.ok) throw new Error('Error al eliminar categoría del curso');
   return await res.json();
 };

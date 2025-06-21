@@ -1,30 +1,34 @@
 import { getAuthHeaders } from './authHeader';
 
-const BASE_URL = 'http://localhost:3000/api/recipients';
+const BASE_URL = 'http://localhost:3000/api/email_recipients';
 
-export const getRecipientsByEmail = async (id_email) => {
-  const res = await fetch(`${BASE_URL}/${id_email}`, {
-    headers: getAuthHeaders(),
-  });
-  if (!res.ok) throw new Error('Error al obtener destinatarios');
+export const getAllEmailRecipients = async () => {
+  const res = await fetch(BASE_URL, { headers: getAuthHeaders() });
+  if (!res.ok) throw new Error('Error al obtener destinatarios de correos');
   return await res.json();
 };
 
-export const addRecipient = async (data) => {
+export const getEmailRecipient = async (id_historial, id_graduate) => {
+  const res = await fetch(`${BASE_URL}/${id_historial}/${id_graduate}`, { headers: getAuthHeaders() });
+  if (!res.ok) throw new Error('Error al obtener destinatario del historial');
+  return await res.json();
+};
+
+export const assignRecipientToEmail = async (data) => {
   const res = await fetch(BASE_URL, {
     method: 'POST',
     headers: getAuthHeaders(),
     body: JSON.stringify(data),
   });
-  if (!res.ok) throw new Error('Error al agregar destinatario');
+  if (!res.ok) throw new Error('Error al asignar destinatario al historial');
   return await res.json();
 };
 
-export const removeRecipient = async (id_email, id_graduate) => {
-  const res = await fetch(`${BASE_URL}/${id_email}/${id_graduate}`, {
+export const removeRecipientFromEmail = async (id_historial, id_graduate) => {
+  const res = await fetch(`${BASE_URL}/${id_historial}/${id_graduate}`, {
     method: 'DELETE',
     headers: getAuthHeaders(),
   });
-  if (!res.ok) throw new Error('Error al eliminar destinatario');
+  if (!res.ok) throw new Error('Error al eliminar destinatario del historial');
   return await res.json();
 };

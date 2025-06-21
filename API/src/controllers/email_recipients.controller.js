@@ -1,39 +1,54 @@
-const EmailRecipient = require('../models/email_recipients.model');
+const { EmailRecipient, EmailHistory, Graduate } = require('../models');
 
-const getRecipientsByEmail = async (req, res) => {
+const getAllEmailRecipients = async (req, res) => {
   try {
-    const recipients = await EmailRecipient.findAll({
-      where: { id_email: req.params.id_email },
+    const data = await EmailRecipient.findAll({
+      include: [EmailHistory, Graduate],
     });
-    res.json(recipients);
+    res.json(data);
   } catch (err) {
-    res.status(500).json({ message: 'Error al obtener destinatarios' });
+    res.status(500).json({ message: 'Error al obtener destinatarios de correos' });
   }
 };
 
-const addRecipient = async (req, res) => {
-  const { id_email, id_graduate, email } = req.body;
+const getEmailRecipient = async (req, res) => {
+  const { id_historial, id_graduate } = req.params;
   try {
-    const entry = await EmailRecipient.create({ id_email, id_graduate, email });
-    res.status(201).json(entry);
+    const data = await EmailRecipient.findOne({
+      where: { id_historial, id_graduate },
+      include: [EmailHistory, Graduate],
+    });
+    if (!data) return res.status(404).json({ message: 'Relación no encontrada' });
+    res.json(data);
   } catch (err) {
-    res.status(500).json({ message: 'Error al agregar destinatario' });
+    res.status(500).json({ message: 'Error al buscar relación' });
   }
 };
 
-const removeRecipient = async (req, res) => {
-  const { id_email, id_graduate } = req.params;
+const assignRecipientToEmail = async (req, res) => {
+  const { id_historial, id_graduate } = req.body;
   try {
-    const deleted = await EmailRecipient.destroy({ where: { id_email, id_graduate } });
-    if (!deleted) return res.status(404).json({ message: 'Destinatario no encontrado' });
-    res.json({ message: 'Destinatario eliminado' });
+    const created = await EmailRecipient.create({ id_historial, id_graduate });
+    res.status(201).json(created);
   } catch (err) {
-    res.status(500).json({ message: 'Error al eliminar destinatario' });
+    res.status(500).json({ message: 'Error al asignar destinatario' });
+  }
+};
+
+const removeRecipientFromEmail = async (req, res) => {
+  const { id_historial, id_graduate } = req.params;
+  try {
+    const deleted = await EmailRecipient.destroy({ where: { id_historial, id_graduate } });
+    if (!deleted) return res.status(404).json({ message: 'Relación no encontrada' });
+    res.json({ message: 'Destinatario removido del historial' });
+  } catch (err) {
+    res.status(500).json({ message: 'Error al eliminar relación' });
   }
 };
 
 module.exports = {
-  getRecipientsByEmail,
-  addRecipient,
-  removeRecipient,
+  getAllEmailRecipients,
+  getEmailRecipient,
+  assignRecipientToEmail,
+  removeRecipientFromEmail,
 };
