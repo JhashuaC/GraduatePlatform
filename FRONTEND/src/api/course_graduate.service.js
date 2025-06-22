@@ -7,6 +7,11 @@ export const getAllCourseGraduates = async () => {
   if (!res.ok) throw new Error('Error al obtener relaciones curso-graduado');
   return await res.json();
 };
+export const getAllCourseGraduatesById = async (id_graduate) => {
+  const res = await fetch(`${BASE_URL}/${id_graduate}`, { headers: getAuthHeaders() });
+  if (!res.ok) throw new Error('Error al obtener relaciones curso-graduado');
+  return await res.json();
+};
 
 export const getCourseGraduate = async (id_course, id_graduate) => {
   const res = await fetch(`${BASE_URL}/${id_course}/${id_graduate}`, { headers: getAuthHeaders() });
