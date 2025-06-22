@@ -10,7 +10,7 @@ export default function Workshops() {
 
   useEffect(() => {
     async function fetchData() {
-      const data = await getAllCourseGraduates(); 
+      const data = await getAllCourseGraduates();  //BRO SIRVE
       setGraduateCourse(data);
     }
     fetchData();
