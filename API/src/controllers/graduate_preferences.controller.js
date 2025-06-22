@@ -26,6 +26,11 @@ const getAllGraduatePreferencesById = async (req, res) => {
     }
   ]
 });
+  }
+catch (err) {
+    res.status(500).json({ message: 'Error al buscar relación' });
+  }
+  };
 
 
 const getGraduatePreference = async (req, res) => {
