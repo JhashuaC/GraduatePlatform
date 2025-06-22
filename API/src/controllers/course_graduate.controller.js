@@ -11,6 +11,22 @@ const getAllCourseGraduates = async (req, res) => {
   }
 };
 
+
+const getAllCourseGraduatesById = async (req, res) => {
+  const { id_graduate } = req.params;
+  try {
+    const data = await CourseGraduate.findAll({
+      where: { id_graduate },
+      include: [Course, Graduate],
+    });
+    if (!data) return res.status(404).json({ message: 'Relación no encontrada' });
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ message: 'Error al buscar la relación' });
+  }
+};
+
+
 const getCourseGraduate = async (req, res) => {
   const { id_course, id_graduate } = req.params;
   try {
@@ -69,4 +85,5 @@ module.exports = {
   assignGraduateToCourse,
   updateCompletionStatus,
   removeGraduateFromCourse,
+  getAllCourseGraduatesById
 };
