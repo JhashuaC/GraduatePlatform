@@ -84,7 +84,6 @@ export default function Speakers() {
         {speakers.map((sp) => (
           <li key={sp.id} className="flex justify-between items-center border-b py-2">
             <SpeakerCard  key={sp.id_speaker} speakers={sp}  onDelete={() => handleDelete(sp.id_speaker)}/>
-          
           </li>
         ))}
       </ul>
