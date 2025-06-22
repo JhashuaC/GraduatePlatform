@@ -55,6 +55,8 @@ PreferenceOption.belongsToMany(Course, {
   through: CourseCategory,
   foreignKey: 'id_option',
 });
+GraduatePreference.belongsTo(Graduate, { foreignKey: 'id_graduate', as: 'graduate' });
+GraduatePreference.belongsTo(PreferenceOption, { foreignKey: 'id_option', as: 'preferenceOption' });
 
 Graduate.belongsToMany(PreferenceOption, {
   through: GraduatePreference,
