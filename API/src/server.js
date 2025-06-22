@@ -20,7 +20,7 @@ const emailHistoryRoutes = require('./routes/email_history.routes');
 const emailRecipientsRoutes = require('./routes/email_recipients.routes');
 const surveyQuestionsRoutes = require('./routes/survey_questions.routes');
 const surveyResponsesRoutes = require('./routes/survey_responses.routes');
-
+const notesRoutes = require('./routes/notes.routes');
 const app = express();
 
 app.use(cors());
@@ -43,7 +43,7 @@ app.use('/api/emails', emailHistoryRoutes);
 app.use('/api/recipients', emailRecipientsRoutes);
 app.use('/api/questions', surveyQuestionsRoutes);
 app.use('/api/responses', surveyResponsesRoutes);
-
+app.use('/api/notes',notesRoutes)
 app.use((req, res, next) => {
   const error = new Error('Ruta no encontrada');
   error.status = 404;
