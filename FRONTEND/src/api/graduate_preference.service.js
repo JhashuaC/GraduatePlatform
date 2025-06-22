@@ -1,6 +1,6 @@
 import { getAuthHeaders } from './authHeader';
 
-const BASE_URL = 'http://localhost:3000/api/graduate_preferences';
+const BASE_URL = 'http://localhost:3000/api/graduate-preferences';
 
 export const getAllGraduatePreferences = async () => {
   const res = await fetch(BASE_URL, { headers: getAuthHeaders() });
@@ -9,7 +9,7 @@ export const getAllGraduatePreferences = async () => {
 };
 
 export const getAllGraduatePreferencesById = async (id_graduate) => {
-  const res = await fetch(`${BASE_URL}/$'byId'/${id_graduate}`, { headers: getAuthHeaders() });
+  const res = await fetch(`${BASE_URL}/byID/${id_graduate}`, { headers: getAuthHeaders() });
   if (!res.ok) throw new Error('Error al obtener preferencias de graduados');
   return await res.json();
 };

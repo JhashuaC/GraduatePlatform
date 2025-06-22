@@ -26,7 +26,7 @@ export default function App() {
               <Navigate to="/graduate" replace />
             ) : (
               <Navigate to="/admin" replace />
-            )
+            ) 
           }
         />
 

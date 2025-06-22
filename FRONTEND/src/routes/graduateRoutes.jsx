@@ -5,6 +5,8 @@ import GraduateLayout from "../layouts/GraduateLayout";
 import Dashboard  from "../pages/graduate/Dashboard";
 import Workshops  from "../pages/graduate/Workshops";
 import Profile    from "../pages/graduate/Profile";
+import Preferences from "../pages/graduate/Preferences";
+import MyWorkshops from "../pages/graduate/MyWorkshops";
 
 export default function GraduateRoutes() {
   const { user, role, loading } = useAuth();
@@ -24,6 +26,10 @@ export default function GraduateRoutes() {
         <Route index              element={<Dashboard />} />          {/* /graduate */}
         <Route path="talleres"    element={<Workshops />} />
         <Route path="perfil"      element={<Profile />} />
+        <Route path="preferencias" element={<Preferences />} />
+        <Route path="misTalleres" element={<MyWorkshops />} />  {/* Mis talleres */}
+        
+        {/* Redirección por defecto */}
         <Route path="*"           element={<Navigate to="" replace />} />
       </Route>
     </Routes>
