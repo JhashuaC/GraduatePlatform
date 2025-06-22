@@ -22,10 +22,16 @@ const getAllGraduatePreferencesById = async (req, res) => {
       include: [
         {
           model: Graduate,
-          attributes: ['id_graduate', 'first_name', 'email']
+          include: [
+            {
+              model: User,
+              attributes: ['first_name', 'email']
+            }
+          ]
         },
         {
-          model: PreferenceOption
+          model: PreferenceOption,
+          attributes: ['id_option', 'name']
         }
       ]
     });
