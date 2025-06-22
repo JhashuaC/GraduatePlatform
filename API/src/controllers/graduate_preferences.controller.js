@@ -14,9 +14,18 @@ const getAllGraduatePreferencesById = async (req, res) => {
   const { id_graduate } = req.params;
   try {
     const data = await GraduatePreference.findAll({
-      where: { id_graduate },
-      include: [Graduate, PreferenceOption],
-    });
+  where: { id_graduate },
+  include: [
+    {
+      model: Graduate,
+      attributes: ['id_graduate', 'first_name', 'email']
+    },
+    {
+      model: PreferenceOption
+    }
+  ]
+});
+
     if (!data) return res.status(404).json({ message: 'Relación no encontrada' });
     res.json(data);
   } catch (err) {
