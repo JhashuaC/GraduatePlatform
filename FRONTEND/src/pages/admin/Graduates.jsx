@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
-import { getAllGraduates, addGraduate } from "../api/graduate.service";
-import { getCareers } from "../api/careersService";
-import GraduatedCard from "../components/GraduatedCard";
-import Navbar from "../components/Navbar";
+import { getAllGraduates, createGraduate } from "../../api/graduate.service";
+import { getAllCareers } from "../../api/career.service";
+import GraduatedCard from "../../components/GraduatedCard";
 
 export default function Graduates() {
     const [graduados, setGraduados] = useState([]);
@@ -21,10 +20,10 @@ export default function Graduates() {
 
     useEffect(() => {
         async function fetchData() {
-            const data = await getGraduates();
+            const data = await getAllGraduates();
             setGraduados(data);
 
-            const careerData = await getCareers();
+            const careerData = await getAllCareers();
             setCareers(careerData);
         }
         fetchData();
@@ -44,7 +43,7 @@ export default function Graduates() {
             graduation_year: Number(formData.graduation_year),
             id_career: Number(formData.id_career),
         };
-        const nuevo = await addGraduate(formData);
+        const nuevo = await createGraduate(formData);
         if (nuevo) {
             setGraduados([...graduados, nuevo]);
             setFormData({ name: "", identification: "", address: "", email: "", phone: "", work_phone: "", graduation_year: "", id_career: "" });
@@ -54,7 +53,6 @@ export default function Graduates() {
 
     return (
         <div className="pt-20 min-h-screen bg-gray-100 bg-gradient-to-br from-blue-950 via-cyan-00 to-blue-500">
-            <Navbar />
 
             <div className="max-w-6xl mx-auto p-6">
 

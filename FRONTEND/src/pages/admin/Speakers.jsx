@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { getAllSpeakers, deleteSpeaker } from "../../api/speaker.service";
+import { getAllSpeakers, deleteSpeaker, createSpeaker } from "../../api/speaker.service";
+import SpeakerCard from "../../components/SpeakerCard";
 
 export default function Speakers() {
   const [speakers, setSpeakers] = useState([]);
@@ -19,7 +20,7 @@ export default function Speakers() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const newSpeaker = await addSpeaker(formData);
+    const newSpeaker = await createSpeaker(formData);
     if (newSpeaker) {
       setSpeakers((prev) => [...prev, newSpeaker]);
       setFormData({ name: "", expertise: "", email: "" });
@@ -82,9 +83,7 @@ export default function Speakers() {
       <ul>
         {speakers.map((sp) => (
           <li key={sp.id} className="flex justify-between items-center border-b py-2">
-            <span>
-              {sp.name} - {sp.expertise} ({sp.email})
-            </span>
+            <SpeakerCard  key={sp.id_speaker} speakers={sp} />
             <button
               onClick={() => handleDelete(sp.id)}
               className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700"

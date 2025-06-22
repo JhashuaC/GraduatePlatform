@@ -11,6 +11,7 @@ export default function AdminLayout() {
         <div className="text-xl font-bold">Administrador</div>
         <div className="flex space-x-4 items-center">
           <Link to="/admin/users" className="hover:underline">Usuarios</Link>
+          <Link to="/admin/graduates" className="hover:underline">Graduados</Link>
           <Link to="/admin/speakers" className="hover:underline">Facilitadores</Link>
           <Link to="/admin/courses" className="hover:underline">Cursos</Link>
           <button

@@ -5,7 +5,9 @@ import { assignGraduateToCourse } from '../../api/course_graduate.service';
 import { useAuth } from "../../context/AuthContext"; 
 
 export default function Workshops() {
-  const { user } = useAuth(); 
+     const { user } = useAuth();                // id_user === id_graduate
+    const idGraduate = user?.id_user;
+
   const [courses, setCourses] = useState([]);
 
   useEffect(() => {
@@ -25,8 +27,8 @@ export default function Workshops() {
 
     const data = {
       id_course: courseId,
-      id_graduate: user.id_user,
-      completed: 0,
+      id_graduate: idGraduate,
+      completed: false,
       completed_at: null,
     };
 

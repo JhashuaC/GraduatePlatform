@@ -11,8 +11,7 @@ export default function GraduatedCard({ graduado }) {
       />
       <div className="p-4">
         <h2 className="text-xl font-bold text-gray-800">{graduado.name}</h2>
-        <p className="text-black mt-2"> ID: {graduado.identification}</p>
-        <p className="text-gray-600 mt-2"> Direccion: {graduado.address}</p>
+        <p className="text-black mt-2"> ID: {graduado.id_graduate}</p>
         <p className="text-gray-600 mt-2">Carrera: {graduado.id_career}</p>
         <p className="text-gray-600 mt-2">Año de Graduacion: {graduado.graduation_year}</p>
         <p className="text-blue-500 mt-2">{graduado.email}</p>
