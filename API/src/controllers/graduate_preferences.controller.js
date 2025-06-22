@@ -11,26 +11,39 @@ const getAllGraduatePreferences = async (req, res) => {
   }
 };
 
+
 const getAllGraduatePreferencesById = async (req, res) => {
   const { id_graduate } = req.params;
+  console.log(`Buscando preferencias del graduado con ID: ${id_graduate}`);
+
   try {
     const data = await GraduatePreference.findAll({
-  where: { id_graduate },
-  include: [
-    {
-      model: Graduate,
-      attributes: ['id_graduate', 'first_name', 'email']
-    },
-    {
-      model: PreferenceOption
+      where: { id_graduate },
+      include: [
+        {
+          model: Graduate,
+          attributes: ['id_graduate', 'first_name', 'email']
+        },
+        {
+          model: PreferenceOption
+        }
+      ]
+    });
+
+    if (!data || data.length === 0) {
+      console.log('No se encontraron preferencias asociadas');
+      return res.status(404).json({ message: 'Relación no encontrada' });
     }
-  ]
-});
-  }
-catch (err) {
+
+    console.log(`Se encontraron ${data.length} preferencias para el graduado ${id_graduate}`);
+    res.json(data);
+  } catch (err) {
+    console.error('Error al buscar relación:', err);
     res.status(500).json({ message: 'Error al buscar relación' });
   }
-  };
+};
+
+
 
 
 const getGraduatePreference = async (req, res) => {
