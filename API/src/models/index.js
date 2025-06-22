@@ -28,6 +28,8 @@ User.hasOne(Speaker, { foreignKey: 'id_speaker' });
 
 Course.belongsTo(Speaker, { foreignKey: 'id_speaker' });
 Speaker.hasMany(Course, { foreignKey: 'id_speaker' });
+CourseGraduate.belongsTo(Course, { foreignKey: 'id_course' });
+CourseGraduate.belongsTo(Graduate, { foreignKey: 'id_graduate' });
 
 Career.belongsToMany(Course, {
   through: CareerCourse,
