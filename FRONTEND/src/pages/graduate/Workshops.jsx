@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { getAllCourses } from "../../api/course.service";
 import CourseCard from "../../components/CourseCard";
-import { assignGraduateToCourse } from '../../api/course_graduate.service'; 
-import { useAuth } from "../../context/AuthContext"; 
+import { assignGraduateToCourse } from '../../api/course_graduate.service';
+import { useAuth } from "../../context/AuthContext";
 
 export default function Workshops() {
-     const { user } = useAuth();                // id_user === id_graduate
-    const idGraduate = user?.id_user;
+  const { user } = useAuth();               
+  const idGraduate = user?.id_user;
 
   const [courses, setCourses] = useState([]);
 
@@ -19,26 +19,26 @@ export default function Workshops() {
   }, []);
 
   const handleRegister = async (courseId) => {
-  try {
-    if (!user) {
-      alert('Debes iniciar sesión para inscribirte');
-      return;
+    try {
+      if (!user) {
+        alert('Debes iniciar sesión para inscribirte');
+        return;
+      }
+
+      const data = {
+        id_course: courseId,
+        id_graduate: idGraduate,
+        completado: false,
+        fecha_completado: null,
+      };
+
+      await assignGraduateToCourse(data);
+      alert(`Te inscribiste exitosamente al curso con ID ${courseId}`);
+    } catch (err) {
+      alert('Ocurrió un error al inscribirte. Intenta más tarde.');
+      console.error(err);
     }
-
-    const data = {
-      id_course: courseId,
-      id_graduate: idGraduate,
-      completed: false,
-      completed_at: null,
-    };
-
-    await assignGraduateToCourse(data);
-    alert(`Te inscribiste exitosamente al curso con ID ${courseId}`);
-  } catch (err) {
-    alert('Ocurrió un error al inscribirte. Intenta más tarde.');
-    console.error(err);
-  }
-};
+  };
 
   return (
     <div className="p-6">
@@ -49,8 +49,8 @@ export default function Workshops() {
             key={course.id_course}
             name={course.name}
             description={course.description}
-            date={course.date}
-            time={course.time}
+            date={course.date_course}
+            time={course.time_course}
             modality={course.modality}
             onRegister={() => handleRegister(course.id_course)}
           />

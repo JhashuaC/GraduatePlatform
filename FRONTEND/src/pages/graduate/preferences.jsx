@@ -34,12 +34,15 @@ export default function Preferences() {
     const alreadyHas = (idOpt) => myPrefs.includes(idOpt);
 
     const handleAdd = async (idOpt) => {
-        await assignPreferenceToGraduate({ id_graduate: idGraduate, id_option: idOpt });
+        await await assignPreferenceToGraduate({
+            id_graduate: idGraduate,
+            id_option: idOpt,
+        });
         setMyPrefs(prev => [...prev, idOpt]);
     };
 
     const handleRemove = async (idOpt) => {
-        await removePreferenceFromGraduate({ id_graduate: idGraduate, id_option: idOpt });
+        await removePreferenceFromGraduate(idGraduate, idOpt);
         setMyPrefs(prev => prev.filter(id => id !== idOpt));
     };
 
