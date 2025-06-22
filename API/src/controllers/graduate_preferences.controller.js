@@ -1,4 +1,5 @@
-const { GraduatePreference, Graduate, PreferenceOption } = require('../models');
+const { Graduate, PreferenceOption, GraduatePreference, User } = require('../models');
+
 
 const getAllGraduatePreferences = async (req, res) => {
   try {
