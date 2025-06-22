@@ -10,6 +10,20 @@ const getAllGraduatePreferences = async (req, res) => {
     res.status(500).json({ message: 'Error al obtener preferencias de graduados' });
   }
 };
+const getAllGraduatePreferencesById = async (req, res) => {
+  const { id_graduate } = req.params;
+  try {
+    const data = await GraduatePreference.findAll({
+      where: { id_graduate },
+      include: [Graduate, PreferenceOption],
+    });
+    if (!data) return res.status(404).json({ message: 'Relación no encontrada' });
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ message: 'Error al buscar relación' });
+  }
+};
+
 
 const getGraduatePreference = async (req, res) => {
   const { id_graduate, id_option } = req.params;
@@ -51,4 +65,5 @@ module.exports = {
   getGraduatePreference,
   assignPreferenceToGraduate,
   removePreferenceFromGraduate,
+  getAllGraduatePreferencesById
 };

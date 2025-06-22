@@ -8,6 +8,13 @@ export const getAllGraduatePreferences = async () => {
   return await res.json();
 };
 
+export const getAllGraduatePreferencesById = async (id_graduate) => {
+  const res = await fetch(`${BASE_URL}/${id_graduate}`, { headers: getAuthHeaders() });
+  if (!res.ok) throw new Error('Error al obtener preferencias de graduados');
+  return await res.json();
+};
+
+
 export const getGraduatePreference = async (id_graduate, id_option) => {
   const res = await fetch(`${BASE_URL}/${id_graduate}/${id_option}`, { headers: getAuthHeaders() });
   if (!res.ok) throw new Error('Error al obtener la preferencia del graduado');
