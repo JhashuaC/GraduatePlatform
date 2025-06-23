@@ -21,7 +21,10 @@ export const getUserById = async (id) => {
 export const createUser = async (data) => {
   const res = await fetch(BASE_URL, {
     method: 'POST',
-    headers: getAuthHeaders(),
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
     body: JSON.stringify(data),
   });
   if (!res.ok) throw new Error('Error al crear usuario');

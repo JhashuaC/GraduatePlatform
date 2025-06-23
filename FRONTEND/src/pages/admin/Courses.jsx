@@ -126,7 +126,7 @@ export default function Courses() {
           </select>
           <button
             type="submit"
-            className="bg-green-600 text-white py-2 px-4 rounded"
+            className="bg-green-700 text-white py-2 px-4 rounded"
           >
             Guardar Curso
           </button>
@@ -135,20 +135,25 @@ export default function Courses() {
 
       <ul>
         {courses.map((c) => (
-          <li
-            key={c.id_course}
-            className="flex justify-between items-center border-b py-2"
-          >
-            <span>
-              {c.name_course} - {c.description}
-            </span>
-            <button
+          
+             <div className="bg-white shadow-md rounded-2xl p-4 border border-gray-200 hover:shadow-lg transition-all duration-300 flex flex-col justify-between">
+              <div>
+                <h3 className="text-2xl font-semibold text-teal-800 mb-2">{c.name_course}</h3>
+                <p className="text-2 text-gray-700 mb-4">{c.description}</p>
+                <div className="text-2 text-gray-500 space-y-1 mb-3">
+                  <p><strong>Fecha:</strong> {c.date_course}</p>
+                  <p><strong>Hora:</strong> {c.description}</p>
+                  <p><strong>Modalidad:</strong> {c.modality}</p>
+                  <button
               onClick={() => handleDelete(c.id_course)}
-              className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700"
+              className=" bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700"
             >
               Eliminar
             </button>
-          </li>
+                </div>
+              </div>
+            </div>
+      
         ))}
       </ul>
     </div>

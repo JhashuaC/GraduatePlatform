@@ -6,7 +6,7 @@ export default function CourseCard({ name, description, date, time, modality, on
         <h3 className="text-xl font-semibold text-blue-700 mb-2">{name}</h3>
         <p className="text-gray-700 mb-3">{description}</p>
         <div className="text-sm text-gray-500 space-y-1 mb-3">
-          <p><strong>Fecha:</strong> {new Date(date).toLocaleDateString()}</p>
+          <p><strong>Fecha:</strong> {date}</p>
           <p><strong>Hora:</strong> {time}</p>
           <p><strong>Modalidad:</strong> {modality}</p>
         </div>
