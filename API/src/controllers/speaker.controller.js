@@ -22,13 +22,23 @@ const getSpeakerById = async(req, res) => {
 
 const createSpeaker = async(req, res) => {
     const { id_speaker, specialty, work_phone } = req.body;
+    console.log('[CREATE SPEAKER] Solicitud recibida con datos:', {
+        id_speaker,
+        specialty,
+        work_phone,
+    });
+
     try {
         const speaker = await Speaker.create({ id_speaker, specialty, work_phone });
+
+        console.log('[CREATE SPEAKER] Facilitador creado exitosamente:', speaker.toJSON());
         res.status(201).json(speaker);
     } catch (err) {
+        console.error('[CREATE SPEAKER] Error al crear facilitador:', err);
         res.status(500).json({ message: 'Error al crear facilitador' });
     }
 };
+
 
 const updateSpeaker = async(req, res) => {
     try {
