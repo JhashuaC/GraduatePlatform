@@ -19,6 +19,7 @@ export const getUserById = async (id) => {
 };
 
 export const createUser = async (data) => {
+  console.log(data);
   const res = await fetch(BASE_URL, {
     method: 'POST',
     headers: {

@@ -24,7 +24,7 @@ export default function AuthPage() {
     phone: "",
     address: "",
     password: "",
-    id_role: "admin",
+    id_role: "1",
     graduation_year: "",
     id_career: "",
     category: "",
@@ -70,11 +70,12 @@ export default function AuthPage() {
         password: regForm.password,
         id_role: regForm.id_role,
       };
+      console.log(userPayload);
 
       const createdUser = await createUser(userPayload);
 
       // Crear en graduate
-      if (regForm.id_role === "graduate") {
+      if (regForm.id_role === "2") {
         await createGraduate({
           id_graduate: createdUser.id_user,
           graduation_year: regForm.graduation_year,
@@ -85,7 +86,7 @@ export default function AuthPage() {
       }
 
       // Crear en speaker
-      if (regForm.id_role === "speaker") {
+      if (regForm.id_role === "3") {
         await createSpeaker({
           id_speaker: createdUser.id_user,
           specialty: regForm.specialty,
@@ -103,7 +104,7 @@ export default function AuthPage() {
         phone: "",
         address: "",
         password: "",
-        id_role: "graduate",
+        id_role: "1",
         graduation_year: "",
         id_career: "",
         category: "",
@@ -191,16 +192,15 @@ export default function AuthPage() {
               className="block w-full mb-4 p-2 border"
             >
               <option value="admin">Administrador</option>
-              <option value="graduate">Graduado</option>
-              <option value="speaker">Facilitador</option>
+              <option value="2">Graduado</option>
+              <option value="3">Facilitador</option>
             </select>
 
             {/* Campos para Graduado */}
-            {regForm.id_role === "graduate" && (
+            {regForm.id_role === "2" && (
               <>
                 <input
                   name="graduation_year"
-                  type="number"
                   placeholder="Año de Graduación"
                   value={regForm.graduation_year}
                   onChange={handleRegisterChange}
@@ -231,7 +231,7 @@ export default function AuthPage() {
             )}
 
             {/* Campos para Facilitador */}
-            {regForm.id_role === "speaker" && (
+            {regForm.id_role === "3" && (
               <>
                 <input
                   name="specialty"

@@ -28,7 +28,7 @@ export default function Workshops() {
       const data = {
         id_course: courseId,
         id_graduate: idGraduate,
-        completado: false,
+        completado: 0,
         fecha_completado: null,
       };
 

@@ -2,7 +2,7 @@ import { getAuthHeaders } from './authHeader';
 
 const BASE_URL = 'http://localhost:3000/api/speakers';
 
-export const getAllSpeakers = async() => {
+export const getAllSpeakers = async () => {
     const res = await fetch(BASE_URL, {
         headers: getAuthHeaders(),
     });
@@ -10,7 +10,7 @@ export const getAllSpeakers = async() => {
     return await res.json();
 };
 
-export const getSpeakerById = async(id) => {
+export const getSpeakerById = async (id) => {
     const res = await fetch(`${BASE_URL}/${id}`, {
         headers: getAuthHeaders(),
     });
@@ -18,17 +18,20 @@ export const getSpeakerById = async(id) => {
     return await res.json();
 };
 
-export const createSpeaker = async(data) => {
+export const createSpeaker = async (data) => {
     const res = await fetch(BASE_URL, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
         body: JSON.stringify(data),
     });
     if (!res.ok) throw new Error('Error al crear facilitador');
     return await res.json();
 };
 
-export const updateSpeaker = async(id, data) => {
+export const updateSpeaker = async (id, data) => {
     const res = await fetch(`${BASE_URL}/${id}`, {
         method: 'PUT',
         headers: getAuthHeaders(),
@@ -38,7 +41,7 @@ export const updateSpeaker = async(id, data) => {
     return await res.json();
 };
 
-export const deleteSpeaker = async(id) => {
+export const deleteSpeaker = async (id) => {
     const res = await fetch(`${BASE_URL}/${id}`, {
         method: 'DELETE',
         headers: getAuthHeaders(),
