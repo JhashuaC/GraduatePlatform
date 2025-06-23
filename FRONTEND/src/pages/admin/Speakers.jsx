@@ -80,13 +80,13 @@ export default function Speakers() {
         </form>
       )}
 
-      <ul>
+      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
         {speakers.map((sp) => (
-          <li key={sp.id} className="flex justify-between items-center border-b py-2">
+         
             <SpeakerCard  key={sp.id_speaker} speakers={sp}  onDelete={() => handleDelete(sp.id_speaker)}/>
-          </li>
+         
         ))}
-      </ul>
+      </div>
     </div>
   );
 }

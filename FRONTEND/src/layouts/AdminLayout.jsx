@@ -13,7 +13,7 @@ export default function AdminLayout() {
           <Link to="/admin/users" className="hover:underline">Usuarios</Link>
           <Link to="/admin/graduates" className="hover:underline">Graduados</Link>
           <Link to="/admin/speakers" className="hover:underline">Facilitadores</Link>
-          <Link to="/admin/courses" className="hover:underline">Cursos</Link>
+          <Link to="/admin/courses" className="hover:underline">Talleres</Link>
           <button
             onClick={logout}
             className="ml-4 bg-red-500 px-3 py-1 rounded hover:bg-red-600 transition"

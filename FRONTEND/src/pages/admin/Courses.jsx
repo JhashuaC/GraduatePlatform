@@ -1,15 +1,28 @@
 import { useState, useEffect } from "react";
-import { getAllCourses, deleteCourse } from "../../api/course.service";
+import { getAllCourses, createCourse, deleteCourse } from "../../api/course.service";
+import { getAllSpeakers } from "../../api/speaker.service";
 
 export default function Courses() {
   const [courses, setCourses] = useState([]);
+  const [speakers, setSpeakers] = useState([]);
   const [showForm, setShowForm] = useState(false);
-  const [formData, setFormData] = useState({ title: "", description: "" });
+  const [formData, setFormData] = useState({
+    name_course: "",
+    description: "",
+    date_course: "",
+    time_course: "",
+    modality: "",
+    id_speaker: "",
+  });
 
   useEffect(() => {
     async function fetchData() {
-      const data = await getAllCourses();
-      setCourses(data);
+      const [coursesData, speakersData] = await Promise.all([
+        getAllCourses(),
+        getAllSpeakers(),
+      ]);
+      setCourses(coursesData);
+      setSpeakers(speakersData);
     }
     fetchData();
   }, []);
@@ -19,13 +32,21 @@ export default function Courses() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const newCourse = await addCourse(formData);
+    const newCourse = await createCourse(formData);
     if (newCourse) {
       setCourses((prev) => [...prev, newCourse]);
-      setFormData({ title: "", description: "" });
+      setFormData({
+        name_course: "",
+        description: "",
+        date_course: "",
+        time_course: "",
+        modality: "",
+        id_speaker: "",
+      });
       setShowForm(false);
     }
   };
+
 
   const handleDelete = async (id) => {
     if (await deleteCourse(id)) {
@@ -35,10 +56,10 @@ export default function Courses() {
 
   return (
     <div>
-      <h2 className="text-3xl mb-6">Cursos</h2>
+      <h2 className="text-3xl mb-6">Talleres</h2>
       <button
         onClick={() => setShowForm(!showForm)}
-        className="mb-4 bg-blue-600 text-white py-2 px-4 rounded"
+        className="mb-4 bg-blue-800 text-white py-2 px-4 rounded"
       >
         {showForm ? "Ocultar formulario" : "Agregar Curso"}
       </button>
@@ -46,9 +67,9 @@ export default function Courses() {
       {showForm && (
         <form onSubmit={handleSubmit} className="mb-6 space-y-4 max-w-md">
           <input
-            name="title"
-            placeholder="Título"
-            value={formData.title}
+            name="name_course"
+            placeholder="Título del curso"
+            value={formData.name_course}
             onChange={handleChange}
             required
             className="border p-2 rounded w-full"
@@ -61,6 +82,48 @@ export default function Courses() {
             required
             className="border p-2 rounded w-full"
           />
+          <input
+            type="date"
+            name="date_course"
+            value={formData.date_course}
+            onChange={handleChange}
+            required
+            className="border p-2 rounded w-full"
+          />
+          <input
+            type="time"
+            name="time_course"
+            value={formData.time_course}
+            onChange={handleChange}
+            required
+            className="border p-2 rounded w-full"
+          />
+          <select
+            name="modality"
+            value={formData.modality}
+            onChange={handleChange}
+            required
+            className="border p-2 rounded w-full"
+          >
+            <option value="">Seleccione modalidad</option>
+            <option value="Presencial">Presencial</option>
+            <option value="Virtual">Virtual</option>
+            <option value="Mixto">Mixto</option>
+          </select>
+          <select
+            name="id_speaker"
+            value={formData.id_speaker}
+            onChange={handleChange}
+            required
+            className="border p-2 rounded w-full"
+          >
+            <option value="">Seleccione un facilitador</option>
+            {speakers.map((s) => (
+              <option key={s.id_speaker} value={s.id_speaker}>
+                {s.specialty} Tel: {s.work_phone}
+              </option>
+            ))}
+          </select>
           <button
             type="submit"
             className="bg-green-600 text-white py-2 px-4 rounded"
@@ -73,14 +136,14 @@ export default function Courses() {
       <ul>
         {courses.map((c) => (
           <li
-            key={c.id}
+            key={c.id_course}
             className="flex justify-between items-center border-b py-2"
           >
             <span>
-              {c.title} - {c.description}
+              {c.name_course} - {c.description}
             </span>
             <button
-              onClick={() => handleDelete(c.id)}
+              onClick={() => handleDelete(c.id_course)}
               className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700"
             >
               Eliminar
