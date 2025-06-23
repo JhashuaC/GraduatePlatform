@@ -56,10 +56,10 @@ export default function Courses() {
 
   return (
     <div>
-      <h2 className="text-3xl mb-6">Talleres</h2>
+      <h2 className="text-center text-black text-4xl font-bold my-4">TALLERES</h2>
       <button
         onClick={() => setShowForm(!showForm)}
-        className="mb-4 bg-blue-800 text-white py-2 px-4 rounded"
+        className="mb-4 bg-teal-800 hover:bg-teal-950 text-white py-2 px-4 rounded"
       >
         {showForm ? "Ocultar formulario" : "Agregar Curso"}
       </button>

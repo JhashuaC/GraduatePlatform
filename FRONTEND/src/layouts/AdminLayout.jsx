@@ -7,7 +7,7 @@ export default function AdminLayout() {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      <nav className="bg-blue-900 text-white px-6 py-4 flex justify-between items-center">
+      <nav className="bg-teal-800 text-white px-6 py-4 flex justify-between items-center">
         <div className="text-xl font-bold">Administrador</div>
         <div className="flex space-x-4 items-center">
           <Link to="/admin/users" className="hover:underline">Usuarios</Link>

@@ -12,7 +12,7 @@ export default function SpeakerCard({ speakers, onDelete }) {
       <div className="p-4">
         <h2 className="text-xl font-bold text-gray-800">{speakers.name}</h2>
         <p className="text-black mt-2"> ID: {speakers.id_speaker}</p>
-        <p className="text-gray-600 mt-2">Especialidad: {speakers.speciality}</p>
+        <p className="text-gray-600 mt-2">Especialidad: {speakers.specialty}</p>
         <p className="text-gray-600 mt-2">Número de trabajo: {speakers.work_phone}</p>
         <p className="text-blue-500 mt-2">{speakers.email}</p>
          <button

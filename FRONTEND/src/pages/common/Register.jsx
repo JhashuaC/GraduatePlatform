@@ -9,7 +9,7 @@ export default function Register() {
     name: "",
     email: "",
     password: "",
-    id_role: 2, // o el id por defecto
+    id_role: 1, 
   });
 
   const handleChange = (e) =>

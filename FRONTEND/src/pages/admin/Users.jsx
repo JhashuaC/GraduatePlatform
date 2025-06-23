@@ -21,11 +21,10 @@ export default function Users() {
 
   return (
     <div className="p-6">
-      <h2 className="text-3xl mb-6 font-bold text-blue-900">Lista de Usuarios</h2>
-
+     <h2 className="text-center text-black text-4xl font-bold my-4">USUARIOS</h2>
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white shadow-md rounded border">
-          <thead className="bg-blue-900 text-white">
+          <thead className="bg-teal-800 text-white">
             <tr>
               <th className="py-2 px-4">Nombre</th>
               <th className="py-2 px-4">Apellidos</th>

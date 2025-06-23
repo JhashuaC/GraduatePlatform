@@ -14,10 +14,14 @@ export default function AuthPage() {
     // Estados para registro
     const [regForm, setRegForm] = useState({
         name: "",
-        last_name: "",
+        last_name1: "",
+        last_name2: "",
+        identity_number: "",
         email: "",
+        phone: "",
+        address: "",
         password: "",
-        id_role: "user",
+        id_role: "gradute",
     });
     const [regError, setRegError] = useState("");
     const [regSuccess, setRegSuccess] = useState("");
@@ -46,7 +50,17 @@ export default function AuthPage() {
         try {
             await register(regForm);
             setRegSuccess("Usuario registrado con éxito. Ahora inicia sesión.");
-            setRegForm({ name: "", last_name: "", email: "", password: "", id_role: "user" });
+            setRegForm({
+                name: "",
+                last_name1: "",
+                last_name2: "",
+                identity_number: "",
+                email: "",
+                phone: "",
+                address: "",
+                password: "",
+                id_role: "gradute",
+            });
             setIsLogin(true);
         } catch (err) {
             setRegError("Error al registrar usuario");
@@ -107,9 +121,25 @@ export default function AuthPage() {
                             className="block w-full mb-2 p-2 border"
                         />
                         <input
-                            name="last_name"
-                            placeholder="Apellido"
-                            value={regForm.last_name}
+                            name="last_name1"
+                            placeholder="Primer Apellido"
+                            value={regForm.last_name1}
+                            onChange={handleRegisterChange}
+                            required
+                            className="block w-full mb-2 p-2 border"
+                        />
+                        <input
+                            name="last_name2"
+                            placeholder="Segundo Apellido"
+                            value={regForm.last_name2}
+                            onChange={handleRegisterChange}
+                            required
+                            className="block w-full mb-2 p-2 border"
+                        />
+                         <input
+                            name="phone"
+                            placeholder="Teléfono"
+                            value={regForm.phone}
                             onChange={handleRegisterChange}
                             required
                             className="block w-full mb-2 p-2 border"
@@ -131,14 +161,32 @@ export default function AuthPage() {
                             required
                             className="block w-full mb-4 p-2 border"
                         />
+                        <input
+                            name="identity_number"
+                            placeholder="Número de Identificación"
+                            value={regForm.identity_number}
+                            onChange={handleRegisterChange}
+                            required
+                            className="block w-full mb-2 p-2 border"
+
+                        />
+                        <input
+                            name="address"
+                            placeholder="Dirección"
+                            value={regForm.address}
+                            onChange={handleRegisterChange}
+                            required
+                            className="block w-full mb-2 p-2 border"
+                        />
                         <select
                             name="id_role"
                             value={regForm.id_role}
                             onChange={handleRegisterChange}
                             className="block w-full mb-4 p-2 border"
                         >
-                            <option value="user">Usuario</option>
                             <option value="admin">Administrador</option>
+                            <option value="graduate">Graduado</option>
+                            <option value="speaker">Facilitador</option>
                         </select>
 
                         <button className="bg-blue-600 text-white px-4 py-2 rounded w-full mb-2">

@@ -61,7 +61,7 @@ export default function Graduates() {
 
                 <button
                     onClick={() => setShowForm(!showForm)}
-                    className=" bg-blue-950 hover:bg-blue-900 text-white font-bold py-3 px-9 text-xl rounded transition"
+                    className=" bg-teal-800 hover:bg-teal-950 text-white font-bold py-3 px-9 text-xl rounded transition"
 
                 >
                     {showForm ? "Ocultar formulario" : "Agregar graduado"}
