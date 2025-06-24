@@ -3,7 +3,7 @@ const { CourseGraduate, Course, Graduate } = require('../models');
 const getAllCourseGraduates = async (req, res) => {
   try {
     const data = await CourseGraduate.findAll({
-      include: [Course, Graduate],
+      include: [Course, Graduate, User],
     });
     res.json(data);
   } catch (err) {
