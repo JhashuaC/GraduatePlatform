@@ -84,9 +84,9 @@ export default function MyWorkshops() {
             {students.map((s) => (
               <li key={s.Graduate.id_graduate} className="flex justify-between items-center border-b py-2">
                 <span>
-                  {s.Graduate.id_graduate} 
+                  {s.Graduate.User.first_name} {s.Graduate.User.last_name1} - {s.Graduate.User.email}
                   <br />
-                Categoría: {s.Graduate.category || "N/A"}
+                  Categoría: {s.Graduate.category || "N/A"} | Teléfono: {s.Graduate.work_phone} 
                   <br />
                   Estado: {s.completado ? "✅ Completado" : "⏳ Pendiente"}
                 </span>
