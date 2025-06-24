@@ -36,6 +36,7 @@ export default function Speakers() {
 
   return (
     <div>
+        <div className="max-w-6xl mx-auto p-6">
       <h2 className="text-center text-black text-4xl font-bold my-6">FACILITADOR</h2>
       <button
         onClick={() => setShowForm(!showForm)}
@@ -87,6 +88,7 @@ export default function Speakers() {
          
         ))}
       </div>
+    </div>
     </div>
   );
 }

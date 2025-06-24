@@ -17,15 +17,14 @@ export default function Preferences() {
     const [myPrefs, setMyPrefs] = useState([]);
     const [search, setSearch] = useState("");
 
-    /* cargar opciones y preferencias propias */
     useEffect(() => {
         async function fetchData() {
-            const [options, prefs] = await Promise.all([
-                getAllPreferences(),
-                getAllGraduatePreferencesById(idGraduate),
-            ]);
+            const options = await getAllPreferences();
             setAllOptions(options);
-            setMyPrefs(prefs.map(p => p.id_option)); // guarda solo IDs
+
+            const prefs = await getAllGraduatePreferencesById(idGraduate);
+            setMyPrefs(prefs.map(p => p.id_option)); 
+            setMyPrefs(prefs.map(p => p.id_option)); 
         }
         if (idGraduate) fetchData();
     }, [idGraduate]);

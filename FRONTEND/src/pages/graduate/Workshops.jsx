@@ -30,7 +30,8 @@ export default function Workshops() {
         id_graduate: idGraduate,
         completado: 0,
         fecha_completado: null,
-      };
+      }; 
+      console.log(data);
 
       await assignGraduateToCourse(data);
       alert(`Te inscribiste exitosamente al curso con ID ${courseId}`);
