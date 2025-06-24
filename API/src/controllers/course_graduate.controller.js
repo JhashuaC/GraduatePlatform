@@ -74,8 +74,8 @@ const getAllCourseGraduates = async (req, res) => {
     const entry = await CourseGraduate.findOne({ where: { id_course, id_graduate } });
     if (!entry) return res.status(404).json({ message: 'Relación no encontrada' });
 
-    entry.completado = true;
-    entry.fecha_completado = new Date();
+    entry.completed = 1;
+    entry.completed_at = new Date();
     await entry.save();
 
     res.json({ message: 'Estado actualizado', entry });

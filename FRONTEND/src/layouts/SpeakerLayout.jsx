@@ -7,7 +7,7 @@ export default function SpeakerLayout() {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      <nav className="bg-blue-900 text-white px-6 py-4 flex justify-between items-center">
+      <nav className="bg-sky-800 text-white px-6 py-4 flex justify-between items-center">
         <div className="text-xl font-bold">Falicitador</div>
         <div className="flex space-x-4">
           <Link to="/speaker/dashboard">Inicio</Link>

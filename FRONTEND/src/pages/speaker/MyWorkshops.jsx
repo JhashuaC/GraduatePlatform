@@ -38,23 +38,37 @@ export default function MyWorkshops() {
       setLoading(false);
     }
   };
-  const handleNoteChange = (graduateId, value) => {
-    setNotes(prev => ({ ...prev, [graduateId]: value }));
+
+  const handleNoteChange = (graduateId, value, courseName) => {
+    setNotes(prev => ({
+      ...prev,
+      [graduateId]: {
+        nota: value,
+        curso: courseName
+      }
+    }));
   };
 
+
   const handleSendNote = async (graduateId) => {
-    const nota = notes[graduateId];
-    if (!nota || isNaN(nota) || nota < 0 || nota > 100) {
+    const noteData = notes[graduateId];
+
+    if (!noteData || isNaN(noteData.nota) || noteData.nota < 0 || noteData.nota > 100) {
       alert("Por favor, ingrese una nota válida (0-100)");
       return;
     }
 
     try {
-      await sendNoteByEmail(graduateId, parseInt(nota));
+      await sendNoteByEmail(graduateId, {
+        note: parseInt(noteData.nota),
+        course_name: noteData.curso,
+      });
+
       await updateCompletionStatus(selectedCourseId, graduateId, {
         completed: true,
         completed_at: new Date().toISOString(),
       });
+
       alert("Nota enviada y marcado como completado");
       fetchStudents(selectedCourseId);
     } catch (error) {
@@ -65,7 +79,7 @@ export default function MyWorkshops() {
 
   return (
     <div className="max-w-4xl mx-auto p-6">
-      <h2 className="text-3xl font-bold mb-6 text-blue-900">Mis Talleres</h2>
+      <h2 className="text-3xl font-bold mb-6 text-sky-800">Mis Talleres</h2>
       <p className="mb-4">
         Selecciona un taller para ver los graduados inscritos y enviar sus notas.
       </p>
@@ -90,7 +104,7 @@ export default function MyWorkshops() {
 
       {students.length > 0 && (
         <div className="bg-white rounded shadow p-4">
-          <h3 className="text-xl font-semibold mb-4 text-teal-800">Graduados Inscritos</h3>
+          <h3 className="text-xl font-semibold mb-4 text-sky-800">Graduados Inscritos</h3>
           <ul className="space-y-3">
             {students.map((s) => (
               <li
@@ -111,15 +125,15 @@ export default function MyWorkshops() {
                   <input
                     type="number"
                     placeholder="Nota"
-                    value={notes[s.Graduate.id_graduate] || ""}
-                    onChange={(e) => handleNoteChange(s.Graduate.id_graduate, e.target.value)}
+                   value={notes[s.Graduate.id_graduate]?.nota || ""}
+                    onChange={(e) => handleNoteChange(s.Graduate.id_graduate, e.target.value, s.Course.name_course)}
                     disabled={s.completado}
                     className="border p-1 rounded w-20"
                   />
                   <button
                     onClick={() => handleSendNote(s.Graduate.id_graduate)}
                     disabled={s.completado}
-                    className={`${s.completado ? "bg-gray-400" : "bg-blue-700 hover:bg-blue-800"
+                    className={`${s.completado ? "bg-gray-400" : "bg-sky-800 hover:bg-blue-800"
                       } text-white px-3 py-1 rounded`}
                   >
                     {s.completado ? "Enviado" : "Enviar Nota"}

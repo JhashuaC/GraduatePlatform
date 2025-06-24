@@ -43,14 +43,14 @@ export default function Workshops() {
     <div className="p-6">
       <h2 className="text-3xl font-bold mb-6 text-center text-blue-900">Mis Talleres</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {graduateCourse.map((course) => (
+        {graduateCourse.map((graduateCourse) => (
           <CourseCard
             key={graduateCourse.id_course}
-            name={graduateCourse.name}
-            description={graduateCourse.description}
-            date={graduateCourse.date}
-            time={graduateCourse.time}
-            modality={graduateCourse.modality}
+            name={graduateCourse.Course.name_course}
+            description={graduateCourse.Course.description}
+            date={graduateCourse.Course.date_course}
+            time={graduateCourse.Course.time_course}
+            modality={graduateCourse.Course.modality}
             onRegister={() => handleRegister(graduateCourse.id_course)}
           />
         ))}

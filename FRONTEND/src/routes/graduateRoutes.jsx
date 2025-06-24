@@ -7,6 +7,7 @@ import Workshops  from "../pages/graduate/Workshops";
 import Profile    from "../pages/graduate/Profile";
 import Preferences from "../pages/graduate/Preferences";
 import MyWorkshops from "../pages/graduate/MyWorkshops";
+import Historial from "../pages/graduate/Historial";
 
 export default function GraduateRoutes() {
   const { user, role, loading } = useAuth();
@@ -28,6 +29,7 @@ export default function GraduateRoutes() {
         <Route path="perfil"      element={<Profile />} />
         <Route path="preferencias" element={<Preferences />} />
         <Route path="misTalleres" element={<MyWorkshops />} />  {/* Mis talleres */}
+        <Route path="historial"   element={<Historial />} /> 
         
         {/* Redirección por defecto */}
         <Route path="*"           element={<Navigate to="" replace />} />
