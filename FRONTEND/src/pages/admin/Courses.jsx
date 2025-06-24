@@ -45,14 +45,17 @@ export default function Courses() {
       });
       setShowForm(false);
     }
+    const updatedCourses = await getAllCourses();
+    setCourses(updatedCourses);
   };
 
 
-  const handleDelete = async (id) => {
-    if (await deleteCourse(id)) {
-      setCourses((prev) => prev.filter((c) => c.id !== id));
-    }
-  };
+ const handleDelete = async (id) => {
+  if (await deleteCourse(id)) {
+    const updatedCourses = await getAllCourses(); // recarga los cursos completos
+    setCourses(updatedCourses);
+  }
+};
 
   return (
     <div>
@@ -120,7 +123,7 @@ export default function Courses() {
             <option value="">Seleccione un facilitador</option>
             {speakers.map((s) => (
               <option key={s.id_speaker} value={s.id_speaker}>
-                {s.specialty} Tel: {s.work_phone}
+                {s.User.first_name} {s.User.last_name1} Tel: {s.work_phone}
               </option>
             ))}
           </select>
@@ -135,25 +138,26 @@ export default function Courses() {
 
       <ul>
         {courses.map((c) => (
-          
-             <div className="bg-white shadow-md rounded-2xl p-4 border border-gray-200 hover:shadow-lg transition-all duration-300 flex flex-col justify-between">
-              <div>
-                <h3 className="text-2xl font-semibold text-teal-800 mb-2">{c.name_course}</h3>
-                <p className="text-2 text-gray-700 mb-4">{c.description}</p>
-                <div className="text-2 text-gray-500 space-y-1 mb-3">
-                  <p><strong>Fecha:</strong> {c.date_course}</p>
-                  <p><strong>Hora:</strong> {c.description}</p>
-                  <p><strong>Modalidad:</strong> {c.modality}</p>
-                  <button
-              onClick={() => handleDelete(c.id_course)}
-              className=" bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700"
-            >
-              Eliminar
-            </button>
-                </div>
+
+          <div className="bg-gray-100 shadow-md rounded-2xl p-4 border border-gray-200 hover:shadow-lg transition-all duration-300 flex flex-col justify-between">
+            <div>
+              <h3 className="text-2xl font-semibold text-teal-800 mb-2">{c.name_course}</h3>
+              <p className="text-2 text-gray-700 mb-4">{c.description}</p>
+              <div className="text-2 text-gray-500 space-y-1 mb-3">
+                <p><strong>Fecha:</strong> {c.date_course}</p>
+                <p><strong>Hora:</strong> {c.description}</p>
+                <p><strong>Modalidad:</strong> {c.modality}</p>
+                <p><strong>Info al:</strong> {c.Speaker.work_phone}</p>
+                <button
+                  onClick={() => handleDelete(c.id_course)}
+                  className=" bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700"
+                >
+                  Eliminar
+                </button>
               </div>
             </div>
-      
+          </div>
+
         ))}
       </ul>
     </div>

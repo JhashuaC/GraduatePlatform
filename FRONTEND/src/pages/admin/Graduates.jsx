@@ -52,16 +52,16 @@ export default function Graduates() {
     };
 
     return (
-        <div className="pt-20 min-h-screen bg-gray-100 bg-gradient-to-br from-blue-950 via-cyan-00 to-blue-500">
-
+        // <div className="pt-20 min-h-screen bg-gray-100 bg-gradient-to-br from-blue-950 via-cyan-00 to-blue-500">
+        <div>
             <div className="max-w-6xl mx-auto p-6">
 
 
-                <h2 className="text-center text-amber-50 text-4xl font-bold my-6">GRADUADOS</h2>
+                <h2 className="text-center text-teal-950 text-4xl font-bold my-6">GRADUADOS</h2>
 
                 <button
                     onClick={() => setShowForm(!showForm)}
-                    className=" bg-teal-800 hover:bg-teal-950 text-white font-bold py-3 px-9 text-xl rounded transition"
+                className="mb-4 bg-teal-800 hover:bg-teal-950 text-white py-2 px-4 rounded"
 
                 >
                     {showForm ? "Ocultar formulario" : "Agregar graduado"}

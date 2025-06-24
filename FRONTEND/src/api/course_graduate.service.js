@@ -1,6 +1,6 @@
 import { getAuthHeaders } from './authHeader';
 
-const BASE_URL = 'http://localhost:3000/api/course_graduate';
+const BASE_URL = 'http://localhost:3000/api/assignments';
 
 export const getAllCourseGraduates = async () => {
   const res = await fetch(BASE_URL, { headers: getAuthHeaders() });
