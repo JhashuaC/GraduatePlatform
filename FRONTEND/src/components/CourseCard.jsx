@@ -3,7 +3,7 @@ export default function CourseCard({ name, description, date, time, modality, on
   return (
     <div className="bg-white shadow-md rounded-2xl p-4 border border-gray-200 hover:shadow-lg transition-all duration-300 flex flex-col justify-between">
       <div>
-        <h3 className="text-xl font-semibold text-blue-700 mb-2">{name}</h3>
+        <h3 className="text-2xl font-semibold text-blue-700 mb-2">{name}</h3>
         <p className="text-gray-700 mb-3">{description}</p>
         <div className="text-sm text-gray-500 space-y-1 mb-3">
           <p><strong>Fecha:</strong> {date}</p>

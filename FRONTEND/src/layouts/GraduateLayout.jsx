@@ -14,8 +14,8 @@ export default function GraduateLayout() {
           <Link to="/graduate/misTalleres">Mis Talleres</Link>
           <Link to="/graduate/preferencias">Preferencias</Link>
           <Link to="/graduate/talleres">Talleres</Link>
-          <Link to="/graduate/perfil">Perfil</Link>
           <Link to="/graduate/historial">Historial</Link>
+          <Link to="/graduate/perfil">Perfil</Link>
           <button onClick={logout} className="ml-4 bg-red-500 px-3 py-1 rounded">Salir</button>
         </div>
       </nav>
