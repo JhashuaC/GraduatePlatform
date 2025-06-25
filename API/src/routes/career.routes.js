@@ -9,7 +9,7 @@ const {
 } = require('../controllers/career.controller');
 const { verifyToken } = require('../middleware/auth.middleware');
 
-router.get('/', verifyToken, getAllCareers);
+router.get('/', getAllCareers);
 router.get('/:id', verifyToken, getCareerById);
 router.post('/', verifyToken, createCareer);
 router.put('/:id', verifyToken, updateCareer);
