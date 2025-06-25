@@ -43,29 +43,29 @@ app.use('/api/emails', emailHistoryRoutes);
 app.use('/api/recipients', emailRecipientsRoutes);
 app.use('/api/questions', surveyQuestionsRoutes);
 app.use('/api/responses', surveyResponsesRoutes);
-app.use('/api/notes',notesRoutes)
+app.use('/api/notes', notesRoutes)
 app.use((req, res, next) => {
-  const error = new Error('Ruta no encontrada');
-  error.status = 404;
-  next(error);
+    const error = new Error('Ruta no encontrada');
+    error.status = 404;
+    next(error);
 });
 
 app.use((error, req, res, next) => {
-  const status = error.status || 500;
-  const message = error.message || 'Error interno del servidor';
-  res.status(status).json({ message });
+    const status = error.status || 500;
+    const message = error.message || 'Error interno del servidor';
+    res.status(status).json({ message });
 });
 
 db.authenticate()
-  .then(() => {
-    console.log('Conexión a la base de datos establecida con éxito.');
-  })
-  .catch((err) => {
-    console.error('No se pudo conectar a la base de datos:', err);
-  });
+    .then(() => {
+        console.log('Conexión a la base de datos establecida con éxito.');
+    })
+    .catch((err) => {
+        console.error('No se pudo conectar a la base de datos:', err);
+    });
 
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-  console.log(`Servidor corriendo en el puerto ${PORT}`);
+    console.log(`Servidor corriendo en el puerto ${PORT}`);
 });
