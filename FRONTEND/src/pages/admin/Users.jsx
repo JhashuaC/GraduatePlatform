@@ -22,7 +22,7 @@ export default function Users() {
 
   return (
     <div className="p-6">
-      <h2 className="text-4xl font-bold text-teal-800 text-center mb-8">Usuarios Registrados</h2>
+      <h2 className="text-4xl font-bold text-teal-800 text-center mb-8">USUARIOS REGISTRADOS</h2>
 
       {users.length === 0 ? (
         <p className="text-center text-gray-500">No hay usuarios registrados.</p>

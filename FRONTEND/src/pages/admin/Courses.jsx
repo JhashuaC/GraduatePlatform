@@ -63,7 +63,7 @@ export default function Courses() {
 
   return (
     <div className="p-6 max-w-6xl mx-auto">
-      <h2 className="text-4xl font-bold text-center text-teal-800 mb-6">Gestión de Talleres</h2>
+      <h2 className="text-4xl font-bold text-center text-teal-800 mb-6">GESTIÓN DE TALLERES</h2>
 
       <div className="text-center mb-6">
         <button

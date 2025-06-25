@@ -4,10 +4,49 @@ import { getAllCareers } from "../../api/career.service";
 import GraduatedCard from "../../components/GraduatedCard";
 
 export default function Graduates() {
-    const [graduados, setGraduados] = useState([]);
-    const [careers, setCareers] = useState([]);
-    const [showForm, setShowForm] = useState(false);
-    const [formData, setFormData] = useState({
+  const [graduados, setGraduados] = useState([]);
+  const [careers, setCareers] = useState([]);
+  const [showForm, setShowForm] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    identification: "",
+    address: "",
+    email: "",
+    phone: "",
+    work_phone: "",
+    graduation_year: "",
+    id_career: ""
+  });
+
+  useEffect(() => {
+    async function fetchData() {
+      const data = await getAllGraduates();
+      setGraduados(data);
+
+      const careerData = await getAllCareers();
+      setCareers(careerData);
+    }
+    fetchData();
+  }, []);
+
+  const handleChange = (e) => {
+    setFormData(prev => ({
+      ...prev,
+      [e.target.name]: e.target.value
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const formToSend = {
+      ...formData,
+      graduation_year: Number(formData.graduation_year),
+      id_career: Number(formData.id_career),
+    };
+    const nuevo = await createGraduate(formToSend);
+    if (nuevo) {
+      setGraduados([...graduados, nuevo]);
+      setFormData({
         name: "",
         identification: "",
         address: "",
@@ -16,92 +55,92 @@ export default function Graduates() {
         work_phone: "",
         graduation_year: "",
         id_career: ""
-    });
+      });
+      setShowForm(false);
+    }
+  };
 
-    useEffect(() => {
-        async function fetchData() {
-            const data = await getAllGraduates();
-            setGraduados(data);
+  return (
+      <div className="max-w-7xl mx-auto px-6">
+      <h2 className="text-4xl font-bold text-center text-teal-800 mb-6">
+          GRADUADOS
+        </h2>
 
-            const careerData = await getAllCareers();
-            setCareers(careerData);
-        }
-        fetchData();
-    }, []);
-
-    const handleChange = (e) => {
-        setFormData(prev => ({
-            ...prev,
-            [e.target.name]: e.target.value
-        }));
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        const formToSend = {
-            ...formData,
-            graduation_year: Number(formData.graduation_year),
-            id_career: Number(formData.id_career),
-        };
-        const nuevo = await createGraduate(formData);
-        if (nuevo) {
-            setGraduados([...graduados, nuevo]);
-            setFormData({ name: "", identification: "", address: "", email: "", phone: "", work_phone: "", graduation_year: "", id_career: "" });
-
-        }
-    };
-
-    return (
-        // <div className="pt-20 min-h-screen bg-gray-100 bg-gradient-to-br from-blue-950 via-cyan-00 to-blue-500">
-        <div>
-            <div className="max-w-6xl mx-auto p-6">
-
-
-                <h2 className="text-center text-teal-950 text-4xl font-bold my-6">GRADUADOS</h2>
-
-                <button
-                    onClick={() => setShowForm(!showForm)}
-                className="mb-4 bg-teal-800 hover:bg-teal-950 text-white py-2 px-4 rounded"
-
-                >
-                    {showForm ? "Ocultar formulario" : "Agregar graduado"}
-                </button>
-
-                <div className={`transition-all duration-500 overflow-hidden ${showForm ? "max-h-[1000px] opacity-100" : "max-h-0 opacity-0"} bg-white p-4 rounded shadow mb-6`}>
-                    <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <input name="name" value={formData.name} onChange={handleChange} placeholder="Nombre" className="p-2 border rounded" required />
-                        <input name="identification" value={formData.identification} onChange={handleChange} placeholder="Identificacion" className="p-2 border rounded" required />
-                        <input name="address" value={formData.address} onChange={handleChange} placeholder="Direccion" className="p-2 border rounded" required />
-                        <input name="email" value={formData.email} onChange={handleChange} placeholder="Email" className="p-2 border rounded" required />
-                        <input name="phone" value={formData.phone} onChange={handleChange} placeholder="Telefono" className="p-2 border rounded" required />
-                        <input name="work_phone" value={formData.work_phone} onChange={handleChange} placeholder="Telefono Trabajo" className="p-2 border rounded" required />
-                        <input name="graduation_year" value={formData.graduation_year} onChange={handleChange} placeholder="Año de Graduación" className="p-2 border rounded" required />
-
-                        <select
-                            name="id_career"
-                            value={formData.id_career}
-                            onChange={handleChange}
-                            className="p-2 border rounded"
-                            required
-                        >
-                            <option value="">Seleccionar carrera</option>
-                            {careers.map(c => (
-                                <option key={c.id_career} value={c.id_career}>{c.name}</option>
-                            ))}
-                        </select>
-
-                        <button type="submit" className="font-bold bg-blue-900 text-white py-2 px-4 rounded hover:bg-blue-950 col-span-full">
-                            GUARDAR GRADUADO
-                        </button>
-                    </form>
-                </div>
-
-                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    {graduados.map((g) => (
-                        <GraduatedCard key={g.identification || g.id} graduado={g} />
-                    ))}
-                </div>
-            </div>
+        <div className="flex justify-center mb-8">
+          <button
+            onClick={() => setShowForm(!showForm)}
+            className="bg-teal-700 hover:bg-teal-900 text-white font-semibold py-3 px-6 rounded-lg shadow-lg transition-transform transform hover:scale-105 "
+            aria-expanded={showForm}
+          >
+            {showForm ? "Ocultar formulario" : "Agregar graduado"}
+          </button>
         </div>
-    );
+
+        <section
+          className={`overflow-hidden rounded-xl shadow-lg bg-white p-3 max-w-3xl mx-auto mb-7 transition-all duration-700 ease-in-out ${
+            showForm ? "max-h-[1200px] opacity-100" : "max-h-0 opacity-0"
+          }`}
+          aria-hidden={!showForm}
+        >
+          <form
+            onSubmit={handleSubmit}
+            className="grid grid-cols-1 md:grid-cols-2 gap-6"
+            noValidate
+          >
+            {[
+              { name: "name", placeholder: "Nombre completo", type: "text" },
+              { name: "identification", placeholder: "Identificación", type: "text" },
+              { name: "address", placeholder: "Dirección", type: "text" },
+              { name: "email", placeholder: "Correo electrónico", type: "email" },
+              { name: "phone", placeholder: "Teléfono personal", type: "tel" },
+              { name: "work_phone", placeholder: "Teléfono de trabajo", type: "tel" },
+              { name: "graduation_year", placeholder: "Año de graduación", type: "number", min: 1900, max: new Date().getFullYear() },
+            ].map(({ name, placeholder, type, min, max }) => (
+              <input
+                key={name}
+                name={name}
+                type={type}
+                min={min}
+                max={max}
+                value={formData[name]}
+                onChange={handleChange}
+                placeholder={placeholder}
+                className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-600 focus:border-transparent shadow-sm transition"
+                required
+              />
+            ))}
+
+            <select
+              name="id_career"
+              value={formData.id_career}
+              onChange={handleChange}
+              className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-600 focus:border-transparent shadow-sm transition"
+              required
+            >
+              <option value="" disabled>
+                Seleccionar carrera
+              </option>
+              {careers.map((c) => (
+                <option key={c.id_career} value={c.id_career}>
+                  {c.name}
+                </option>
+              ))}
+            </select>
+
+            <button
+              type="submit"
+              className="col-span-full bg-teal-800 hover:bg-teal-900 text-white font-bold py-3 rounded-lg shadow-md"
+            >
+              Guardar Graduado
+            </button>
+          </form>
+        </section>
+
+        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          {graduados.map((g) => (
+            <GraduatedCard key={g.identification || g.id} graduado={g} />
+          ))}
+        </section>
+      </div>
+  );
 }
