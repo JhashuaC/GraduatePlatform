@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { getAllCourseGraduatesById, removeGraduateFromCourse } from '../../api/course_graduate.service';
 import { useAuth } from "../../context/AuthContext";
+import { CalendarDays, Clock, Laptop, BookX } from "lucide-react";
 
 export default function Workshops() {
   const [graduateCourse, setGraduateCourse] = useState([]);
   const { user } = useAuth();
-  const id_graduate = user?.id_user; // id_user === id_graduate
+  const id_graduate = user?.id_user;
 
   useEffect(() => {
     async function fetchData() {
@@ -19,40 +20,60 @@ export default function Workshops() {
   const handleUnenroll = async (id_course) => {
     try {
       await removeGraduateFromCourse(id_course, id_graduate);
-      // Actualizar el estado local para remover el curso sin recargar
       setGraduateCourse(prev => prev.filter(cg => cg.id_course !== id_course));
-      alert("Desmatriculación exitosa");
+      alert("✅ Desmatriculación exitosa.");
     } catch (error) {
       console.error("Error desmatriculando curso:", error);
-      alert("Error al desmatricular el curso");
+      alert("❌ Error al desmatricular el curso.");
     }
   };
 
   return (
     <div className="p-6">
-      <h2 className="text-3xl font-bold mb-6 text-center text-blue-900">Mis Talleres</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {graduateCourse.map((graduateCourse) => (
-          <div key={`${graduateCourse.id_course}-${graduateCourse.id_graduate}`} className="bg-white shadow-md rounded-2xl p-4 border border-gray-200 hover:shadow-lg transition-all duration-300 flex flex-col justify-between">
-            <div>
-              <h3 className="text-2xl font-semibold text-blue-700 mb-2">{graduateCourse.Course.name_course}</h3>
-              <p className="text-gray-700 mb-3">{graduateCourse.Course.description}</p>
-              <div className="text-sm text-gray-500 space-y-1 mb-3">
-                <p><strong>Fecha:</strong> {graduateCourse.Course.date_course}</p>
-                <p><strong>Hora:</strong> {graduateCourse.Course.time_course}</p>
-                <p><strong>Modalidad:</strong> {graduateCourse.Course.modality}</p>
-              </div>
-            </div>
+      <h2 className="text-3xl font-bold mb-6 text-center text-blue-900">Mis Talleres Inscritos</h2>
 
-            <button
-              onClick={() => handleUnenroll(graduateCourse.id_course)}
-              className="mt-4 bg-red-700 hover:bg-red-600 text-white px-4 py-2 rounded"
+      {graduateCourse.length === 0 ? (
+        <p className="text-center text-gray-500">No estás inscrito en ningún taller actualmente.</p>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {graduateCourse.map((gc) => (
+            <div
+              key={`${gc.id_course}-${gc.id_graduate}`}
+              className="bg-white shadow-lg rounded-2xl border border-gray-200 p-5 flex flex-col justify-between h-full transition-transform hover:scale-[1.02] duration-300"
             >
-              Desmatricular
-            </button>
-          </div>
-        ))}
-      </div>
+              <div>
+                <h3 className="text-2xl font-bold text-blue-800 mb-2 flex items-center gap-2">
+                  {gc.Course.name_course}
+                </h3>
+                <p className="text-gray-700 mb-3 text-sm">{gc.Course.description}</p>
+
+                <div className="text-sm text-gray-600 space-y-2 mb-4">
+                  <p className="flex items-center gap-2">
+                    <CalendarDays className="w-4 h-4 text-blue-500" />
+                    <strong>Fecha:</strong> {gc.Course.date_course}
+                  </p>
+                  <p className="flex items-center gap-2">
+                    <Clock className="w-4 h-4 text-blue-500" />
+                    <strong>Hora:</strong> {gc.Course.time_course}
+                  </p>
+                  <p className="flex items-center gap-2">
+                    <Laptop className="w-4 h-4 text-blue-500" />
+                    <strong>Modalidad:</strong> {gc.Course.modality}
+                  </p>
+                </div>
+              </div>
+
+              <button
+                onClick={() => handleUnenroll(gc.id_course)}
+                className="mt-auto bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-semibold flex items-center gap-2 justify-center transition-all"
+              >
+                <BookX className="w-4 h-4" />
+                Desmatricular
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
