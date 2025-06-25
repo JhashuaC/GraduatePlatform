@@ -1,6 +1,6 @@
 import { getAuthHeaders } from './authHeader';
 
-const BASE_URL = 'http://localhost:3000/api/courses';
+const BASE_URL = import.meta.env.VITE_API_URL + '/courses';
 
 export const getAllCourses = async () => {
   const res = await fetch(BASE_URL, {

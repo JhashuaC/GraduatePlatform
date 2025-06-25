@@ -1,6 +1,6 @@
 import { getAuthHeaders } from './authHeader';
 
-const BASE_URL = 'http://localhost:3000/api/email_recipients';
+const BASE_URL = import.meta.env.VITE_API_URL + '/email_recipients';
 
 export const getAllEmailRecipients = async () => {
   const res = await fetch(BASE_URL, { headers: getAuthHeaders() });

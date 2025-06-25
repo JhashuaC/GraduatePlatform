@@ -1,6 +1,6 @@
 import { getAuthHeaders } from './authHeader';
 
-const BASE_URL = 'http://localhost:3000/api/notes';
+const BASE_URL = import.meta.env.VITE_API_URL + '/notes';
 
 export const sendNoteByEmail = async (id, note) => {
   const res = await fetch(`${BASE_URL}/send`, {

@@ -1,6 +1,6 @@
 import { getAuthHeaders } from './authHeader';
 
-const BASE_URL = 'http://localhost:3000/api/survey_responses';
+const BASE_URL = import.meta.env.VITE_API_URL + '/survey_responses';
 
 export const getAllSurveyResponses = async () => {
   const res = await fetch(BASE_URL, { headers: getAuthHeaders() });
@@ -19,7 +19,7 @@ export const createSurveyResponse = async (data) => {
     method: 'POST',
     headers: getAuthHeaders(),
     body: JSON.stringify(data),
-  });
+  });S
   if (!res.ok) throw new Error('Error al registrar respuesta');
   return await res.json();
 };

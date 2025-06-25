@@ -1,5 +1,5 @@
 // src/api/authService.js
-const API_URL = 'http://localhost:3000/api';   
+const API_URL = import.meta.env.VITE_API_URL;
 
 const defaultHeaders = { 'Content-Type': 'application/json' };
 
@@ -14,7 +14,7 @@ export const loginRequest = async (credentials) => {
 };
 
 export const registerRequest = async (data) => {
-  const res = await fetch(`http://localhost:3000/api/user`, {
+  const res = await fetch(`${API_URL}/user`, {
     method: 'POST',
     headers: defaultHeaders,
     body: JSON.stringify(data),
