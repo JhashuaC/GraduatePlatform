@@ -1,7 +1,7 @@
 const { User } = require('../models');
 const { sendNoteEmail } = require('../utils/emailSender');
 
-const sendGradeEmail = async(req, res) => {
+const sendGradeEmail = async (req, res) => {
     const { id, note, course_name } = req.body;
 
     console.log('Iniciando envío de nota por correo');
@@ -16,7 +16,11 @@ const sendGradeEmail = async(req, res) => {
         }
 
         const subject = 'Resultado de taller';
-        const text = `Hola ${graduate.first_name}, tu nota en el taller ${course_name}, ha sido: ${note}.`;
+        const text = `
+Estimado/a ${graduate.first_name},
+
+Espero que este mensaje le encuentre bien. Le informo que su calificación en el taller "${course_name}" ha sido: ${note}.
+Si desea revisar detalles específicos de su evaluación o tiene alguna consulta, no dude en contactar al número del Taller.`;
 
         console.log('Enviando correo a:', graduate.email);
         console.log('Asunto:', subject);
