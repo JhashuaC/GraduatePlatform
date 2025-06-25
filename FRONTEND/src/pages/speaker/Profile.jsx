@@ -1,5 +1,5 @@
 import { useAuth } from "../../context/AuthContext";
-import { FaUserGraduate, FaEnvelope, FaPhoneAlt, FaMapMarkerAlt, FaIdCard, FaCalendarAlt, FaUniversity } from "react-icons/fa";
+import { FaUserTie  , FaEnvelope, FaPhoneAlt, FaMapMarkerAlt, FaIdCard, FaCalendarAlt, FaUniversity } from "react-icons/fa";
 
 export default function Profile() {
   const { user } = useAuth();
@@ -7,7 +7,7 @@ export default function Profile() {
   return (
     <div className="max-w-3xl mx-auto mt-10 p-6 bg-white rounded-xl shadow-md">
       <h2 className="text-3xl font-bold text-sky-800 mb-6 text-center flex items-center justify-center gap-2">
-        <FaUserGraduate className="text-sky-700" /> Mi Perfil
+        <FaUserTie   className="text-sky-700" /> Mi perfil
       </h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-gray-800">
@@ -38,7 +38,7 @@ export default function Profile() {
         </div>
 
         {/* Teléfono y Dirección */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2">             
           <FaPhoneAlt className="text-sky-600" />
           <div>
             <p className="font-semibold">Teléfono:</p>
@@ -53,30 +53,30 @@ export default function Profile() {
           </div>
         </div>
 
-        {/* Información de graduado */}
-        {user?.Graduate && (
+        {/* Información de facilitador */}         
+        {user?.Speaker && (
           <>
             <div className="flex items-center gap-2">
               <FaCalendarAlt className="text-sky-600" />
               <div>
                 <p className="font-semibold">Año de Graduación:</p>
-                <p>{user.Graduate.graduation_year}</p>
+                <p>{user.Speaker.graduation_year}</p>
               </div>
             </div>
             <div className="flex items-center gap-2">
               <FaUniversity className="text-sky-600" />
               <div>
                 <p className="font-semibold">ID de Carrera:</p>
-                <p>{user.Graduate.id_career}</p>
+                <p>{user.Speaker.id_career}</p>
               </div>
             </div>
             <div>
               <p className="font-semibold">Categoría:</p>
-              <p>{user.Graduate.category || "No especificado"}</p>
+              <p>{user.Speaker.specialty || "No especificado"}</p>
             </div>
             <div>
               <p className="font-semibold">Teléfono laboral:</p>
-              <p>{user.Graduate.work_phone || "No disponible"}</p>
+              <p>{user.Speaker.work_phone || "No disponible"}</p>
             </div>
           </>
         )}

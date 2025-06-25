@@ -3,6 +3,8 @@ import { useAuth } from "../../context/AuthContext";
 import { getAllCourses } from "../../api/course.service";
 import { getAllCourseGraduates, updateCompletionStatus } from "../../api/course_graduate.service";
 import { sendNoteByEmail } from "../../api/note.service";
+import { FaCheckCircle, FaHourglassHalf, FaPaperPlane, FaChalkboardTeacher } from "react-icons/fa";
+import { MdOutlineEditNote } from "react-icons/md";
 
 export default function MyWorkshops() {
   const { user } = useAuth();
@@ -10,7 +12,7 @@ export default function MyWorkshops() {
   const [selectedCourseId, setSelectedCourseId] = useState("");
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [notes, setNotes] = useState({}); // Para almacenar la nota por estudiante
+  const [notes, setNotes] = useState({});
 
   useEffect(() => {
     if (user?.id_user) fetchCourses();
@@ -49,7 +51,6 @@ export default function MyWorkshops() {
     }));
   };
 
-
   const handleSendNote = async (graduateId) => {
     const noteData = notes[graduateId];
 
@@ -78,11 +79,12 @@ export default function MyWorkshops() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
-      <h2 className="text-3xl font-bold mb-6 text-sky-800">Mis Talleres</h2>
-      <p className="mb-4">
-        Selecciona un taller para ver los graduados inscritos y enviar sus notas.
-      </p>
+    <div className="max-w-5xl mx-auto p-6">
+      <div className="text-center mb-8">
+        <FaChalkboardTeacher className="mx-auto text-5xl text-sky-800 mb-2" />
+        <h2 className="text-4xl font-bold text-sky-800">Mis Talleres</h2>
+        <p className="text-gray-600">Selecciona un taller para calificar a los graduados.</p>
+      </div>
 
       <select
         value={selectedCourseId}
@@ -90,57 +92,79 @@ export default function MyWorkshops() {
           setSelectedCourseId(e.target.value);
           fetchStudents(e.target.value);
         }}
-        className="mb-6 border p-2 rounded w-full"
+        className="mb-6 border border-gray-300 p-2 rounded w-full shadow-sm"
       >
-        <option value="">Selecciona un taller</option>
+        <option value="">📘 Selecciona un taller</option>
         {courses.map((c) => (
           <option key={c.id_course} value={c.id_course}>
-            {c.name_course} - Fecha: {c.date_course}
+            {c.name_course} – {c.date_course}
           </option>
         ))}
       </select>
 
-      {loading && <p>Cargando estudiantes...</p>}
+      {loading && <p className="text-gray-600 text-center">Cargando estudiantes...</p>}
 
       {students.length > 0 && (
-        <div className="bg-white rounded shadow p-4">
-          <h3 className="text-xl font-semibold mb-4 text-sky-800">Graduados Inscritos</h3>
-          <ul className="space-y-3">
-            {students.map((s) => (
-              <li
-                key={`${s.id_course}-${s.Graduate.id_graduate}`}
+        <div className="bg-white rounded-2xl shadow-lg p-6">
+          <h3 className="text-2xl font-semibold mb-4 text-sky-800">Graduados Inscritos</h3>
+          <ul className="space-y-6">
+            {students.map((s) => {
+              const completed = s.completado;
+              const userInfo = s.Graduate.User;
+              const gradInfo = s.Graduate;
 
-                className="flex justify-between items-center border-b py-2"
-              >
+              return (
+                <li
+                  key={`${s.id_course}-${gradInfo.id_graduate}`}
+                  className="flex flex-col md:flex-row justify-between items-start md:items-center border-b pb-4"
+                >
+                  <div className="text-gray-800 space-y-1">
+                    <p className="text-lg font-medium">
+                      {userInfo.first_name} {userInfo.last_name1}
+                    </p>
+                    <p className="text-sm">📧 {userInfo.email}</p>
+                    <p className="text-sm">📱 {gradInfo.work_phone} | Categoría: {gradInfo.category || "N/A"}</p>
+                    <p className="text-sm flex items-center gap-1">
+                      {completed ? (
+                        <>
+                          <FaCheckCircle className="text-green-600" /> <span>Completado</span>
+                        </>
+                      ) : (
+                        <>
+                          <FaHourglassHalf className="text-yellow-500" /> <span>Pendiente</span>
+                        </>
+                      )}
+                    </p>
+                  </div>
 
-                <div>
-                  <strong>{s.Graduate.User.first_name} {s.Graduate.User.last_name1}</strong> - {s.Graduate.User.email}
-                  <br />
-                  Teléfono: {s.Graduate.work_phone} | Categoría: {s.Graduate.category || "N/A"}
-                  <br />
-                  Estado: {s.completado ? "✅ Completado" : "⏳ Pendiente"}
-                </div>
-
-                <div className="flex gap-2 items-center">
-                  <input
-                    type="number"
-                    placeholder="Nota"
-                   value={notes[s.Graduate.id_graduate]?.nota || ""}
-                    onChange={(e) => handleNoteChange(s.Graduate.id_graduate, e.target.value, s.Course.name_course)}
-                    disabled={s.completado}
-                    className="border p-1 rounded w-20"
-                  />
-                  <button
-                    onClick={() => handleSendNote(s.Graduate.id_graduate)}
-                    disabled={s.completado}
-                    className={`${s.completado ? "bg-gray-400" : "bg-sky-800 hover:bg-blue-800"
-                      } text-white px-3 py-1 rounded`}
-                  >
-                    {s.completado ? "Enviado" : "Enviar Nota"}
-                  </button>
-                </div>
-              </li>
-            ))}
+                  <div className="mt-4 md:mt-0 flex flex-col md:flex-row items-center gap-3">
+                    <input
+                      type="number"
+                      placeholder="Nota"
+                      value={notes[gradInfo.id_graduate]?.nota || ""}
+                      onChange={(e) =>
+                        handleNoteChange(gradInfo.id_graduate, e.target.value, s.Course.name_course)
+                      }
+                      disabled={completed}
+                      className="border p-2 rounded w-24 text-center"
+                    />
+                    <button
+                      onClick={() => handleSendNote(gradInfo.id_graduate)}
+                      disabled={completed}
+                      className={`flex items-center gap-2 px-4 py-2 rounded text-white transition ${
+                        completed
+                          ? "bg-gray-400 cursor-not-allowed"
+                          : "bg-sky-800 hover:bg-sky-900"
+                      }`}
+                    >
+                      {completed ? "Enviado" : <>
+                        <FaPaperPlane /> Enviar Nota
+                      </>}
+                    </button>
+                  </div>
+                </li>
+              );
+            })}
           </ul>
         </div>
       )}

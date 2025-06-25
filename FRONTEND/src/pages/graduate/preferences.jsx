@@ -1,13 +1,18 @@
 import { useEffect, useState } from "react";
-import {
-    getAllPreferences,
-} from "../../api/preference_options.service";
+import { getAllPreferences } from "../../api/preference_options.service";
 import {
     getAllGraduatePreferencesById,
     assignPreferenceToGraduate,
     removePreferenceFromGraduate,
 } from "../../api/graduate_preference.service";
 import { useAuth } from "../../context/AuthContext";
+
+import {
+   CirclePlus,
+   CircleMinus,
+   Search,
+
+} from "lucide-react";
 
 export default function Preferences() {
     const { user } = useAuth();                // id_user === id_graduate
@@ -23,8 +28,8 @@ export default function Preferences() {
             setAllOptions(options);
 
             const prefs = await getAllGraduatePreferencesById(idGraduate);
-            setMyPrefs(prefs.map(p => p.id_option)); 
-            setMyPrefs(prefs.map(p => p.id_option)); 
+            setMyPrefs(prefs.map(p => p.id_option));
+            setMyPrefs(prefs.map(p => p.id_option));
         }
         if (idGraduate) fetchData();
     }, [idGraduate]);
@@ -56,13 +61,16 @@ export default function Preferences() {
 
             {/* Buscador */}
             <div className="mb-4">
+                
                 <input
                     type="text"
                     placeholder="Buscar preferencias..."
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
-                    className="border p-2 rounded w-full md:w-1/2"
+                    className="border p-2 rounded w-full md:w-1/2 items-center gap-1"
+                    
                 />
+                
             </div>
 
             {/* Todas las opciones disponibles */}
@@ -80,16 +88,16 @@ export default function Preferences() {
                             {alreadyHas(opt.id_option) ? (
                                 <button
                                     onClick={() => handleRemove(opt.id_option)}
-                                    className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700"
+                                    className="bg-red-600 text-white px-3 py-1 rounded  flex items-center gap-1 hover:bg-red-700"
                                 >
-                                    Quitar
+                                   <CircleMinus  className="w-4 h-4" /> Quitar
                                 </button>
                             ) : (
                                 <button
                                     onClick={() => handleAdd(opt.id_option)}
-                                    className="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700"
+                                    className="bg-green-600 text-white px-3 py-1 rounded flex items-center gap-1 hover:bg-green-700"
                                 >
-                                    Añadir
+                                    <CirclePlus  className="w-4 h-4" /> Añadir
                                 </button>
                             )}
                         </div>

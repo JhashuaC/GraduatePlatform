@@ -16,22 +16,11 @@ export default function AuthPage() {
 
   // Registro
   const [regForm, setRegForm] = useState({
-    name: "",
-    last_name1: "",
-    last_name2: "",
-    identity_number: "",
-    email: "",
-    phone: "",
-    address: "",
-    password: "",
-    id_role: "1",
-    graduation_year: "",
-    id_career: "",
-    category: "",
-    work_phone: "",
-    specialty: "",
+    name: "", last_name1: "", last_name2: "",
+    identity_number: "", email: "", phone: "", address: "",
+    password: "", id_role: "1", graduation_year: "", id_career: "",
+    category: "", work_phone: "", specialty: "",
   });
-
   const [regError, setRegError] = useState("");
   const [regSuccess, setRegSuccess] = useState("");
 
@@ -47,18 +36,16 @@ export default function AuthPage() {
     try {
       await login(loginForm);
       navigate("/home");
-    } catch (err) {
+    } catch {
       setLoginError("Credenciales inválidas");
     }
   };
 
   const handleRegisterSubmit = async (e) => {
     e.preventDefault();
-    setRegError("");
-    setRegSuccess("");
+    setRegError(""); setRegSuccess("");
 
     try {
-      // Crear en tabla users
       const userPayload = {
         first_name: regForm.name,
         last_name1: regForm.last_name1,
@@ -70,11 +57,9 @@ export default function AuthPage() {
         password: regForm.password,
         id_role: regForm.id_role,
       };
-      console.log(userPayload);
 
       const createdUser = await createUser(userPayload);
 
-      // Crear en graduate
       if (regForm.id_role === "2") {
         await createGraduate({
           id_graduate: createdUser.id_user,
@@ -85,7 +70,6 @@ export default function AuthPage() {
         });
       }
 
-      // Crear en speaker
       if (regForm.id_role === "3") {
         await createSpeaker({
           id_speaker: createdUser.id_user,
@@ -96,20 +80,10 @@ export default function AuthPage() {
 
       setRegSuccess("Usuario registrado con éxito. Ahora inicia sesión.");
       setRegForm({
-        name: "",
-        last_name1: "",
-        last_name2: "",
-        identity_number: "",
-        email: "",
-        phone: "",
-        address: "",
-        password: "",
-        id_role: "1",
-        graduation_year: "",
-        id_career: "",
-        category: "",
-        work_phone: "",
-        specialty: "",
+        name: "", last_name1: "", last_name2: "",
+        identity_number: "", email: "", phone: "", address: "",
+        password: "", id_role: "1", graduation_year: "", id_career: "",
+        category: "", work_phone: "", specialty: "",
       });
       setIsLogin(true);
     } catch (err) {
@@ -119,55 +93,53 @@ export default function AuthPage() {
   };
 
   return (
-    <div className="bg-blue-950 min-h-screen flex items-center justify-center">
-      <div className="p-4 bg-white rounded shadow w-96 mx-auto mt-20">
+    <div className="min-h-screen bg-gradient-to-b from-blue-950 to-blue-800 flex flex-col items-center justify-center px-4 py-12">
+      <img src="/logo.png" alt="Logo" className="w-32 mb-6" />
+
+      <div className="bg-white shadow-2xl rounded-2xl w-full max-w-md p-8">
+        <h2 className="text-2xl font-bold text-center text-blue-800 mb-6">
+          {isLogin ? "Iniciar Sesión" : "Registro de Usuario"}
+        </h2>
+
         {isLogin ? (
-          <form onSubmit={handleLoginSubmit}>
-            <h2 className="text-xl mb-4">Iniciar sesión</h2>
-            {loginError && <p className="text-red-500">{loginError}</p>}
+          <form onSubmit={handleLoginSubmit} className="space-y-4">
+            {loginError && <p className="text-red-500 text-sm">{loginError}</p>}
             <input
+              type="email"
               name="email"
-              placeholder="Email"
+              placeholder="Correo electrónico"
               value={loginForm.email}
               onChange={handleLoginChange}
+              className="input"
               required
-              className="block w-full mb-2 p-2 border"
             />
             <input
-              name="password"
               type="password"
+              name="password"
               placeholder="Contraseña"
               value={loginForm.password}
               onChange={handleLoginChange}
+              className="input"
               required
-              className="block w-full mb-4 p-2 border"
             />
-            <button className="bg-blue-600 text-white px-4 py-2 rounded w-full mb-2">
-              Entrar
-            </button>
-            <p className="text-center text-sm">
+            <button className="btn-primary w-full">Entrar</button>
+            <p className="text-sm text-center">
               ¿No tienes cuenta?{" "}
-              <button
-                type="button"
-                onClick={() => setIsLogin(false)}
-                className="text-blue-600 hover:underline"
-              >
+              <button type="button" onClick={() => setIsLogin(false)} className="text-blue-600 hover:underline">
                 Regístrate aquí
               </button>
             </p>
           </form>
         ) : (
-          <form onSubmit={handleRegisterSubmit}>
-            <h2 className="text-xl mb-4">Registrar usuario</h2>
-            {regError && <p className="text-red-500">{regError}</p>}
-            {regSuccess && <p className="text-green-500">{regSuccess}</p>}
+          <form onSubmit={handleRegisterSubmit} className="space-y-3">
+            {regError && <p className="text-red-500 text-sm">{regError}</p>}
+            {regSuccess && <p className="text-green-500 text-sm">{regSuccess}</p>}
 
-            {/* Datos base */}
             {[
               { name: "name", placeholder: "Nombre" },
               { name: "last_name1", placeholder: "Primer Apellido" },
               { name: "last_name2", placeholder: "Segundo Apellido" },
-              { name: "identity_number", placeholder: "Identificación" },
+              { name: "identity_number", placeholder: "Cédula" },
               { name: "email", placeholder: "Correo electrónico" },
               { name: "phone", placeholder: "Teléfono" },
               { name: "address", placeholder: "Dirección" },
@@ -180,8 +152,8 @@ export default function AuthPage() {
                 placeholder={placeholder}
                 value={regForm[name]}
                 onChange={handleRegisterChange}
+                className="input"
                 required
-                className="block w-full mb-2 p-2 border"
               />
             ))}
 
@@ -189,77 +161,33 @@ export default function AuthPage() {
               name="id_role"
               value={regForm.id_role}
               onChange={handleRegisterChange}
-              className="block w-full mb-4 p-2 border"
+              className="input"
             >
-              <option value="admin">Administrador</option>
+              <option value="1">Administrador</option>
               <option value="2">Graduado</option>
               <option value="3">Facilitador</option>
             </select>
 
-            {/* Campos para Graduado */}
             {regForm.id_role === "2" && (
               <>
-                <input
-                  name="graduation_year"
-                  placeholder="Año de Graduación"
-                  value={regForm.graduation_year}
-                  onChange={handleRegisterChange}
-                  className="block w-full mb-2 p-2 border"
-                />
-                <input
-                  name="id_career"
-                  placeholder="ID de Carrera"
-                  value={regForm.id_career}
-                  onChange={handleRegisterChange}
-                  className="block w-full mb-2 p-2 border"
-                />
-                <input
-                  name="category"
-                  placeholder="Categoría"
-                  value={regForm.category}
-                  onChange={handleRegisterChange}
-                  className="block w-full mb-2 p-2 border"
-                />
-                <input
-                  name="work_phone"
-                  placeholder="Teléfono Laboral"
-                  value={regForm.work_phone}
-                  onChange={handleRegisterChange}
-                  className="block w-full mb-2 p-2 border"
-                />
+                <input name="graduation_year" placeholder="Año de Graduación" value={regForm.graduation_year} onChange={handleRegisterChange} className="input" />
+                <input name="id_career" placeholder="ID de Carrera" value={regForm.id_career} onChange={handleRegisterChange} className="input" />
+                <input name="category" placeholder="Categoría" value={regForm.category} onChange={handleRegisterChange} className="input" />
+                <input name="work_phone" placeholder="Teléfono Laboral" value={regForm.work_phone} onChange={handleRegisterChange} className="input" />
               </>
             )}
 
-            {/* Campos para Facilitador */}
             {regForm.id_role === "3" && (
               <>
-                <input
-                  name="specialty"
-                  placeholder="Especialidad"
-                  value={regForm.specialty}
-                  onChange={handleRegisterChange}
-                  className="block w-full mb-2 p-2 border"
-                />
-                <input
-                  name="work_phone"
-                  placeholder="Teléfono Laboral"
-                  value={regForm.work_phone}
-                  onChange={handleRegisterChange}
-                  className="block w-full mb-2 p-2 border"
-                />
+                <input name="specialty" placeholder="Especialidad" value={regForm.specialty} onChange={handleRegisterChange} className="input" />
+                <input name="work_phone" placeholder="Teléfono Laboral" value={regForm.work_phone} onChange={handleRegisterChange} className="input" />
               </>
             )}
 
-            <button className="bg-blue-600 text-white px-4 py-2 rounded w-full mb-2">
-              Registrar
-            </button>
-            <p className="text-center text-sm">
+            <button className="btn-primary w-full">Registrar</button>
+            <p className="text-sm text-center">
               ¿Ya tienes cuenta?{" "}
-              <button
-                type="button"
-                onClick={() => setIsLogin(true)}
-                className="text-blue-600 hover:underline"
-              >
+              <button type="button" onClick={() => setIsLogin(true)} className="text-blue-600 hover:underline">
                 Inicia sesión
               </button>
             </p>

@@ -74,7 +74,7 @@ export default function Historial() {
           {c.completed && (
             <button
               onClick={() => setSelected(c)}
-              className="mt-3 bg-green-700 hover:bg-green-800 text-white px-4 py-2 rounded"
+              className="mt-3 bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded"
             >
               Ver Certificado
             </button>

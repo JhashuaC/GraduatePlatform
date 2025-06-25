@@ -5,6 +5,7 @@ import SpeakerLayout from "../layouts/SpeakerLayout";
 import Dashboard from "../pages/speaker/Dashboard";
 import Attendance from "../pages/speaker/Attendance";
 import MyWorkshops from "../pages/speaker/MyWorkshops";
+import Profile  from "../pages/speaker/Profile";
 
 export default function SpeakerRoutes() {
   const { user, role, loading } = useAuth();
@@ -18,11 +19,11 @@ export default function SpeakerRoutes() {
   return (
     <Routes>
       <Route element={<SpeakerLayout />}>
-        <Route index              element={<Dashboard />} />          {/* /graduate */}
+        <Route index              element={<Dashboard />} />        
         <Route path="asistencia" element={<Attendance />} />
-        <Route path="misTalleres" element={<MyWorkshops />} />  {/* Mis talleres */}
-        
-        {/* Redirección por defecto */}
+        <Route path="misTalleres" element={<MyWorkshops />} /> 
+         <Route path="perfil"      element={<Profile />} />
+
         <Route path="*"           element={<Navigate to="" replace />} />
       </Route>
     </Routes>

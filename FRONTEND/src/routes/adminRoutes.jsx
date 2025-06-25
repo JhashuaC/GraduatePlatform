@@ -7,6 +7,7 @@ import Users from "../pages/admin/Users";
 import Speakers from "../pages/admin/Speakers";
 import Courses from "../pages/admin/Courses";
 import Graduates from "../pages/admin/Graduates";
+import Dashboard from "../pages/admin/Dashboard";
 
 export default function AdminRoutes() {
   const { user, role, loading } = useAuth();
@@ -23,12 +24,12 @@ export default function AdminRoutes() {
   return (
     <Routes>
       <Route element={<AdminLayout />}>
-        <Route index            element={<Navigate to="users" replace />} />
-        <Route path="users"     element={<Users />} />
-        <Route path="graduates"  element={<Graduates />} />
-        <Route path="speakers"  element={<Speakers />} />
-        <Route path="courses"   element={<Courses />} />
-        <Route path="*"         element={<Navigate to="users" replace />} />
+        <Route index element={<Dashboard />} />
+        <Route path="users" element={<Users />} />
+        <Route path="graduates" element={<Graduates />} />
+        <Route path="speakers" element={<Speakers />} />
+        <Route path="courses" element={<Courses />} />
+        <Route path="*"           element={<Navigate to="" replace />} />
       </Route>
     </Routes>
   );

@@ -48,7 +48,7 @@ export default function Workshops() {
         {courses.map((course) => (
           <CourseCard
             key={course.id_course}
-            name={course.name}
+            name={course.name_course}
             description={course.description}
             date={course.date_course}
             time={course.time_course}

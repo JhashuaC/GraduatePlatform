@@ -13,6 +13,7 @@ export default function SpeakerLayout() {
           <Link to="/speaker/dashboard">Inicio</Link>
           <Link to="/speaker/misTalleres">Mis Talleres</Link>
           <Link to="/speaker/asistencia">Asistencia</Link>
+          <Link to="/speaker/perfil">Perfil</Link>
 
           <button onClick={logout} className="ml-4 bg-red-500 px-3 py-1 rounded">Salir</button>
         </div>
