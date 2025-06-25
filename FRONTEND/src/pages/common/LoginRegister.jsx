@@ -10,11 +10,9 @@ export default function AuthPage() {
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(true);
 
-  // Login
   const [loginForm, setLoginForm] = useState({ email: "", password: "" });
   const [loginError, setLoginError] = useState("");
 
-  // Registro
   const [regForm, setRegForm] = useState({
     name: "", last_name1: "", last_name2: "",
     identity_number: "", email: "", phone: "", address: "",
@@ -110,8 +108,8 @@ export default function AuthPage() {
               placeholder="Correo electrónico"
               value={loginForm.email}
               onChange={handleLoginChange}
-              className="input"
               required
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
             />
             <input
               type="password"
@@ -119,10 +117,15 @@ export default function AuthPage() {
               placeholder="Contraseña"
               value={loginForm.password}
               onChange={handleLoginChange}
-              className="input"
               required
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
             />
-            <button className="btn-primary w-full">Entrar</button>
+            <button
+              type="submit"
+              className="w-full bg-blue-700 hover:bg-blue-800 text-white font-semibold py-2 rounded-lg shadow-md transition-transform hover:scale-105"
+            >
+              Entrar
+            </button>
             <p className="text-sm text-center">
               ¿No tienes cuenta?{" "}
               <button type="button" onClick={() => setIsLogin(false)} className="text-blue-600 hover:underline">
@@ -152,7 +155,7 @@ export default function AuthPage() {
                 placeholder={placeholder}
                 value={regForm[name]}
                 onChange={handleRegisterChange}
-                className="input"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
                 required
               />
             ))}
@@ -161,7 +164,7 @@ export default function AuthPage() {
               name="id_role"
               value={regForm.id_role}
               onChange={handleRegisterChange}
-              className="input"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
             >
               <option value="1">Administrador</option>
               <option value="2">Graduado</option>
@@ -170,21 +173,26 @@ export default function AuthPage() {
 
             {regForm.id_role === "2" && (
               <>
-                <input name="graduation_year" placeholder="Año de Graduación" value={regForm.graduation_year} onChange={handleRegisterChange} className="input" />
-                <input name="id_career" placeholder="ID de Carrera" value={regForm.id_career} onChange={handleRegisterChange} className="input" />
-                <input name="category" placeholder="Categoría" value={regForm.category} onChange={handleRegisterChange} className="input" />
-                <input name="work_phone" placeholder="Teléfono Laboral" value={regForm.work_phone} onChange={handleRegisterChange} className="input" />
+                <input name="graduation_year" placeholder="Año de Graduación" value={regForm.graduation_year} onChange={handleRegisterChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none transition" />
+                <input name="id_career" placeholder="ID de Carrera" value={regForm.id_career} onChange={handleRegisterChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none transition" />
+                <input name="category" placeholder="Categoría" value={regForm.category} onChange={handleRegisterChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none transition" />
+                <input name="work_phone" placeholder="Teléfono Laboral" value={regForm.work_phone} onChange={handleRegisterChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none transition" />
               </>
             )}
 
             {regForm.id_role === "3" && (
               <>
-                <input name="specialty" placeholder="Especialidad" value={regForm.specialty} onChange={handleRegisterChange} className="input" />
-                <input name="work_phone" placeholder="Teléfono Laboral" value={regForm.work_phone} onChange={handleRegisterChange} className="input" />
+                <input name="specialty" placeholder="Especialidad" value={regForm.specialty} onChange={handleRegisterChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none transition" />
+                <input name="work_phone" placeholder="Teléfono Laboral" value={regForm.work_phone} onChange={handleRegisterChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none transition" />
               </>
             )}
 
-            <button className="btn-primary w-full">Registrar</button>
+            <button
+              type="submit"
+              className="w-full bg-blue-600 hover:bg-green-700 text-white font-semibold py-2 rounded-lg shadow-md transition-transform hover:scale-105"
+            >
+              Registrar
+            </button>
             <p className="text-sm text-center">
               ¿Ya tienes cuenta?{" "}
               <button type="button" onClick={() => setIsLogin(true)} className="text-blue-600 hover:underline">
