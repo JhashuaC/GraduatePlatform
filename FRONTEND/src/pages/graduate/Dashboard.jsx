@@ -32,7 +32,7 @@ export default function Dashboard() {
         <div className="bg-yellow-100 border border-yellow-300 rounded-xl p-5 text-center shadow hover:shadow-md transition">
           <FaUserGraduate className="text-yellow-700 text-3xl mx-auto mb-2" />
           <h3 className="text-lg font-semibold text-yellow-800">Historial</h3>
-          <p className="text-gray-600 text-sm">Visualiza los cursos que has completado.</p>
+          <p className="text-gray-600 text-sm">Visualiza el procesos de tus Talleres.</p>
         </div>
       </div>
     </div>

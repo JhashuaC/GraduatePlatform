@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Outlet, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import {  RiAdminLine } from "react-icons/ri";
 import {
   FaUsers,
   FaUserGraduate,
@@ -17,20 +18,20 @@ export default function AdminLayout() {
   const [showSidebar, setShowSidebar] = useState(false);
 
   return (
-    <div className="min-h-screen bg-gray-100 relative">
+      <div className="min-h-screen bg-gray-100">
       {/* Sidebar Dropdown */}
       {showSidebar && (
         <div className="fixed top-0 left-0 h-full w-64 bg-teal-800 text-white z-50 shadow-lg p-6 transition-all duration-300">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-xl font-bold flex items-center gap-2">
-              <FaHome /> Menú
+              <RiAdminLine /> Menú
             </h2>
             <button onClick={() => setShowSidebar(false)}>
               <FaTimes className="text-white text-xl hover:text-red-300" />
             </button>
           </div>
 
-          <nav className="space-y-4">
+           <nav className="space-y-4 text-sm">
             <Link
               to="/admin/inicio"
               className="flex items-center gap-2 hover:bg-teal-700 px-3 py-2 rounded"
@@ -79,13 +80,13 @@ export default function AdminLayout() {
 
       {/* Navbar superior */}
       <nav className="bg-teal-800 text-white px-6 py-4 shadow-md">
-        <div className="flex justify-between items-center max-w-7xl mx-auto">
+        <div className="flex justify-between items-center ">
           <div className="flex items-center gap-4">
             <button onClick={() => setShowSidebar(true)} className="text-white text-2xl hover:text-gray-300">
               <FaBars />
             </button>
-            <div className="text-2xl font-bold flex items-center gap-2">
-              <FaHome className="text-white" />
+            <div className="text-xl font-bold flex items-center gap-2">
+              <RiAdminLine  className="text-white" />
               Administrador
             </div>
           </div>

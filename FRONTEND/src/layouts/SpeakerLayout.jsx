@@ -72,7 +72,7 @@ export default function SpeakerLayout() {
 
       {/* Navbar superior */}
       <nav className="bg-sky-800 text-white px-6 py-4 shadow-md">
-        <div className="flex justify-between items-center max-w-7xl mx-auto">
+        <div className="flex justify-between items-center ">
           <div className="flex items-center gap-4">
             <button
               onClick={() => setShowSidebar(true)}
@@ -80,7 +80,7 @@ export default function SpeakerLayout() {
             >
               <FaBars />
             </button>
-            <div className="text-2xl font-bold flex items-center gap-2">
+            <div className="text-xl font-bold flex items-center gap-2">
               <FaChalkboardTeacher />Facilitador
             </div>
           </div>

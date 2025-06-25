@@ -147,7 +147,7 @@ export default function AuthPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-950 to-blue-800 flex flex-col items-center justify-center px-4 py-12">
-      <img src="/logo.png" alt="Logo" className="w-32 mb-6" />
+      <img src="/logo.png" alt="Logo" className="w-35 mb-7" />
 
       <div className="bg-white shadow-2xl rounded-2xl w-full max-w-3xl p-8">
         <h2 className="text-2xl font-bold text-center text-blue-800 mb-6">
