@@ -15,7 +15,7 @@ export default function Profile() {
         <div>
           <p className="font-semibold">Nombre:</p>
           <p className="text-lg">{user?.first_name}</p>
-        </div>
+        </div> //probando cambiar algo
         <div>
           <p className="font-semibold">Apellidos:</p>
           <p className="text-lg">{user?.last_name1} {user?.last_name2}</p>
