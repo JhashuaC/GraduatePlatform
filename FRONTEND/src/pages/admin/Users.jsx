@@ -21,23 +21,6 @@ export default function Users() {
     const confirmed = window.confirm("¿Estás seguro de eliminar este usuario?");
     if (!confirmed) return;
 
-    // Intentar eliminar de speaker (puede no existir)
-    try {
-      await deleteSpeaker(id);
-      console.log("Speaker eliminado (si existía).");
-    } catch (err) {
-      console.warn("No se eliminó speaker (posiblemente no existía):", err);
-    }
-
-    // Intentar eliminar de graduate (puede no existir)
-    try {
-      await deleteGraduate(id);
-      console.log("Graduate eliminado (si existía).");
-    } catch (err) {
-      console.warn("No se eliminó graduate (posiblemente no existía):", err);
-    }
-
-    // Ahora eliminar el usuario
     const result = await deleteUser(id);
     setUsers((prev) => prev.filter((u) => u.id_user !== id));
     alert(result.message); // Muestra: "Usuario eliminado"
