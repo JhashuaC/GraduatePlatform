@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 import { getAllCourseGraduatesById } from "../../api/course_graduate.service";
-import { getAllGraduatePreferencesById } from "../../api/graduate_preference.service";
+import { getAllGraduatePreferencesById } from "../../api/graduate_preference.service"; //changes
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -52,7 +52,7 @@ export default function Dashboard() {
       icon: <FaClipboardList className="text-blue-700 text-4xl mx-auto mb-3 animate-pulse" />,
       bg: "bg-blue-100",
       text: "text-blue-800",
-      route: "/graduate/talleres",
+      route: "/graduate/Mistalleres",
     },
     {
       title: "Mis Preferencias",
