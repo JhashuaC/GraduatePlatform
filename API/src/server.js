@@ -23,7 +23,10 @@ const surveyResponsesRoutes = require('./routes/survey_responses.routes');
 const notesRoutes = require('./routes/notes.routes');
 const app = express();
 
-app.use(cors());
+app.use(cors({
+    origin: "http://localhost:5173",
+    credentials:  true
+}));
 app.use(morgan('dev'));
 app.use(express.json());
 
