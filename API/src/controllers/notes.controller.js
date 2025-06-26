@@ -30,6 +30,7 @@ Detalles adicionales:
 
 **Importante sobre su certificado:**
 El certificado digital de este taller ya se encuentra disponible para su descarga en la sección de Historial Académico de su perfil. Puede acceder a él en cualquier momento cuando lo necesite.
+
 Si desea:
 • Revisar aspectos específicos de su evaluación
 • Recibir retroalimentación detallada
@@ -40,10 +41,7 @@ Puede contactarnos directamente a través del número telefónico del Taller o r
 Quedo a su disposición para cualquier inquietud.
 
 Cordialmente,
-[Su Nombre]
-Coordinación del Taller ${course_name}
-[Teléfono de contacto]
-[Correo institucional]`;
+Coordinación del Taller ${course_name}`;
         console.log('Enviando correo a:', graduate.email);
         console.log('Asunto:', subject);
         console.log('Contenido:', text);
