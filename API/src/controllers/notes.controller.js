@@ -15,13 +15,32 @@ const sendGradeEmail = async (req, res) => {
             return res.status(404).json({ message: 'Graduado no encontrado' });
         }
 
-        const subject = 'Resultado de taller';
+        const subject = 'RESULTADO DEL TALLER - ' + course_name.toUpperCase()
         const text = `
-Estimado/a ${graduate.first_name},
+Estimado/a ${graduate.first_name} ${graduate.last_name1},
 
-Espero que este mensaje le encuentre bien. Le informo que su calificación en el taller "${course_name}" ha sido: ${note}.
-Si desea revisar detalles específicos de su evaluación o tiene alguna consulta, no dude en contactar al número del Taller.`;
+Espero que este mensaje le encuentre bien. 
 
+Me complace informarle que ha finalizado el proceso de evaluación del taller "${course_name}". Su calificación obtenida es: ${note}.
+
+Detalles adicionales:
+- Taller: ${course_name}
+- Calificación: ${note}
+
+Si desea:
+• Revisar aspectos específicos de su evaluación
+• Recibir retroalimentación detallada
+• Realizar cualquier consulta relacionada
+
+Puede contactarnos directamente a través del número telefónico del Taller o respondiendo a este correo.
+
+Quedo a su disposición para cualquier inquietud.
+
+Cordialmente,
+[Su Nombre]
+Coordinación del Taller ${course_name}
+[Teléfono de contacto]
+[Correo institucional]`;
         console.log('Enviando correo a:', graduate.email);
         console.log('Asunto:', subject);
         console.log('Contenido:', text);
