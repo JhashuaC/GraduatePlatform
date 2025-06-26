@@ -16,15 +16,16 @@ const SurveyResponse = require('./survey_responses.model');
 
 User.belongsTo(Role, { foreignKey: 'id_role' });
 Role.hasMany(User, { foreignKey: 'id_role' });
+Graduate.belongsTo(User, { foreignKey: 'id_graduate', onDelete: 'CASCADE' });
+User.hasOne(Graduate, { foreignKey: 'id_graduate', onDelete: 'CASCADE' });
 
-Graduate.belongsTo(User, { foreignKey: 'id_graduate' });
-User.hasOne(Graduate, { foreignKey: 'id_graduate' });
+Speaker.belongsTo(User, { foreignKey: 'id_speaker', onDelete: 'CASCADE' });
+User.hasOne(Speaker, { foreignKey: 'id_speaker', onDelete: 'CASCADE' });
 
 Graduate.belongsTo(Career, { foreignKey: 'id_career' });
 Career.hasMany(Graduate, { foreignKey: 'id_career' });
 
-Speaker.belongsTo(User, { foreignKey: 'id_speaker' });
-User.hasOne(Speaker, { foreignKey: 'id_speaker' });
+
 
 Course.belongsTo(Speaker, { foreignKey: 'id_speaker' });
 Speaker.hasMany(Course, { foreignKey: 'id_speaker' });
@@ -32,53 +33,53 @@ CourseGraduate.belongsTo(Course, { foreignKey: 'id_course' });
 CourseGraduate.belongsTo(Graduate, { foreignKey: 'id_graduate' });
 
 Career.belongsToMany(Course, {
-  through: CareerCourse,
-  foreignKey: 'id_career',
+    through: CareerCourse,
+    foreignKey: 'id_career',
 });
 Course.belongsToMany(Career, {
-  through: CareerCourse,
-  foreignKey: 'id_course',
+    through: CareerCourse,
+    foreignKey: 'id_course',
 });
 
 Course.belongsToMany(Graduate, {
-  through: CourseGraduate,
-  foreignKey: 'id_course',
+    through: CourseGraduate,
+    foreignKey: 'id_course',
 });
 Graduate.belongsToMany(Course, {
-  through: CourseGraduate,
-  foreignKey: 'id_graduate',
+    through: CourseGraduate,
+    foreignKey: 'id_graduate',
 });
 
 Course.belongsToMany(PreferenceOption, {
-  through: CourseCategory,
-  foreignKey: 'id_course',
+    through: CourseCategory,
+    foreignKey: 'id_course',
 });
 PreferenceOption.belongsToMany(Course, {
-  through: CourseCategory,
-  foreignKey: 'id_option',
+    through: CourseCategory,
+    foreignKey: 'id_option',
 });
 GraduatePreference.belongsTo(Graduate, { foreignKey: 'id_graduate' });
 GraduatePreference.belongsTo(PreferenceOption, { foreignKey: 'id_option' });
 
 Graduate.belongsToMany(PreferenceOption, {
-  through: GraduatePreference,
-  foreignKey: 'id_graduate',
+    through: GraduatePreference,
+    foreignKey: 'id_graduate',
 });
 PreferenceOption.belongsToMany(Graduate, {
-  through: GraduatePreference,
-  foreignKey: 'id_option',
+    through: GraduatePreference,
+    foreignKey: 'id_option',
 });
 
 EmailHistory.belongsTo(User, { foreignKey: 'id_admin' });
 User.hasMany(EmailHistory, { foreignKey: 'id_admin' });
 
 EmailHistory.belongsToMany(Graduate, {
-  through: EmailRecipient,
-  foreignKey: 'id_email',
+    through: EmailRecipient,
+    foreignKey: 'id_email',
 });
 Graduate.belongsToMany(EmailHistory, {
-  through: EmailRecipient,
-  foreignKey: 'id_graduate',
+    through: EmailRecipient,
+    foreignKey: 'id_graduate',
 });
 
 SurveyResponse.belongsTo(Graduate, { foreignKey: 'id_graduate' });
@@ -91,19 +92,19 @@ SurveyResponse.belongsTo(SurveyQuestion, { foreignKey: 'id_question' });
 SurveyQuestion.hasMany(SurveyResponse, { foreignKey: 'id_question' });
 
 module.exports = {
-  User,
-  Role,
-  Career,
-  Graduate,
-  Speaker,
-  Course,
-  CareerCourse,
-  CourseGraduate,
-  PreferenceOption,
-  CourseCategory,
-  GraduatePreference,
-  EmailHistory,
-  EmailRecipient,
-  SurveyQuestion,
-  SurveyResponse,
+    User,
+    Role,
+    Career,
+    Graduate,
+    Speaker,
+    Course,
+    CareerCourse,
+    CourseGraduate,
+    PreferenceOption,
+    CourseCategory,
+    GraduatePreference,
+    EmailHistory,
+    EmailRecipient,
+    SurveyQuestion,
+    SurveyResponse,
 };

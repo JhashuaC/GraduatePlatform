@@ -1,5 +1,5 @@
-const User = require('../models/user.model');
-const Role = require('../models/roles.model');
+const { User, Graduate, Speaker } = require('../models');
+
 const bcrypt = require('bcryptjs');
 
 const getAllUsers = async(req, res) => {
@@ -35,20 +35,10 @@ const createUser = async(req, res) => {
         id_role,
     } = req.body;
 
-    console.log('[CREATE USER] Solicitud recibida con los siguientes datos:');
-    console.log({
-        first_name,
-        last_name1,
-        last_name2,
-        identity_number,
-        email,
-        phone,
-        address,
-        id_role,
-    });
+
 
     try {
-        console.log('[CREATE USER] Generando hash para la contraseña...');
+
         const hash = await bcrypt.hash(password, 10);
         console.log('[CREATE USER] Hash generado con éxito.');
 
@@ -66,7 +56,7 @@ const createUser = async(req, res) => {
         });
 
 
-        console.log('[CREATE USER] Usuario creado exitosamente:', user.toJSON());
+
         res.status(201).json(user);
     } catch (err) {
         console.error('[CREATE USER] Error al crear usuario:', err);
@@ -105,17 +95,30 @@ const updateUser = async(req, res) => {
     }
 };
 
+
 const deleteUser = async(req, res) => {
     const { id } = req.params;
     try {
         const user = await User.findByPk(id);
         if (!user) return res.status(404).json({ message: 'Usuario no encontrado' });
+
+
+        const speaker = await Speaker.findOne({ where: { id_speaker: id } });
+        if (speaker) await speaker.destroy();
+
+
+        const graduate = await Graduate.findOne({ where: { id_graduate: id } });
+        if (graduate) await graduate.destroy();
+
+
         await user.destroy();
-        res.json({ message: 'Usuario eliminado' });
+
+        res.json({ message: 'Usuario y datos relacionados eliminados' });
     } catch (err) {
         res.status(500).json({ message: 'Error al eliminar usuario' });
     }
 };
+
 
 module.exports = {
     getAllUsers,
