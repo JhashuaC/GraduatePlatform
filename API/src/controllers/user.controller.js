@@ -102,18 +102,9 @@ const deleteUser = async(req, res) => {
         const user = await User.findByPk(id);
         if (!user) return res.status(404).json({ message: 'Usuario no encontrado' });
 
-
-        const speaker = await Speaker.findOne({ where: { id_speaker: id } });
-        if (speaker) await speaker.destroy();
-
-
-        const graduate = await Graduate.findOne({ where: { id_graduate: id } });
-        if (graduate) await graduate.destroy();
-
-
         await user.destroy();
 
-        res.json({ message: 'Usuario y datos relacionados eliminados' });
+        res.json({ message: 'Usuario y relaciones eliminadas con éxito' });
     } catch (err) {
         res.status(500).json({ message: 'Error al eliminar usuario' });
     }
