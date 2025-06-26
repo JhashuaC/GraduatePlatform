@@ -23,7 +23,15 @@ const surveyResponsesRoutes = require('./routes/survey_responses.routes');
 const notesRoutes = require('./routes/notes.routes');
 const app = express();
 
-app.use(cors());
+
+app.use(cors({
+    origin: [
+        "http://localhost:5173",
+        "https://jhasmartech.online"
+    ],
+    credentials: true
+}));
+
 app.use(morgan('dev'));
 app.use(express.json());
 
@@ -64,7 +72,7 @@ db.authenticate()
         console.error('No se pudo conectar a la base de datos:', err);
     });
 
-const PORT = process.env.PORT || 3000;
+const PORT = 3000;
 
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en el puerto ${PORT}`);
