@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Outlet, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import {  RiAdminLine } from "react-icons/ri";
+import { RiAdminLine } from "react-icons/ri";
 import {
   FaUsers,
   FaUserGraduate,
@@ -18,8 +18,8 @@ export default function AdminLayout() {
   const [showSidebar, setShowSidebar] = useState(false);
 
   return (
-      <div className="min-h-screen bg-gray-100">
-      {/* Sidebar Dropdown */}
+    <div className="min-h-screen bg-gray-100">
+      {/* Sidebar móvil */}
       {showSidebar && (
         <div className="fixed top-0 left-0 h-full w-64 bg-teal-800 text-white z-50 shadow-lg p-6 transition-all duration-300">
           <div className="flex justify-between items-center mb-6">
@@ -31,7 +31,7 @@ export default function AdminLayout() {
             </button>
           </div>
 
-           <nav className="space-y-4 text-sm">
+          <nav className="space-y-4 text-sm">
             <Link
               to="/admin/inicio"
               className="flex items-center gap-2 hover:bg-teal-700 px-3 py-2 rounded"
@@ -70,7 +70,10 @@ export default function AdminLayout() {
           </nav>
 
           <button
-            onClick={logout}
+            onClick={() => {
+              logout();
+              setShowSidebar(false);
+            }}
             className="mt-8 flex items-center gap-2 bg-red-600 hover:bg-red-700 px-4 py-2 rounded w-full justify-center"
           >
             <FaSignOutAlt /> Salir
@@ -79,19 +82,24 @@ export default function AdminLayout() {
       )}
 
       {/* Navbar superior */}
-      <nav className="bg-teal-800 text-white px-6 py-4 shadow-md">
-        <div className="flex justify-between items-center ">
+      <nav className="bg-teal-800 text-white px-6 py-4 shadow-md sticky top-0 z-40">
+        <div className="flex justify-between items-center">
+          {/* Menú hamburguesa */}
           <div className="flex items-center gap-4">
-            <button onClick={() => setShowSidebar(true)} className="text-white text-2xl hover:text-gray-300">
+            <button
+              onClick={() => setShowSidebar(true)}
+              className="text-white text-2xl hover:text-gray-300 sm:hidden"
+            >
               <FaBars />
             </button>
             <div className="text-xl font-bold flex items-center gap-2">
-              <RiAdminLine  className="text-white" />
+              <RiAdminLine className="text-white" />
               Administrador
             </div>
           </div>
 
-          <div className="flex space-x-6 items-center text-sm font-medium">
+          {/* Menú horizontal oculto en móviles */}
+          <div className="hidden sm:flex space-x-6 items-center text-sm font-medium">
             <Link to="/admin/inicio" className="flex items-center gap-1 hover:text-gray-200 transition">
               <FaHome /> Inicio
             </Link>
@@ -117,8 +125,8 @@ export default function AdminLayout() {
         </div>
       </nav>
 
-      {/* Contenido principal */}
-      <main className="max-w-7xl mx-auto p-6">
+      {/* Contenido */}
+      <main className="p-4 sm:p-6 max-w-7xl mx-auto">
         <Outlet />
       </main>
     </div>
