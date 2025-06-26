@@ -27,6 +27,7 @@ const app = express();
 app.use(cors({
     origin: [
         "http://localhost:5173",
+        "https://www.jhasmartech.online",
         "https://jhasmartech.online"
     ],
     credentials: true
