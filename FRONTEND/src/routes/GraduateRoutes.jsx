@@ -1,5 +1,5 @@
 // src/routes/GraduateRoutes.jsx
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom"; //prueba
 import { useAuth } from "../context/AuthContext";
 import GraduateLayout from "../layouts/GraduateLayout";
 import Dashboard  from "../pages/graduate/Dashboard";
