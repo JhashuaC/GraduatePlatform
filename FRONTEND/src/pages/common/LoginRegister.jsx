@@ -46,7 +46,7 @@ export default function AuthPage() {
     phone: "",
     address: "",
     password: "",
-    id_role: "1",
+    id_role: "2", // Solo graduado por defecto
     graduation_year: "",
     id_career: "",
     category: "",
@@ -121,7 +121,7 @@ export default function AuthPage() {
         phone: "",
         address: "",
         password: "",
-        id_role: "1",
+        id_role: "2",
         graduation_year: "",
         id_career: "",
         category: "",
@@ -173,7 +173,10 @@ export default function AuthPage() {
               onChange: handleLoginChange,
               required: true,
             })}
-             <button type="submit" className="w-full bg-blue-700 hover:bg-blue-800 text-white font-semibold py-2 rounded-lg shadow-md transition-transform hover:scale-105">
+            <button
+              type="submit"
+              className="w-full bg-blue-700 hover:bg-blue-800 text-white font-semibold py-2 rounded-lg shadow-md transition-transform hover:scale-105"
+            >
               Entrar
             </button>
             <p className="text-sm text-center">
@@ -253,8 +256,8 @@ export default function AuthPage() {
                 value={regForm.id_role}
                 onChange={handleRegisterChange}
                 className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
               >
-                <option value="1">Administrador</option>
                 <option value="2">Graduado</option>
                 <option value="3">Facilitador</option>
               </select>
@@ -271,7 +274,7 @@ export default function AuthPage() {
                     name="id_career"
                     value={regForm.id_career}
                     onChange={handleRegisterChange}
-                    className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 "
+                    className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
                     required
                   >
                     <option value="">Seleccionar carrera</option>
@@ -314,15 +317,19 @@ export default function AuthPage() {
               )}
             </div>
 
-              <button
+            <button
               type="submit"
-              className="w-full bg-blue-600 hover:bg-green-700 text-white font-semibold py-2 rounded-lg shadow-md transition-transform hover:scale-105"
+              className="mt-4 w-full bg-blue-600 hover:bg-green-700 text-white font-semibold py-2 rounded-lg shadow-md transition-transform hover:scale-105"
             >
               Registrar
             </button>
             <p className="text-sm text-center mt-3">
               ¿Ya tienes cuenta?{" "}
-              <button type="button" onClick={() => setIsLogin(true)} className="text-blue-600 hover:underline">
+              <button
+                type="button"
+                onClick={() => setIsLogin(true)}
+                className="text-blue-600 hover:underline"
+              >
                 Inicia sesión
               </button>
             </p>
