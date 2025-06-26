@@ -13,11 +13,11 @@ import {
   FaBook,
   FaCheckCircle,
   FaClipboardList,
-  FaCalendarAlt,
   FaFileAlt,
 } from "react-icons/fa";
 
 import {
+  ResponsiveContainer,
   BarChart,
   Bar,
   XAxis,
@@ -116,64 +116,80 @@ export default function DashboardAdmin() {
   });
 
   return (
-    <div className="max-w-6xl mx-auto p-6">
-      <div className="bg-white shadow-lg rounded-2xl p-8 mb-6 text-center">
-        <h1 className="text-4xl font-bold text-teal-800 mb-2">
+    <div className="max-w-6xl mx-auto p-4 sm:p-6">
+      {/* Bienvenida */}
+      <div className="bg-white shadow-lg rounded-2xl p-6 sm:p-8 mb-6 text-center">
+        <h1 className="text-2xl sm:text-4xl font-bold text-teal-800 mb-2">
           ¡Bienvenido, {user?.first_name} {user?.last_name1}!
         </h1>
-        <p className="text-gray-600 text-lg">
+        <p className="text-gray-600 text-base sm:text-lg">
           Este es el panel de administración. Gestiona usuarios, graduados, facilitadores y talleres.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-10">
+      {/* Tarjetas estadísticas */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mb-10">
         {statCards.map((card, idx) => (
           <div
             key={idx}
-            className={`${card.color} border rounded-xl p-6 shadow hover:shadow-md transition text-center`}
+            className={`${card.color} border rounded-xl p-4 sm:p-6 shadow hover:shadow-md transition text-center`}
           >
-            <div className={`${card.text} text-3xl mb-2`}>{card.icon}</div>
-            <h3 className={`text-xl font-semibold ${card.text}`}>{card.label}</h3>
-            <p className="text-gray-600 text-lg mt-1 font-bold">{card.value}</p>
+            <div className={`${card.text} text-2xl sm:text-3xl mb-2`}>{card.icon}</div>
+            <h3 className={`text-lg sm:text-xl font-semibold ${card.text}`}>{card.label}</h3>
+            <p className="text-gray-600 text-base sm:text-lg mt-1 font-bold">{card.value}</p>
           </div>
         ))}
       </div>
 
+      {/* Gráficos de barras y pie */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-        <div className="bg-white rounded-xl shadow p-6">
-          <h3 className="text-xl font-semibold mb-4 text-blue-900">Usuarios por Rol</h3>
-          <BarChart width={400} height={250} data={usersByRole}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Bar dataKey="total" fill="#0ea5e9" />
-          </BarChart>
+        <div className="bg-white rounded-xl shadow p-4 sm:p-6">
+          <h3 className="text-lg sm:text-xl font-semibold mb-4 text-blue-900">Usuarios por Rol</h3>
+          <div className="w-full h-64">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={usersByRole}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis allowDecimals={false} />
+                <Tooltip />
+                <Bar dataKey="total" fill="#0ea5e9" />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
         </div>
 
-        <div className="bg-white rounded-xl shadow p-6">
-          <h3 className="text-xl font-semibold mb-4 text-green-800">Modalidad de Talleres</h3>
-          <PieChart width={400} height={250}>
-            <Pie data={modalityData} cx="50%" cy="50%" outerRadius={80} label dataKey="value">
-              {modalityData.map((_, i) => (
-                <Cell key={i} fill={COLORS[i % COLORS.length]} />
-              ))}
-            </Pie>
-            <Tooltip />
-            <Legend />
-          </PieChart>
+        <div className="bg-white rounded-xl shadow p-4 sm:p-6">
+          <h3 className="text-lg sm:text-xl font-semibold mb-4 text-green-800">Modalidad de Talleres</h3>
+          <div className="w-full h-64">
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie data={modalityData} cx="50%" cy="50%" outerRadius={80} label dataKey="value">
+                  {modalityData.map((_, i) => (
+                    <Cell key={i} fill={COLORS[i % COLORS.length]} />
+                  ))}
+                </Pie>
+                <Tooltip />
+                <Legend />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
         </div>
       </div>
 
-      <div className="bg-white rounded-xl shadow p-6 mt-6">
-        <h3 className="text-xl font-semibold mb-4 text-sky-900">Talleres por Mes</h3>
-        <LineChart width={700} height={300} data={coursesByMonth}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="month" />
-          <YAxis allowDecimals={false} />
-          <Tooltip />
-          <Line type="monotone" dataKey="value" stroke="#0ea5e9" strokeWidth={2} />
-        </LineChart>
+      {/* Línea por mes */}
+      <div className="bg-white rounded-xl shadow p-4 sm:p-6 mt-6">
+        <h3 className="text-lg sm:text-xl font-semibold mb-4 text-sky-900">Talleres por Mes</h3>
+        <div className="w-full h-72">
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart data={coursesByMonth}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="month" />
+              <YAxis allowDecimals={false} />
+              <Tooltip />
+              <Line type="monotone" dataKey="value" stroke="#0ea5e9" strokeWidth={2} />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
       </div>
     </div>
   );
