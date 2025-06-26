@@ -26,7 +26,10 @@ Me complace informarle que ha finalizado el proceso de evaluación del taller "$
 Detalles adicionales:
 - Taller: ${course_name}
 - Calificación: ${note}
+- Certificado: Disponible en su historial académico
 
+**Importante sobre su certificado:**
+El certificado digital de este taller ya se encuentra disponible para su descarga en la sección de Historial Académico de su perfil. Puede acceder a él en cualquier momento cuando lo necesite.
 Si desea:
 • Revisar aspectos específicos de su evaluación
 • Recibir retroalimentación detallada
