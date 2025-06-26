@@ -276,12 +276,26 @@ export default function AuthPage() {
 
               {regForm.id_role === "2" && (
                 <>
-                  {renderInput(<GraduationCap size={20} />, {
-                    name: "graduation_year",
-                    placeholder: "Año de Graduación",
-                    value: regForm.graduation_year,
-                    onChange: handleRegisterChange,
-                  }, "graduation_year")}
+                  <div>
+                    <div className="flex items-center bg-white border border-gray-300 rounded-lg overflow-hidden">
+                      <div className="p-2 bg-gray-100 text-gray-500">
+                        <GraduationCap size={20} />
+                      </div>
+                      <select
+                        name="graduation_year"
+                        value={regForm.graduation_year}
+                        onChange={handleRegisterChange}
+                        className="w-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      >
+                        <option value="">Seleccionar año de graduación</option>
+                        {Array.from({ length: new Date().getFullYear() - 1950 + 1 }, (_, i) => 1950 + i).map((year) => (
+                          <option key={year} value={year}>{year}</option>
+                        ))}
+                      </select>
+                    </div>
+                    {regErrors.graduation_year && <p className="text-red-500 text-sm mt-1">{regErrors.graduation_year}</p>}
+                  </div>
+
                   <div>
                     <select
                       name="id_career"

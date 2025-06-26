@@ -1,6 +1,8 @@
 // src/pages/admin/Users.jsx
 import { useEffect, useState } from "react";
 import { getAllUsers, deleteUser } from "../../api/user.service";
+import { deleteSpeaker} from "../../api/speaker.service"
+import { deleteGraduate } from "../../api/graduate.service"
 import { UserIcon, MailIcon, PhoneIcon, MapPinIcon, Trash2Icon } from "lucide-react";
 
 export default function Users() {
@@ -15,10 +17,35 @@ export default function Users() {
   }, []);
 
   const handleDelete = async (id) => {
-    if (await deleteUser(id)) {
-      setUsers((prev) => prev.filter((u) => u.id_user !== id));
+  try {
+    const confirmed = window.confirm("¿Estás seguro de eliminar este usuario?");
+    if (!confirmed) return;
+
+    // Intentar eliminar de speaker (puede no existir)
+    try {
+      await deleteSpeaker(id);
+      console.log("Speaker eliminado (si existía).");
+    } catch (err) {
+      console.warn("No se eliminó speaker (posiblemente no existía):", err);
     }
-  };
+
+    // Intentar eliminar de graduate (puede no existir)
+    try {
+      await deleteGraduate(id);
+      console.log("Graduate eliminado (si existía).");
+    } catch (err) {
+      console.warn("No se eliminó graduate (posiblemente no existía):", err);
+    }
+
+    // Ahora eliminar el usuario
+    const result = await deleteUser(id);
+    setUsers((prev) => prev.filter((u) => u.id_user !== id));
+    alert(result.message); // Muestra: "Usuario eliminado"
+  } catch (error) {
+    console.error("Error al eliminar usuario:", error);
+    alert("No se pudo eliminar el usuario. Revisa la consola.");
+  }
+};
 
   return (
     <div className="p-6">

@@ -16,15 +16,15 @@ export default function Dashboard() {
       route: "/speaker/misTalleres",
     },
     {
-      title: "Graduados",
+      title: "Graduados y Asistencia",
       description: "Consulta los participantes de cada taller.",
       icon: <FaUsers className="text-indigo-700 text-4xl mx-auto mb-3 animate-pulse" />,
       bg: "bg-indigo-100",
       text: "text-indigo-800",
-      route: "speaker/asistencia",
+      route: "/speaker/asistencia",
     },
     {
-      title: "Notas y Asistencia",
+      title: "Notas y Proceso",
       description: "Asigna calificaciones y certifica participación.",
       icon: <FaClipboardCheck className="text-green-700 text-4xl mx-auto mb-3 animate-pulse" />,
       bg: "bg-green-100",

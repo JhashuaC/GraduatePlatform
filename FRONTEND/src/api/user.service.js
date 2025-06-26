@@ -47,6 +47,17 @@ export const deleteUser = async (id) => {
     method: 'DELETE',
     headers: getAuthHeaders(),
   });
-  if (!res.ok) throw new Error('Error al eliminar usuario');
-  return await res.json();
+
+  if (!res.ok) {
+    const errorText = await res.text(); // para depurar el error del servidor
+    console.error("Error al eliminar:", res.status, errorText);
+    throw new Error('Error al eliminar usuario');
+  }
+
+  // Solo intenta leer el body si el status no es 204
+  if (res.status !== 204) {
+    return await res.json();
+  }
+
+  return true; // si fue exitoso y no hay contenido
 };
