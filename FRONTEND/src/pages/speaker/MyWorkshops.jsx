@@ -60,10 +60,7 @@ export default function MyWorkshops() {
     }
 
     try {
-      await sendNoteByEmail(graduateId, {
-        note: parseInt(noteData.nota),
-        course_name: noteData.curso,
-      });
+      await sendNoteByEmail(graduateId, parseInt(noteData.nota), noteData.curso);
 
       await updateCompletionStatus(selectedCourseId, graduateId, {
         completed: true,
