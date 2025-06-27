@@ -75,7 +75,10 @@ export default function AuthPage() {
     const errors = {};
     if (!regForm.name.trim()) errors.name = "El nombre es obligatorio.";
     if (!regForm.last_name1.trim()) errors.last_name1 = "El primer apellido es obligatorio.";
-    if (regForm.identity_number.length < 9) errors.identity_number = "La cédula debe de tener 9 dígitos.";
+    const identity = regForm.identity_number.trim();
+    if (!/^\d{9}$/.test(identity)) {
+      errors.identity_number = "La cédula debe tener exactamente 9 dígitos numéricos.";
+    }
     if (!regForm.email.includes("@")) errors.email = "Correo no válido.";
     if (regForm.password.length < 6) errors.password = "La contraseña debe tener al menos 6 caracteres.";
 
